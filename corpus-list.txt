@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .
 ..
 .DS_Store
@@ -15,3 +16,7 @@ Igbo Keyboard Layout
 LICENSE
 NFD.tec
 README.md
+=======
+file-list.txt
+corpus-list.txt
+>>>>>>> 61ba36c3d17865e5abf5f385575ef528a028cb22
