@@ -19,6 +19,8 @@ echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
 INITIAL_STATS_TITLE=Inital_Stats_
+SECOND_STATS_TITLE=Second_Stats_
+THIRD_STATS_TITLE=Third_Stats_
 LANGUAGE_ID= #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
 #Set to root folder of project
