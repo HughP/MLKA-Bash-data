@@ -1,8 +1,17 @@
 #########################
 #!/bin/bash
+# Script Name: awesome-script.bash
+# Authors: Hugh Paterson III and Jonathan Duff
+# Version: 0.01
 
-#Hugh Paterson III and Jonathan Duff v.01
-print Program Author and Version number
+SCRIPT_NAME="awesome-script.bash"
+AUTHORS="Hugh Paterson III, Jonathan Duff"
+VERSION="0.01"
+
+#print Program Author and Version number
+echo "Script Name: " $SCRIPT_NAME
+echo "Authors: " $AUTHORS
+echo "Version: " $VERSION
 
 # hi
 
