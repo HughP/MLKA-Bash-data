@@ -21,7 +21,9 @@ CMD_UNICODECCOUNT=UnicodeCCount
 INITIAL_STATS_TITLE=Inital_Stats_
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
-LANGUAGE_ID= #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
+LANGUAGE_ID=
+
+#@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
 #Set to root folder of project
 #define home_folder as location of project
@@ -33,12 +35,15 @@ echo
 echo "Home Folder:" $HOME_FOLDER
 
 #@Jonthan we should do somtheing with "*corpus*+*ori*" in line 32 instead of "*.txt". This way we can focus on original corpus texts and not all .txt files.
+
+#@Hugh: ok this should work
+
 #list all *.txt file and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
 # F: append / to directory entries
-ls -A1r *.txt > corpus-list.txt
+ls -A1r *corpus*ori*.txt > corpus-list.txt
 
 
 ## STEP 1 STAGE 1 & 2:
@@ -48,8 +53,8 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-##@Jonathan do we need that "{" at the end of line 50? - The issue is that I don't see where it closes.
-#example for each filename in corpus-list.txt {
+
+#example for each filename in corpus-list.txt
 for i in $(cat corpus-list.txt); do
 #@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
     $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
@@ -73,6 +78,10 @@ CORPUS_TYPE=corpus_type
 LANGUAGE_CODE=language_code
 INTIAL_COUNT=intial_count
 NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
+
+echo
+echo $NEW_FOLDER
+echo
 
 #mkdir $NEW_FOLDER
 
