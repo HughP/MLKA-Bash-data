@@ -21,7 +21,6 @@ CMD_UNICODECCOUNT=UnicodeCCount
 
 #Set to root folder of project
 #define home_folder as location of project
-#HOME_FOLDER="~/Multi-lingual Keyboard Assessment/MLKA/Data-Processing"
 HOME_FOLDER=`pwd`
 
 #change to working folder
@@ -141,7 +140,6 @@ NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 #for each .tec file {
 #}
 #
-#
 ## STEP 3 STAGE 1:
 #
 ##5. Get second set of corpus counts
@@ -166,7 +164,6 @@ NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 #
 #
 #
-#
 ## STEP 4 STAGE 1:
 #
 ##6. Convert texts to NFD
@@ -177,7 +174,6 @@ NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 #
 #
 #
-#
 ## STEP 5 STAGE 1:
 #
 ##7. Count words of text.
@@ -361,5 +357,3 @@ NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 #.tec file to implement the removal of untypeable characters.
 #.map file for each keyboard layout to transform the text to ASCII.
 #.tec file for each keyboard layout to transform the text to ASCII.
-
-
