@@ -1,22 +1,2 @@
-<<<<<<< HEAD
-.
-..
-.DS_Store
-.git
-AfricanKeyboards.map
-AfricanKeyboards.tec
-awesome-script.sh
-ConvertToNFD.map
-corpus-list.txt
-file-list.txt
-ibo.map
-ibo.tec
-Igbo James text
-Igbo Keyboard Layout
-LICENSE
-NFD.tec
-README.md
-=======
 file-list.txt
 corpus-list.txt
->>>>>>> 61ba36c3d17865e5abf5f385575ef528a028cb22
