@@ -10,7 +10,7 @@ AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
 License="GPL"
 
-#print Program Author and Version number
+#Print Program Author and Version number
 
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
@@ -18,6 +18,8 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
+INITIAL_STATS_TITLE=Inital_Stats_
+LANGUAGE_ID= #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
 #Set to root folder of project
 #define home_folder as location of project
@@ -28,6 +30,7 @@ HOME_FOLDER=`pwd`
 echo 
 echo "Home Folder:" $HOME_FOLDER
 
+#@Jonthan we should do somtheing with "*corpus*+*ori*" in line 32 instead of "*.txt". This way we can focus on original corpus texts and not all .txt files.
 #list all *.txt file and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
@@ -43,10 +46,15 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-
+##@Jonathan do we need that "{" at the end of line 50? - The issue is that I don't see where it closes.
 #example for each filename in corpus-list.txt {
 for i in $(cat corpus-list.txt); do
-    $CMD_UNICODECCOUNT $i
+#@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
+    $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
+    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
+    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
+    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
+    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
 done
 
 #COUNTER=0
