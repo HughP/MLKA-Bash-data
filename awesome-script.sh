@@ -34,11 +34,8 @@ HOME_FOLDER=`pwd`
 echo 
 echo "Home Folder:" $HOME_FOLDER
 
-#@Jonthan we should do somtheing with "*corpus*+*ori*" in line 32 instead of "*.txt". This way we can focus on original corpus texts and not all .txt files.
 
-#@Hugh: ok this should work
-
-#list all *.txt file and store results into corpus-list.txt file
+#list all original corpus files and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
