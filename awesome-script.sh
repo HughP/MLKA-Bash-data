@@ -9,30 +9,53 @@ AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
 
 #print Program Author and Version number
-echo "Script Name: " $SCRIPT_NAME
-echo "Authors: " $AUTHORS
-echo "Version: " $VERSION
+echo "Script Name:" $SCRIPT_NAME
+echo "Authors:" $AUTHORS
+echo "Version:" $VERSION
 
 # hi
 
+#Set to root folder of project
 #define home_folder as location of project
-#
-## cd ~/Multi-lingual\ Keyboard\ Assessment/MLKA/
-#change to working folder 
-#
-# # ls *.txt > corpus-list.txt
+HOME_FOLDER=~/Multi-lingual Keyboard Assessment/MLKA/Data-Processing
+
+#change to working folder
+cd $HOME_FOLDER
+
 #list all *.txt file and store results into corpus-list.txt file
+# A: print almost everything... exclude the . and ..
+# 1: print one file per line
+# r: recursive
+# f: append / to directory entries
+ls -A1rf > corpus-list.txt
 
-
-
 ## STEP 1 STAGE 1 & 2:
 #
 #print Starting step 1 stage 1 and 2: generating data
-#
-#for each filename in corpus-list.txt {
+echo
+echo "Starting STEP 1 STAGE 1 & 2..."
+echo
+
+
+#example for each filename in corpus-list.txt {
+for i in $( ls); do
+    echo item: $i
+done
+
 #change to home_folder
+cd $HOME_FOLDER
+
 #create [corpus_type]-[language_code]-[Intial_count] sub-folder
+CORPUS_TYPE=
+LANGUAGE_CODE=
+INTIAL_COUNT=
+NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
+
+mkdir $NEW_FOLDER
+
 #change to newly created folder
+cd $NEW_FOLDER
+
 #
 #	run UnicodeCCount with “-d” and store into tmp.txt
 #rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
