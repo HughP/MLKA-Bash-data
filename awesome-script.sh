@@ -3,17 +3,20 @@
 # Script Name: awesome-script.bash
 # Authors: Hugh Paterson III and Jonathan Duff
 # Version: 0.01
+# License: GPL
 
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
+License="GPL"
 
 #print Program Author and Version number
+
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
+echo "License:" $License
 
-# hi
 CMD_UNICODECCOUNT=UnicodeCCount
 
 #Set to root folder of project
@@ -33,8 +36,9 @@ echo "Home Folder:" $HOME_FOLDER
 # F: append / to directory entries
 ls -A1r *.txt > corpus-list.txt
 
+
 ## STEP 1 STAGE 1 & 2:
-#
+
 #print Starting step 1 stage 1 and 2: generating data
 echo
 echo "Starting STEP 1 STAGE 1 & 2..."
@@ -337,7 +341,7 @@ NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 #Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
 #Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
 #Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
-#Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
+#Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
 #
 ####Keybords###
 #metadata file for keyboard.

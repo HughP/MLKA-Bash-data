@@ -1,0 +1,12 @@
+Igbo James Text Metadata
+
+Bible Name: Bible Nso (IGBOB)
+English Description: Igbo Bible
+ISO 639-3 code of language: [ibo]
+Known Information: This translation, published by the Bible Society of Nigeria, was published in 2010. If you are interested in obtaining a printed copy, please contact the Bible Society of Nigeria at www.biblesociety-nigeria.org.
+Acquired via: https://www.bible.com/bible/77/jas.5 on 25 June 2014.
+Date Acquired: 25 June 2014
+Method Acquired: Copied from the website.
+Title of the text: Jemes. Bible Nso.
+Cited as: Bible Society of Nigeria. 2010. Jemes. Bible Nso. Lagos, Nigeria: Bible Society of Nigeria.
+Text provenance: Bible Nso (IGBOB)
