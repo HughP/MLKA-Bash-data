@@ -1,15 +1,2 @@
-NFD.tec
-AfricanKeyboards.map
-corpus-list.txt
-LICENSE
-.git
-README.md
-..
-Assessment
-.
-ConvertToNFD.map
-Keyboard
 file-list.txt
-awesome-script.sh
-aff.tec
-BASH_HELP
+corpus-list.txt

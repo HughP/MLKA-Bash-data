@@ -14,20 +14,24 @@ echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 
 # hi
+CMD_UNICODECCOUNT=UnicodeCCount
 
 #Set to root folder of project
 #define home_folder as location of project
-HOME_FOLDER=~/Multi-lingual Keyboard Assessment/MLKA/Data-Processing
+#HOME_FOLDER="~/Multi-lingual Keyboard Assessment/MLKA/Data-Processing"
+HOME_FOLDER=`pwd`
 
 #change to working folder
-cd $HOME_FOLDER
+#cd "$HOME_FOLDER"
+echo 
+echo "Home Folder:" $HOME_FOLDER
 
 #list all *.txt file and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
-# f: append / to directory entries
-ls -A1rf > corpus-list.txt
+# F: append / to directory entries
+ls -A1r *.txt > corpus-list.txt
 
 ## STEP 1 STAGE 1 & 2:
 #
@@ -38,25 +42,31 @@ echo
 
 
 #example for each filename in corpus-list.txt {
-for i in $( ls); do
-    echo item: $i
+for i in $(cat corpus-list.txt); do
+    $CMD_UNICODECCOUNT $i
 done
 
+#COUNTER=0
+#while [  $COUNTER -lt 10 ]; do
+#    echo The counter is $COUNTER
+#    let COUNTER=COUNTER+1 
+#done
+
 #change to home_folder
-cd $HOME_FOLDER
+#cd $HOME_FOLDER
 
 #create [corpus_type]-[language_code]-[Intial_count] sub-folder
-CORPUS_TYPE=
-LANGUAGE_CODE=
-INTIAL_COUNT=
+CORPUS_TYPE=corpus_type
+LANGUAGE_CODE=language_code
+INTIAL_COUNT=intial_count
 NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 
-mkdir $NEW_FOLDER
+#mkdir $NEW_FOLDER
 
 #change to newly created folder
-cd $NEW_FOLDER
+#cd $NEW_FOLDER
 
-#
+
 #	run UnicodeCCount with “-d” and store into tmp.txt
 #rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
 #	copy above created file to *.md instead of *.txt
