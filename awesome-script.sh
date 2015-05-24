@@ -4,6 +4,8 @@
 #Hugh Paterson III and Jonathan Duff v.01
 print Program Author and Version number
 
+# hi
+
 define home_folder as location of project
 
 # cd ~/Multi-lingual\ Keyboard\ Assessment/MLKA/
