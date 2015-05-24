@@ -27,6 +27,9 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
 
+###Notes for all
+
+* Git PRO book For reference: https://git-scm.com/book/en/v2
 
 ```
 Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
