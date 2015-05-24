@@ -11,16 +11,11 @@ VERSION="0.01"
 License="GPL"
 
 #print Program Author and Version number
-echo "Script Name: " $SCRIPT_NAME
-echo "Authors: " $AUTHORS
-echo "Version: " $VERSION
-echo "License: " $License
-=======
+
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
-
-# hi
+echo "License:" $License
 
 #Set to root folder of project
 #define home_folder as location of project
@@ -37,7 +32,6 @@ cd $HOME_FOLDER
 ls -A1rf > corpus-list.txt
 
 
-=======
 ## STEP 1 STAGE 1 & 2:
 
 #print Starting step 1 stage 1 and 2: generating data
