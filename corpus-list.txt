@@ -1,15 +1,17 @@
-NFD.tec
-AfricanKeyboards.map
-corpus-list.txt
-LICENSE
-.git
-README.md
-..
-Assessment
 .
-ConvertToNFD.map
-Keyboard
-file-list.txt
+..
+.DS_Store
+.git
+AfricanKeyboards.map
+AfricanKeyboards.tec
 awesome-script.sh
-aff.tec
-BASH_HELP
+ConvertToNFD.map
+corpus-list.txt
+file-list.txt
+ibo.map
+ibo.tec
+Igbo James text
+Igbo Keyboard Layout
+LICENSE
+NFD.tec
+README.md

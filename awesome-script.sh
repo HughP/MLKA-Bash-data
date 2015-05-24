@@ -19,7 +19,7 @@ echo "License:" $License
 
 #Set to root folder of project
 #define home_folder as location of project
-HOME_FOLDER=~/Multi-lingual Keyboard Assessment/MLKA/Data-Processing
+HOME_FOLDER=~/Multi-lingual_Keyboard_Assessment/MLKA/Data-Processing
 
 #change to working folder
 cd $HOME_FOLDER
