@@ -21,9 +21,12 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 
 ###Notes for Jonathan about git.
 
-Here is some thing about fetching from upstream and syncing your repo: https://help.github.com/articles/syncing-a-fork/
+* Here is some thing about fetching from upstream and syncing your repo: https://help.github.com/articles/syncing-a-fork/
 
 ###Notes for Hugh
+
+* For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
+
 
 ```
 Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
