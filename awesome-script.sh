@@ -4,81 +4,119 @@
 # Authors: Hugh Paterson III and Jonathan Duff
 # Version: 0.01
 # License: GPL
-
+ 
 # Dependencies are mentioned and linked in the README.md file.
 # Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
-# Installing dependiecies can wait for development until version 0.3 of the script.
-
+# Installing dependencies can wait for development until version 0.3 of the script.
+ 
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
 License="GPL"
-
+ 
 #Print Program Author and Version number
-
+ 
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
-
+ 
 CMD_UNICODECCOUNT=UnicodeCCount
-INITIAL_STATS_TITLE=Inital-Stats
+DIR_INITIAL_STATS_TITLE=Initial-Stats
+INITIAL_STATS_TITLE=Initial-Stats
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
-LANGUAGE_ID=NAV
 
+CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
+LANGUAGE_CODE=blabla #This is Same as Language_ID
+INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
+ 
 #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
-
+ 
 #Set to root folder of project
 #define home_folder as location of project
 HOME_FOLDER=`pwd`
-
+ 
 #change to working folder
 #cd "$HOME_FOLDER"
 echo 
 echo "Your data is being processed in the following folder:"
 echo $HOME_FOLDER
-
-
+ 
+ 
 #list all original corpus files and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
 # F: append / to directory entries
 ls -A1r *ori*corpus*.txt > corpus-list.txt
+ 
+#Print starting step 1 stage 1 and 2: generating data
+echo
+echo "Pre-flighting. Setting some of the variables and looking at the corpus data on hand."
+echo
 
+#Generate the LANGUAGE_ID Variables. This step looks through the corpus texts and pull out the last three characters of the corpus texts.
+touch Language_ID.txt
 
+#This puts the languages in the file every time the script runs. They will be in the file twice if run twice. I need to change this to only adding new ones if not alreay there. Consider: http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
+for i in $(cat corpus-list.txt); do
+	expr "/$i" : '.*\(.\{3\}\)\.' >> Language_ID.txt
+done
+
+#Set the Variables.
+LANGUAGE_IDString=$(cat LANGUAGE_ID.txt |tr "\n" " ")
+LANGUAGE_ID=($LANGUAGE_IDString)
+
+echo
+echo
+echo "It looks like we found ${#LANGUAGE_ID[@]} corpora. Including the following: ${LANGUAGE_ID[*]}"
+echo
+echo
+
+ 
 ## STEP 1 STAGE 1 & 2:
-
-#print Starting step 1 stage 1 and 2: generating data
+ 
+#Print starting step 1 stage 1 and 2: generating data
 echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 echo "Doing an initial character count of the book of James before further processing."
 echo
+ 
+if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
+    # Control will enter here if DIRECTORY exist.
+    rm -R -f "$DIR_INITIAL_STATS_TITLE"
+    mkdir $DIR_INITIAL_STATS_TITLE
+else
+    # Control will enter here if DIRECTORY does NOT exist.
+    mkdir $DIR_INITIAL_STATS_TITLE
+fi
 
-mkdir $INITIAL_STATS_TITLE
 
-#for i in $(find . -iname *ori*corups*.txt -type f)
+ 
+#for i in $(find . -iname *ori*corpus*.txt -type f)
+#@Jon W. Suggested that 'find' is a faster more effiencent option than 'cat' or 'ls' in this process. I have things working for 'cat' so I have not changed them.
+
 for i in $(cat corpus-list.txt); do
     for flag in -c -d -u -m "-d -m"; do
-        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Intial_Stats_${flag/ /}-${i/ /}
+        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Initial-Stats_${flag/ /}-${i/ /}
     done
 done
-
-#The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
-#@Jonathan D. or Jon W. Any help here would be a grate asset.
-
+ 
+##The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
+##@Jonathan D. or Jon W. Any help here would be a grate asset.
+ 
 #Next task: Create CSV of counts
 echo
 echo "Creating some CSV files from the intial character counts."
 echo
-
-cd "$INITIAL_STATS_TITLE"
-
-ls -A1r *Intial_Stats*.txt > Intial_Stats-list.txt
-
-for i in $(cat Intial_Stats-list.txt); do
+ 
+cd "$DIR_INITIAL_STATS_TITLE"
+ 
+ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
+ 
+for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
     csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
 done
 
@@ -86,327 +124,376 @@ done
 echo
 echo "Everybody on Github likes to read Markdown. So we're making some markdown tables from the CSV files."
 echo
-
-ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
-
-for i in $(cat Intial_Stats-list-csv.txt); do
-#    | csvfix write_DSV "$i" -o ${i/ /}.md
-done
-
-#trying to cat a header to the .md files then do a something to the header.
-
-#"#${i/ /}"
-
-
-#COUNTER=0
-#while [  $COUNTER -lt 10 ]; do
-#    echo The counter is $COUNTER
-#    let COUNTER=COUNTER+1 
+ 
+#ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
+# 
+#for i in $(cat Intial_Stats-list-csv.txt); do
+##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
+# 
+##trying to cat a header to the .md files then do a something to the header.
+# 
+##"#${i/ /}"
 
-#change to home_folder
+##############################
+Alternate code by Jonathan D.
+##############################
+#Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
+
+#
+#
+#cd $DIR_INITIAL_STATS_TITLE
+#
+##for i in $(find . -iname *ori*corups*.txt -type f)
+#for I in $(cat ../corpus-list.txt); do
+#    for FLAG in -c -d -u -m "-d -m"; do
+#	NEW_FILE_NAME=$INITIAL_STATS_TITLE${FLAG/ /}-${I/ /}
+#
+#        UnicodeCCount $FLAG ../$I > $NEW_FILE_NAME
+#
+#	#prepend newline with hash then file name in sentence case to *.md file:
+#	echo "#"$NEW_FILE_NAME.md > $NEW_FILE_NAME.md
+#	#add space:
+#	echo >> $NEW_FILE_NAME.md
+#	cat $NEW_FILE_NAME >> $NEW_FILE_NAME.md
+#
+#	#@Hugh here goes the TECkit command:
+#	#open *.md file and convert all tabspaces U+0009 to pipes and convert all U+0027 ‘ to \’
+#    done
+#done
+#
 #cd $HOME_FOLDER
-
-#create [corpus_type]-[language_code]-[Intial_count] sub-folder
-CORPUS_TYPE=corpus_type
-LANGUAGE_CODE=language_code
-INTIAL_COUNT=intial_count
-NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
-
-echo
-echo $NEW_FOLDER
-echo
-
-#mkdir $NEW_FOLDER
-
-#change to newly created folder
-#cd $NEW_FOLDER
+#rm corpus-list.txt
+#
+##For reference: http://en.wikipedia.org/wiki/Letter_case
+#
+##The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
 
 
-#	run UnicodeCCount with “-d” and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#	copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#	run UnicodeCCount with “-c” and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#	copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#run UnicodeCCount with “-u”  and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#run UnicodeCCount with “-d -m”  and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#
-#
-#
-## STEP 2 STAGE 1:
-#
-##4. Clean texts
-##	a. Remove SFM Markers
-##		i. Remove Verse #
-##		ii. Remove Chapter #
-##		iii. Remove Section headings #
-##		iv. Create stated copy of text for reference.	
-##	b. Remove typesetting characters via TECkit
-##		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
-##		ii. Create .map file
-##			(1) Create
-##			(2) Compile .tec
-##			(3) Apply
-##			(4) Save .map and .tec files 
-##		iii. Create stated copy of text for reference.	
-#
-## Clean the text files
-#print Starting step 2 stage 1: cleaning the text files
-#
-#change to home_folder
-##generate index folder list
-#list directories and store into index-folder-list.txt file
-#
-#for each folder in index-folder-list.txt {
-#	change to subfolder
-#	Find .tec file name with matching corpus element in name [language_code].
-#	run TECkit on *.txt files (but only files without SFM, and only on the corpus) using compiled [typographic].tec 
-#
-#
-#}
-#
-#for each .tec file {
-#}
-#
-## STEP 3 STAGE 1:
-#
-##5. Get second set of corpus counts
-##	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
-##		i. -d
-##			(1) as a .txt file (using '> CorpusName_SecondCount-d.txt')
-##			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
-##		ii. -u
-##		iii. -d -m
-##		iv. -c
-##		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Second Corpus Counts"
-##		vi. Create an alined data presentation for -u of (3.a.ii) and (5.a.ii). Print this to .md format (per 3.a.ii).
-##	b. List all characters used.
-##		i.List all characters used which are not enabled via the keyboard layout for the language of the text. __(check this for what it is being compared to)__
+##############################
+I need to do some addition and subtraction for the .md files and do some sum() on a column and get the sum of characters.
+
+#to find the sum of a culumn I need to use the 'expr'(no spaces) or 'let'(spaces) command '$expr 5 + 10' see: http://faculty.salina.k-state.edu/tim/unix_sg/bash/math.html http://www.bashguru.com/2010/12/math-in-shell-scripts.html 
+##############################
+
+
+##############################
+After Math expression is done on the CSV files, I need to: UnicodeCCount the Keyboard files. So that I can compare the CSV of the texts and the CSV files of the keyboards.
+##############################
+
+
+
+
+# 
+##COUNTER=0
+##while [  $COUNTER -lt 10 ]; do
+##    echo The counter is $COUNTER
+##    let COUNTER=COUNTER+1 
+##done
+# 
+##change to home_folder
+##cd $HOME_FOLDER
+# 
+##create [corpus_type]-[language_code]-[Intial_count] sub-folder
+#CORPUS_TYPE=corpus_type
+#LANGUAGE_CODE=language_code
+#INTIAL_COUNT=intial_count
+#NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
+# 
+#echo
+#echo $NEW_FOLDER
+#echo
+# 
+##mkdir $NEW_FOLDER
+# 
+##change to newly created folder
+##cd $NEW_FOLDER
+# 
+# 
+##	run UnicodeCCount with “-d” and store into tmp.txt
+##rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
+##	copy above created file to *.md instead of *.txt
+##open that file and convert all tabspaces U+0009 to pipes
+##convert all U+0027 ‘ to \’
+##EX: #Corpus ori james nav text
+##	prepend newline with hash then file name in sentence case to *.md file
 ##
-##6. Convert texts to NFD
-##	a. Convert texts to NFD.
-##		i. UinicodeCCount -m and compare, show diffs
-##	d. Remove untypeable characters
-##		i. UinicodeCCount -m and compare; show diffs
-#
-#
-#
-#
-## STEP 4 STAGE 1:
-#
-##6. Convert texts to NFD
-##	a. Convert texts to NFD.
-##		i. UinicodeCCount -m and compare, show diffs
-##	d. Remove untypeable characters
-##		i. UinicodeCCount -m and compare; show diffs
-#
-#
-#
-## STEP 5 STAGE 1:
-#
-##7. Count words of text.
-##	a. by counting spaces and adding 1.
-#
-#
-## STEP 6 STAGE 1:
-#
-##8. Convert texts to ASCII
-##	a. Use .map file to convert texts to ASCII
+##	run UnicodeCCount with “-c” and store into tmp.txt
+##rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
+##	copy above created file to *.md instead of *.txt
+##open that file and convert all tabspaces U+0009 to pipes
+##convert all U+0027 ‘ to \’
+##EX: #Corpus ori james nav text
+##	prepend newline with hash then file name in sentence case to *.md file
 ##
-#
-## STEP 7 STAGE 1:
-#
-##9. Use python to count digrams.
+##run UnicodeCCount with “-u”  and store into tmp.txt
+##rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
+##copy above created file to *.md instead of *.txt
+##open that file and convert all tabspaces U+0009 to pipes
+##convert all U+0027 ‘ to \’
+##EX: #Corpus ori james nav text
+##	prepend newline with hash then file name in sentence case to *.md file
 ##
-#
-## STEP 8 STAGE 1:
-#
-##10. Use javascript to count distance.	
-##			
+##run UnicodeCCount with “-d -m”  and store into tmp.txt
+##rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
+##copy above created file to *.md instead of *.txt
+##open that file and convert all tabspaces U+0009 to pipes
+##convert all U+0027 ‘ to \’
+##EX: #Corpus ori james nav text
+##	prepend newline with hash then file name in sentence case to *.md file
 ##
-#
-#
-#
-##########################
-#
-#
-#
-##This is a bash script to automate the transformation of corpora.
-#
-##Requires these dependencies
-## 1. UnicodeCCount
-## 2. TECKit
-## 3. Typing by Michael Dickens
-## 4. Stave Python script for Cleaning Wikipedia
-## 5. Stave Python script for counting digrams
-## 6. JavaScript count
-#
-#
-## common commands
 ##
-## echo "changing directories"
-## cd ~/Multi-lingual\ Keyboard\ Assessment/MLKA/
-#
-## echo "adding to git"
-## git add --all
-## git commit -m 'some updates'
-#
-## UnicodeCCount -d -m > sometextfile.txt
-#
-### Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
-### #!/bin/bash
-### #Define bash global variable
-### #This variable is global and can be used anywhere in this bash script
-### VAR="global variable"
-### function bash {
-### #Define bash local variable
-### #This variable is local to bash function only
-### local VAR="local variable"
-### echo $VAR
-### }
-### echo $VAR
-### bash
-### # Note the bash global variable did not change
-### # "local" is bash reserved word
-### echo $VAR
-#
-###Bash for and while loops
-#
-#
-#
 ##
-##1. Collect texts from source.
-##	a. Create date, time, source, and permissions metadata.
-##	b. Create stated copy of text for reference.
-##		i. give each text a consistent first part in the name and a varied middle part and a consistent last part. (i.e. ori-James-NAV-text.txt)
-##	
-##2. Collect keyboard layout files from source.
-##	a. Create date, time, source metadata.
-##	b. Create image based on Apple keyboard template.
-##	c. Create image based on heatmap template.
-##	d. Write keyboard layout description
-##		i. List all characters which are enabled by the keyboard layout in Unicode NFD.
-##			(1) Create list.
-##			(2) Convert list to NFD.
-#
-#ls *.txt > corpus-list.txt
-#
 ##
-##3. For each corpus get initial corpus counts
-##	a. Run UnicodeCCount with the following flags and output them to a single new folder in the following ways:
-#UnicodeCCount -d > CorpusName_InitialCount-d.txt
-##		i. -d
-##			(1) as a .txt file (using '> CorpusName_InitialCount-d.txt')
-##			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
-##		ii. -u
-##		iii. -d -m
-##		iv. -c
-##		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Initial Corpus Counts"
-##	b. List all characters used.
-##		i.List all characters used which are not enabled via the keyboard layout for the language of the text (compare lists: 2.d.1.(2) with 3.a.iii).	
+### STEP 2 STAGE 1:
 ##
-##4. Clean texts
-##	a. Remove SFM Markers
-##		i. Remove Verse #
-##		ii. Remove Chapter #
-##		iii. Remove Section headings #
-##		iv. Create stated copy of text for reference.	
-##	b. Remove typesetting characters via TECkit
-##		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
-##		ii. Create .map file
-##			(1) Create
-##			(2) Compile .tec
-##			(3) Apply
-##			(4) Save .map and .tec files 
-##		iii. Create stated copy of text for reference.	
+###4. Clean texts
+###	a. Remove SFM Markers
+###		i. Remove Verse #
+###		ii. Remove Chapter #
+###		iii. Remove Section headings #
+###		iv. Create stated copy of text for reference.	
+###	b. Remove typesetting characters via TECkit
+###		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
+###		ii. Create .map file
+###			(1) Create
+###			(2) Compile .tec
+###			(3) Apply
+###			(4) Save .map and .tec files 
+###		iii. Create stated copy of text for reference.	
 ##
-##5. Get second set of corpus counts
-##	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
-##		i. -d
-##			(1) as a .txt file (using '> CorpusName_SecondCount-d.txt')
-##			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
-##		ii. -u
-##		iii. -d -m
-##		iv. -c
-##		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Second Corpus Counts"
-##		vi. Create an alined data presentation for -u of (3.a.ii) and (5.a.ii). Print this to .md format (per 3.a.ii).
-##	b. List all characters used.
-##		i.List all characters used which are not enabled via the keyboard layout for the language of the text. __(check this for what it is being compared to)__
+### Clean the text files
+##print Starting step 2 stage 1: cleaning the text files
 ##
-##6. Convert texts to NFD
-##	a. Convert texts to NFD.
-##		i. UinicodeCCount -m and compare, show diffs
-##	d. Remove untypeable characters
-##		i. UinicodeCCount -m and compare; show diffs
+##change to home_folder
+###generate index folder list
+##list directories and store into index-folder-list.txt file
 ##
-##7. Count words of text.
-##	a. by counting spaces and adding 1.
-##		
-##8. Convert texts to ASCII
-##	a. Use .map file to convert texts to ASCII
+##for each folder in index-folder-list.txt {
+##	change to subfolder
+##	Find .tec file name with matching corpus element in name [language_code].
+##	run TECkit on *.txt files (but only files without SFM, and only on the corpus) using compiled [typographic].tec 
 ##
-##9. Use python to count digrams.
 ##
-##10. Use javascript to count distance.	
-##			
+##}
 ##
-#
-#
-###############################
-#List of files for each keyboard and corpus
-###############################
-####Corpora###
-#metadata file for corups.
-#no touch copy of corpus.
-#working copy of corpus.
-#global Unicode to nfd mapping .map file.
-#global unicode to nfd compiled mapping .tec file.
-#
-#Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
-#Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
-#Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
-#Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
-#
-####Keybords###
-#metadata file for keyboard.
-#image of keyboard layout for layout.
-#Base image of keyboard for heatmap.
-#image of keyboard for heatmap sample text.
-#image of keyboard for heatmap full text.
-#list of all characters supported by keyboard.
-#.kmn file for keyboard
-#.kmx file for keyboard
-#.keylayout file for keyboard.
-# text description for keyboard (how it works).
-#list of characters to be removed from text.
-#.map file to support the removal of typographical characters.
-#.tec file to implement the conversions the typographical characters.
-#.map file to support the removal of untypeable characters.
-#.tec file to implement the removal of untypeable characters.
-#.map file for each keyboard layout to transform the text to ASCII.
-#.tec file for each keyboard layout to transform the text to ASCII.
+##for each .tec file {
+##}
+##
+### STEP 3 STAGE 1:
+##
+###5. Get second set of corpus counts
+###	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
+###		i. -d
+###			(1) as a .txt file (using '> CorpusName_SecondCount-d.txt')
+###			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
+###		ii. -u
+###		iii. -d -m
+###		iv. -c
+###		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Second Corpus Counts"
+###		vi. Create an alined data presentation for -u of (3.a.ii) and (5.a.ii). Print this to .md format (per 3.a.ii).
+###	b. List all characters used.
+###		i.List all characters used which are not enabled via the keyboard layout for the language of the text. __(check this for what it is being compared to)__
+###
+###6. Convert texts to NFD
+###	a. Convert texts to NFD.
+###		i. UinicodeCCount -m and compare, show diffs
+###	d. Remove untypeable characters
+###		i. UinicodeCCount -m and compare; show diffs
+##
+##
+##
+##
+### STEP 4 STAGE 1:
+##
+###6. Convert texts to NFD
+###	a. Convert texts to NFD.
+###		i. UinicodeCCount -m and compare, show diffs
+###	d. Remove untypeable characters
+###		i. UinicodeCCount -m and compare; show diffs
+##
+##
+##
+### STEP 5 STAGE 1:
+##
+###7. Count words of text.
+###	a. by counting spaces and adding 1.
+##
+##
+### STEP 6 STAGE 1:
+##
+###8. Convert texts to ASCII
+###	a. Use .map file to convert texts to ASCII
+###
+##
+### STEP 7 STAGE 1:
+##
+###9. Use python to count digrams.
+###
+##
+### STEP 8 STAGE 1:
+##
+###10. Use javascript to count distance.	
+###			
+###
+##
+##
+##
+###########################
+##
+##
+##
+###This is a bash script to automate the transformation of corpora.
+##
+###Requires these dependencies
+### 1. UnicodeCCount
+### 2. TECKit
+### 3. Typing by Michael Dickens
+### 4. Stave Python script for Cleaning Wikipedia
+### 5. Stave Python script for counting digrams
+### 6. JavaScript count
+##
+##
+### common commands
+###
+### echo "changing directories"
+### cd ~/Multi-lingual\ Keyboard\ Assessment/MLKA/
+##
+### echo "adding to git"
+### git add --all
+### git commit -m 'some updates'
+##
+### UnicodeCCount -d -m > sometextfile.txt
+##
+#### Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
+#### #!/bin/bash
+#### #Define bash global variable
+#### #This variable is global and can be used anywhere in this bash script
+#### VAR="global variable"
+#### function bash {
+#### #Define bash local variable
+#### #This variable is local to bash function only
+#### local VAR="local variable"
+#### echo $VAR
+#### }
+#### echo $VAR
+#### bash
+#### # Note the bash global variable did not change
+#### # "local" is bash reserved word
+#### echo $VAR
+##
+####Bash for and while loops
+##
+##
+##
+###
+###1. Collect texts from source.
+###	a. Create date, time, source, and permissions metadata.
+###	b. Create stated copy of text for reference.
+###		i. give each text a consistent first part in the name and a varied middle part and a consistent last part. (i.e. ori-James-NAV-text.txt)
+###	
+###2. Collect keyboard layout files from source.
+###	a. Create date, time, source metadata.
+###	b. Create image based on Apple keyboard template.
+###	c. Create image based on heatmap template.
+###	d. Write keyboard layout description
+###		i. List all characters which are enabled by the keyboard layout in Unicode NFD.
+###			(1) Create list.
+###			(2) Convert list to NFD.
+##
+##ls *.txt > corpus-list.txt
+##
+###
+###3. For each corpus get initial corpus counts
+###	a. Run UnicodeCCount with the following flags and output them to a single new folder in the following ways:
+##UnicodeCCount -d > CorpusName_InitialCount-d.txt
+###		i. -d
+###			(1) as a .txt file (using '> CorpusName_InitialCount-d.txt')
+###			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
+###		ii. -u
+###		iii. -d -m
+###		iv. -c
+###		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Initial Corpus Counts"
+###	b. List all characters used.
+###		i.List all characters used which are not enabled via the keyboard layout for the language of the text (compare lists: 2.d.1.(2) with 3.a.iii).	
+###
+###4. Clean texts
+###	a. Remove SFM Markers
+###		i. Remove Verse #
+###		ii. Remove Chapter #
+###		iii. Remove Section headings #
+###		iv. Create stated copy of text for reference.	
+###	b. Remove typesetting characters via TECkit
+###		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
+###		ii. Create .map file
+###			(1) Create
+###			(2) Compile .tec
+###			(3) Apply
+###			(4) Save .map and .tec files 
+###		iii. Create stated copy of text for reference.	
+###
+###5. Get second set of corpus counts
+###	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
+###		i. -d
+###			(1) as a .txt file (using '> CorpusName_SecondCount-d.txt')
+###			(2) as a .md file where 'tab' is replaced with "|" and "'" is escaped with "\"; at the top of the .md file add "## File name" in good typography (use spaces and sentence case).
+###		ii. -u
+###		iii. -d -m
+###		iv. -c
+###		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Second Corpus Counts"
+###		vi. Create an alined data presentation for -u of (3.a.ii) and (5.a.ii). Print this to .md format (per 3.a.ii).
+###	b. List all characters used.
+###		i.List all characters used which are not enabled via the keyboard layout for the language of the text. __(check this for what it is being compared to)__
+###
+###6. Convert texts to NFD
+###	a. Convert texts to NFD.
+###		i. UinicodeCCount -m and compare, show diffs
+###	d. Remove untypeable characters
+###		i. UinicodeCCount -m and compare; show diffs
+###
+###7. Count words of text.
+###	a. by counting spaces and adding 1.
+###		
+###8. Convert texts to ASCII
+###	a. Use .map file to convert texts to ASCII
+###
+###9. Use python to count digrams.
+###
+###10. Use javascript to count distance.	
+###			
+###
+##
+##
+################################
+##List of files for each keyboard and corpus
+################################
+#####Corpora###
+##metadata file for corups.
+##no touch copy of corpus.
+##working copy of corpus.
+##global Unicode to nfd mapping .map file.
+##global unicode to nfd compiled mapping .tec file.
+##
+##Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
+##Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
+##Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
+##Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
+##
+#####Keybords###
+##metadata file for keyboard.
+##image of keyboard layout for layout.
+##Base image of keyboard for heatmap.
+##image of keyboard for heatmap sample text.
+##image of keyboard for heatmap full text.
+##list of all characters supported by keyboard.
+##.kmn file for keyboard
+##.kmx file for keyboard
+##.keylayout file for keyboard.
+## text description for keyboard (how it works).
+##list of characters to be removed from text.
+##.map file to support the removal of typographical characters.
+##.tec file to implement the conversions the typographical characters.
+##.map file to support the removal of untypeable characters.
+##.tec file to implement the removal of untypeable characters.
+##.map file for each keyboard layout to transform the text to ASCII.
+##.tec file for each keyboard layout to transform the text to ASCII.

@@ -10,12 +10,18 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4 
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
  * `git clone https://github.com/michaeldickens/Typing.git`
-4. Stave Python script for Cleaning Wikipedia
-5. Stave Python script for counting digrams
-6. JavaScript count by jkpat
+4. [CSVfix](https://bitbucket.org/neilb/csvfix) version 1.6 [More info](http://neilb.bitbucket.org/csvfix/)
+ * `git clone https://bitbucket.org/neilb/csvfix` Or use `hg` instead of `git`. Hugh used homebrew and `brew install csvfix`.
+5. Stave Python script for Cleaning Wikipedia
+6. Stave Python script for counting digrams
+7. JavaScript count by jkpat
 
 
+##Roadmap
 
+* 0.3 Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
+
+* 0.4 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 
 
 ##Notes
