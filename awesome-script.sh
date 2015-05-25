@@ -53,10 +53,10 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
+#@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
 
 #example for each filename in corpus-list.txt
 for i in $(cat corpus-list.txt); do
-#@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
     $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
     $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
     $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
