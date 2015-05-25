@@ -22,9 +22,7 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
-ucc_options=("u" "c" "d" "m") # "-d -m")
-ucc_number=("u" "c" "d" "m") # "-d -m")
-INITIAL_STATS_TITLE=Inital_Stats_
+INITIAL_STATS_TITLE=Inital-Stats
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
 LANGUAGE_ID=NAV
@@ -38,7 +36,7 @@ HOME_FOLDER=`pwd`
 #change to working folder
 #cd "$HOME_FOLDER"
 echo 
-echo "Home Folder:" $HOME_FOLDER
+echo "Your data is being processed in the following folder:" $HOME_FOLDER
 
 
 #list all original corpus files and store results into corpus-list.txt file
@@ -46,7 +44,7 @@ echo "Home Folder:" $HOME_FOLDER
 # 1: print one file per line
 # r: recursive
 # F: append / to directory entries
-ls -A1r *corpus*ori*.txt > corpus-list.txt
+ls -A1r *ori*corpus*.txt > corpus-list.txt
 
 
 ## STEP 1 STAGE 1 & 2:
@@ -56,27 +54,16 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-#@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
+mkdir $INITIAL_STATS_TITLE
 
-# example file name: Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-
-for i in $(find . -iname *corups*ori.txt* -type f); do
-    for flag in -c -d -m "-d -m"; do
-        UnicodeCCount $flag $i > Inital_Stats_${flag/ /}_corpus-NAV.txt
+#for i in $(find . -iname *ori*corups*.txt -type f)
+for i in $(cat corpus-list.txt); do
+    for flag in -c -d -u -m "-d -m"; do
+        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Intial_Stats_${flag/ /}-${i/ /}
     done
 done
 
-#@Jon W.  is this where this should be?
-
-#example for each filename in corpus-list.txt
-#for i in $(cat corpus-list.txt); do
-
-#    $CMD_UNICODECCOUNT -"${ucc_options[@]}" $i > $i-"${ucc_number[@]}".txt _corpus-$LANGUAGE_ID.txt
-#    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
-#    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
-#    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
-#    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
-#done
+#The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
 
 #COUNTER=0
 #while [  $COUNTER -lt 10 ]; do
@@ -135,7 +122,7 @@ echo
 #EX: #Corpus ori james nav text
 #	prepend newline with hash then file name in sentence case to *.md file
 #
-#}
+#
 #
 #
 ## STEP 2 STAGE 1:
