@@ -14,10 +14,9 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
  * `git clone https://bitbucket.org/neilb/csvfix` Or use `hg` instead of `git`. Hugh used homebrew and `brew install csvfix`.
 5. [WikiExtractor Script](https://github.com/bwbaugh/wikipedia-extractor) extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
  * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
-6.
-7. Stave Python script for Cleaning Wikipedia
-8. Stave Python script for counting digrams
-9. JavaScript count by jkpat
+6. Stave Python script for Cleaning Wikipedia
+7. Stave Python script for counting digrams
+8. JavaScript count by jkpat
 
 
 ##Roadmap
