@@ -36,7 +36,8 @@ HOME_FOLDER=`pwd`
 #change to working folder
 #cd "$HOME_FOLDER"
 echo 
-echo "Your data is being processed in the following folder:" $HOME_FOLDER
+echo "Your data is being processed in the following folder:"
+echo $HOME_FOLDER
 
 
 #list all original corpus files and store results into corpus-list.txt file
@@ -53,6 +54,8 @@ ls -A1r *ori*corpus*.txt > corpus-list.txt
 echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
+echo "Doing an initial character count of the book of James before further processing."
+echo
 
 mkdir $INITIAL_STATS_TITLE
 
@@ -64,6 +67,36 @@ for i in $(cat corpus-list.txt); do
 done
 
 #The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
+#@Jonathan D. or Jon W. Any help here would be a grate asset.
+
+#Next task: Create CSV of counts
+echo
+echo "Creating some CSV files from the intial character counts."
+echo
+
+cd "$INITIAL_STATS_TITLE"
+
+ls -A1r *Intial_Stats*.txt > Intial_Stats-list.txt
+
+for i in $(cat Intial_Stats-list.txt); do
+    csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
+done
+
+#Next task2: Create .md of counts.
+echo
+echo "Everybody on Github likes to read Markdown. So we're making some markdown tables from the CSV files."
+echo
+
+ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
+
+for i in $(cat Intial_Stats-list-csv.txt); do
+#    | csvfix write_DSV "$i" -o ${i/ /}.md
+done
+
+#trying to cat a header to the .md files then do a something to the header.
+
+#"#${i/ /}"
+
 
 #COUNTER=0
 #while [  $COUNTER -lt 10 ]; do
