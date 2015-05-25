@@ -1,2 +1,0 @@
-example-corpus-ori-james-nav.txt
-example-corpus-ori-james-ibo.txt
