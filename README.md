@@ -6,9 +6,10 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 
 ##Requires these dependencies
 
-1. UnicodeCCount
-2. TECKit
-3. Typing by Michael Dickens
+1. [UnicodeCCount](http://scripts.sil.org/UnicodeCharacterCount) - version 0.3
+2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4 
+3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
+ * `git clone https://github.com/michaeldickens/Typing.git`
 4. Stave Python script for Cleaning Wikipedia
 5. Stave Python script for counting digrams
 6. JavaScript count by jkpat

@@ -5,6 +5,10 @@
 # Version: 0.01
 # License: GPL
 
+# Dependencies are mentioned and linked in the README.md file.
+# Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
+# Installing dependiecies can wait for development until version 0.3 of the script.
+
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
@@ -18,10 +22,12 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
+ucc_options=("u" "c" "d" "m") # "-d -m")
+ucc_number=("u" "c" "d" "m") # "-d -m")
 INITIAL_STATS_TITLE=Inital_Stats_
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
-LANGUAGE_ID=
+LANGUAGE_ID=NAV
 
 #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
@@ -34,11 +40,8 @@ HOME_FOLDER=`pwd`
 echo 
 echo "Home Folder:" $HOME_FOLDER
 
-#@Jonthan we should do somtheing with "*corpus*+*ori*" in line 32 instead of "*.txt". This way we can focus on original corpus texts and not all .txt files.
 
-#@Hugh: ok this should work
-
-#list all *.txt file and store results into corpus-list.txt file
+#list all original corpus files and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
@@ -57,14 +60,23 @@ echo
 
 # example file name: Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
 
-#example for each filename in corpus-list.txt
-for i in $(cat corpus-list.txt); do
-    $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
+for i in $(find . -iname *corups*ori.txt* -type f); do
+    for flag in -c -d -m "-d -m"; do
+        UnicodeCCount $flag $i > Inital_Stats_${flag/ /}_corpus-NAV.txt
+    done
 done
+
+#@Jon W.  is this where this should be?
+
+#example for each filename in corpus-list.txt
+#for i in $(cat corpus-list.txt); do
+
+#    $CMD_UNICODECCOUNT -"${ucc_options[@]}" $i > $i-"${ucc_number[@]}".txt _corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
+#done
 
 #COUNTER=0
 #while [  $COUNTER -lt 10 ]; do
