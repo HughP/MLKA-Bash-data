@@ -5,6 +5,9 @@
 # Version: 0.01
 # License: GPL
 
+# Notes:
+#  Jonathan Duff: KISS. Keep it simple stupid. My main goal is to make it readable, not impressive.
+
 # Dependencies are mentioned and linked in the README.md file.
 # Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 # Installing dependiecies can wait for development until version 0.3 of the script.
@@ -22,10 +25,14 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
-INITIAL_STATS_TITLE=Inital-Stats
+DIR_INITIAL_STATS_TITLE=Initial-Stats
+INITIAL_STATS_TITLE=initial-stats
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
 LANGUAGE_ID=NAV
+CORPUS_TYPE=bla
+LANGUAGE_CODE=blabla
+INTIAL_COUNT=blablabla
 
 #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
@@ -54,41 +61,41 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-mkdir $INITIAL_STATS_TITLE
+if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
+    # Control will enter here if DIRECTORY exist.
+    rm -R -f "$DIR_INITIAL_STATS_TITLE"
+    mkdir $DIR_INITIAL_STATS_TITLE
+else
+    # Control will enter here if DIRECTORY does NOT exist.
+    mkdir $DIR_INITIAL_STATS_TITLE
+fi
+
+cd $DIR_INITIAL_STATS_TITLE
 
 #for i in $(find . -iname *ori*corups*.txt -type f)
-for i in $(cat corpus-list.txt); do
-    for flag in -c -d -u -m "-d -m"; do
-        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Intial_Stats_${flag/ /}-${i/ /}
+for I in $(cat ../corpus-list.txt); do
+    for FLAG in -c -d -u -m "-d -m"; do
+	NEW_FILE_NAME=$INITIAL_STATS_TITLE${FLAG/ /}-${I/ /}
+
+        UnicodeCCount $FLAG ../$I > $NEW_FILE_NAME
+
+	#prepend newline with hash then file name in sentence case to *.md file:
+	echo "#"$NEW_FILE_NAME.md > $NEW_FILE_NAME.md
+	#add space:
+	echo >> $NEW_FILE_NAME.md
+	cat $NEW_FILE_NAME >> $NEW_FILE_NAME.md
+
+	#@Hugh here goes the TECkit command:
+	#open *.md file and convert all tabspaces U+0009 to pipes and convert all U+0027 ‘ to \’
     done
 done
 
+cd $HOME_FOLDER
+rm corpus-list.txt
+
+#For reference: http://en.wikipedia.org/wiki/Letter_case
+
 #The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
-
-#COUNTER=0
-#while [  $COUNTER -lt 10 ]; do
-#    echo The counter is $COUNTER
-#    let COUNTER=COUNTER+1 
-#done
-
-#change to home_folder
-#cd $HOME_FOLDER
-
-#create [corpus_type]-[language_code]-[Intial_count] sub-folder
-CORPUS_TYPE=corpus_type
-LANGUAGE_CODE=language_code
-INTIAL_COUNT=intial_count
-NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
-
-echo
-echo $NEW_FOLDER
-echo
-
-#mkdir $NEW_FOLDER
-
-#change to newly created folder
-#cd $NEW_FOLDER
-
 
 #	run UnicodeCCount with “-d” and store into tmp.txt
 #rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
