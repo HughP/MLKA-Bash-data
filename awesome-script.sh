@@ -5,6 +5,10 @@
 # Version: 0.01
 # License: GPL
 
+# Dependencies are mentioned and linked in the README.md file.
+# Eventually I would like to check for dependencies and install them if needed. This script plus wget or curl should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
+# Installing dependiecies can wait for development until version 0.3 of the script.
+
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.01"
@@ -18,10 +22,12 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
+ucc_options=("u" "c" "d" "m") # "-d -m")
+ucc_number=("u" "c" "d" "m") # "-d -m")
 INITIAL_STATS_TITLE=Inital_Stats_
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
-LANGUAGE_ID=
+LANGUAGE_ID=NAV
 
 #@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
 
@@ -53,8 +59,8 @@ echo
 
 #example for each filename in corpus-list.txt
 for i in $(cat corpus-list.txt); do
-#@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
-    $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
+
+    #$CMD_UNICODECCOUNT -"${ucc_options[@]}" $i > $i-"${ucc_number[@]}".txt _corpus-$LANGUAGE_ID.txt
     $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
     $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
     $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
