@@ -22,7 +22,8 @@ echo "Version:" $VERSION
 echo "License:" $License
 
 CMD_UNICODECCOUNT=UnicodeCCount
-INITIAL_STATS_TITLE=Inital-Stats
+DIR_INITIAL_STATS_TITLE=Initial-Stats
+INITIAL_STATS_TITLE=Initial_Stats_
 SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
 LANGUAGE_ID=NAV
@@ -54,37 +55,31 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-if [ -d "$INITIAL_STATS_TITLE" ]; then
+if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
     # Control will enter here if DIRECTORY exist.
-    rm -R -f "$INITIAL_STATS_TITLE"
-    mkdir $INITIAL_STATS_TITLE
+    rm -R -f "$DIR_INITIAL_STATS_TITLE"
+    mkdir $DIR_INITIAL_STATS_TITLE
 else
     # Control will enter here if DIRECTORY does NOT exist.
-    mkdir $INITIAL_STATS_TITLE
+    mkdir $DIR_INITIAL_STATS_TITLE
 fi
 
 #for i in $(find . -iname *ori*corups*.txt -type f)
 for i in $(cat corpus-list.txt); do
     for flag in -c -d -u -m "-d -m"; do
-        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Intial_Stats_${flag/ /}-${i/ /}
+        UnicodeCCount $flag $i > $DIR_INITIAL_STATS_TITLE/$INITIAL_STATS_TITLE${flag/ /}-${i/ /}
     done
 done
 
 #The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
 
-#COUNTER=0
-#while [  $COUNTER -lt 10 ]; do
-#    echo The counter is $COUNTER
-#    let COUNTER=COUNTER+1 
-#done
-
 #change to home_folder
 #cd $HOME_FOLDER
 
 #create [corpus_type]-[language_code]-[Intial_count] sub-folder
-CORPUS_TYPE=corpus_type
-LANGUAGE_CODE=language_code
-INTIAL_COUNT=intial_count
+CORPUS_TYPE=bla
+LANGUAGE_CODE=blabla
+INTIAL_COUNT=blablabla
 NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
 
 echo
