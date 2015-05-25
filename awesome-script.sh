@@ -54,7 +54,14 @@ echo
 echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
-mkdir $INITIAL_STATS_TITLE
+if [ -d "$INITIAL_STATS_TITLE" ]; then
+    # Control will enter here if DIRECTORY exist.
+    rm -R -f "$INITIAL_STATS_TITLE"
+    mkdir $INITIAL_STATS_TITLE
+else
+    # Control will enter here if DIRECTORY does NOT exist.
+    mkdir $INITIAL_STATS_TITLE
+fi
 
 #for i in $(find . -iname *ori*corups*.txt -type f)
 for i in $(cat corpus-list.txt); do
