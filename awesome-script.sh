@@ -6,7 +6,7 @@
 # License: GPL
 
 # Dependencies are mentioned and linked in the README.md file.
-# Eventually I would like to check for dependencies and install them if needed. This script plus wget or curl should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
+# Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 # Installing dependiecies can wait for development until version 0.3 of the script.
 
 SCRIPT_NAME="awesome-script.bash"
@@ -57,15 +57,23 @@ echo "Starting STEP 1 STAGE 1 & 2..."
 echo
 
 
-#example for each filename in corpus-list.txt
-for i in $(cat corpus-list.txt); do
-
-    #$CMD_UNICODECCOUNT -"${ucc_options[@]}" $i > $i-"${ucc_number[@]}".txt _corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
-    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
+for i in $(find . -iname *corups*ori.txt* -type f); do
+    for flag in -c -d -m "-d -m"; do
+        UnicodeCCount $flag $i > Inital_Stats_${flag/ /}_corpus-NAV.txt
+    done
 done
+
+#@Jon W.  is this where this should be?
+
+#example for each filename in corpus-list.txt
+#for i in $(cat corpus-list.txt); do
+
+#    $CMD_UNICODECCOUNT -"${ucc_options[@]}" $i > $i-"${ucc_number[@]}".txt _corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -c $i > $INITIAL_STATS_TITLE -c _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -d $i > $INITIAL_STATS_TITLE -d _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -d -m $i > $INITIAL_STATS_TITLE -d -m _ corpus-$LANGUAGE_ID.txt
+#    $CMD_UNICODECCOUNT -m $i > $INITIAL_STATS_TITLE -m _ corpus-$LANGUAGE_ID.txt
+#done
 
 #COUNTER=0
 #while [  $COUNTER -lt 10 ]; do
