@@ -4,10 +4,8 @@
 # Authors: Hugh Paterson III and Jonathan Duff
 # Version: 0.01
 # License: GPL
- 
 # Dependencies are mentioned and linked in the README.md file.
-# Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
-# Installing dependencies can wait for development until version 0.3 of the script.
+
  
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
@@ -28,33 +26,82 @@ SECOND_STATS_TITLE=Second_Stats_
 THIRD_STATS_TITLE=Third_Stats_
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
-LANGUAGE_CODE=blabla #This is Same as Language_ID
+LANGUAGE_CODE=blabla #This is same as Language_ID
 INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
  
-#@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
- 
+
 #Set to root folder of project
 #define home_folder as location of project
 HOME_FOLDER=`pwd`
  
-#change to working folder
+#Change to working folder
 #cd "$HOME_FOLDER"
 echo 
 echo "Your data is being processed in the following folder:"
 echo $HOME_FOLDER
  
  
+#Print starting step 1 stage 1 and 2: generating data
+echo
+echo "Pre-flighting. Setting some of the variables and looking at the corpus data on hand."
+echo
+
+##########
+#search for compressed wiki dumps
+##########
+
+echo
+echo
+echo "Looking for corpora from Wikipedia data dumps. If we find anything we'll let you know."
+echo
+echo
+
+#Create Wiki list
+touch Wikipedia-list.txt
+
+#Append file names of corproa to wiki list.
+#List all Wikipedia dumps and store results into wikipedia-list.txt file
+ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
+
+###If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
+###If we find some Wikipedia data display count and kind, just like is done for james, else move on.
+
+if [ "$(cat wikipedia-list.txt | wc -l)" -eq "0" ] ; then
+    # No wikipeida dumps were found.
+    echo
+	echo
+	echo "We didn't find any Wikipedia data. We're moving on."
+	echo
+	echo
+else
+    # Some uncompressed wikipedia dumps exist. 
+	echo
+	echo
+	echo "It looks like we found some Wikipedia data. We think there are"$(cat wikipedia-list.txt | wc -l)" dumps to be processed."
+	echo
+	echo
+fi
+
+##########
+#I need to add the wikipedia decompression and clean up scripts here. http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
+#I need to detemine the language of the wikipedia corpora and convert that to ISO 639-3
+##to do this I can look at the first two letters of the wikipdeia file name, and then I can match those letters to the ISO 639-3 standard based on the table provided in the file 'iso-639-3_20150505.tab'.
+#I need to rename the Wikipedia script sometime so that it matches the other corpora. I still need to determine when this is best to take place.
+##########
+
+echo
+echo
+echo "Wikipedia data takes a while to clean up. We're working on it so that it can be processed with the other copora."
+echo
+echo
+
+
 #list all original corpus files and store results into corpus-list.txt file
 # A: print almost everything... exclude the . and ..
 # 1: print one file per line
 # r: recursive
 # F: append / to directory entries
 ls -A1r *ori*corpus*.txt > corpus-list.txt
- 
-#Print starting step 1 stage 1 and 2: generating data
-echo
-echo "Pre-flighting. Setting some of the variables and looking at the corpus data on hand."
-echo
 
 #Generate the LANGUAGE_ID Variables. This step looks through the corpus texts and pull out the last three characters of the corpus texts.
 touch Language_ID.txt
@@ -68,9 +115,12 @@ done
 LANGUAGE_IDString=$(cat LANGUAGE_ID.txt |tr "\n" " ")
 LANGUAGE_ID=($LANGUAGE_IDString)
 
+#######
+#This section needs to be modified and allow the arangement of info to be corpus by type: Wikpedia/James or Language Navajo/ibgo
+#######
 echo
 echo
-echo "It looks like we found ${#LANGUAGE_ID[@]} corpora. Including the following: ${LANGUAGE_ID[*]}"
+echo "It looks like altogether we found ${#LANGUAGE_ID[@]} corpora. Including the following: ${LANGUAGE_ID[*]}"
 echo
 echo
 

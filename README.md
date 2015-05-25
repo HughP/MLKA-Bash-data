@@ -12,9 +12,12 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
  * `git clone https://github.com/michaeldickens/Typing.git`
 4. [CSVfix](https://bitbucket.org/neilb/csvfix) version 1.6 [More info](http://neilb.bitbucket.org/csvfix/)
  * `git clone https://bitbucket.org/neilb/csvfix` Or use `hg` instead of `git`. Hugh used homebrew and `brew install csvfix`.
-5. Stave Python script for Cleaning Wikipedia
-6. Stave Python script for counting digrams
-7. JavaScript count by jkpat
+5. [WikiExtractor Script]Extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
+ * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
+6.
+7. Stave Python script for Cleaning Wikipedia
+8. Stave Python script for counting digrams
+9. JavaScript count by jkpat
 
 
 ##Roadmap
@@ -33,6 +36,12 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 ###Notes for Hugh
 
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
+
+####Notes by Hugh for where he got what.
+
+#@Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now. 
+ 
+
 
 ###Notes for all
 
