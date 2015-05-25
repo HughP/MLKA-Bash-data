@@ -55,6 +55,8 @@ echo
 
 #@Jonathan in line 52 we should add another variable which would be iterated through. I think this is called an array. I read about it here: http://www.cyberciti.biz/faq/bash-for-loop-array/ That variable would be a list. Then we could shorten lines 53-57.
 
+# example file name: Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
+
 #example for each filename in corpus-list.txt
 for i in $(cat corpus-list.txt); do
     $CMD_UNICODECCOUNT -u $i > $INITIAL_STATS_TITLE -u _ corpus-$LANGUAGE_ID.txt
