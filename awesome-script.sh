@@ -47,6 +47,35 @@ echo "Pre-flighting. Setting some of the variables and looking at the corpus dat
 echo
 
 ##########
+#Clean up the working folder. Remove files from a previous run of the script. Data folders are processed before they are created.
+##########
+
+if [ -f Wikipedia-list.txt ]; then
+    # Delete the file
+    rm -R -f Wikipedia-list.txt
+else
+    # Create the Wikipedia-list.txt
+    echo Clean!
+fi
+
+if [ -f corpus-list.txt ]; then
+    # Delete the file
+    rm -R -f corpus-list.txt
+else
+    # Create the corpus-list.txt
+   echo Clean!Clean!
+fi
+
+if [ -f Language_ID.txt ]; then
+    # Delete the file
+    rm -R -f Language_ID.txt
+else
+    # Create the Language_ID.txt
+   echo Clean!Clean!Clean!
+fi
+
+
+##########
 #search for compressed wiki dumps
 ##########
 
@@ -66,7 +95,7 @@ ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
 ###If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
 ###If we find some Wikipedia data display count and kind, just like is done for james, else move on.
 
-if [ "$(cat wikipedia-list.txt | wc -l)" -eq "0" ] ; then
+if [ "$(cat Wikipedia-list.txt | wc -l)" -eq "0" ] ; then
     # No wikipeida dumps were found.
     echo
 	echo
@@ -80,7 +109,13 @@ else
 	echo "It looks like we found some Wikipedia data. We think there are"$(cat wikipedia-list.txt | wc -l)" dumps to be processed."
 	echo
 	echo
-	git clone https://github.com/bwbaugh/wikipedia-extractor.git
+	if [ -d wikipedia-extractor ]; then
+    	# Control will enter here if DIRECTORY does NOT exist.
+		echo "It looks like you already have wikipedia-extractor in place. Must not be your first time around the block."
+		else
+		echo "Since we found some Wikipedia data, we now need some tools to handle them. Time to git the python script."
+		git clone https://github.com/bwbaugh/wikipedia-extractor.git
+	fi	
 fi
 
 ##########
