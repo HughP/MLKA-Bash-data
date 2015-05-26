@@ -9,8 +9,8 @@ Character count for 'example-ori-corpus-james-ibo.txt':
 	U+003F	?	24
 	U+002E	.	92
 	U+0027	'	141
-	U+0323	̣	9
 	U+0355	͕	41
+	U+0323	̣	9
 	U+0061	a	1157
 	U+0041	A	9
 	U+00E1	á	10
