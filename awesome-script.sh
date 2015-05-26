@@ -53,7 +53,7 @@ if hash csvfix 2>/dev/null; then
 else
     echo "Shucks! You do not have csvfix. You need to get it.  You can use Mercurial and compile it yourself from: https://bitbucket.org/neilb/csvfix"
     echo "Or, you can use Homebrew. 'Brew install csvfix'."
-#    exit
+    exit
 fi
 
 # Check to see if TECkit is installed and in path:
@@ -61,7 +61,7 @@ if hash teckit_compile 2>/dev/null; then
     echo "Great you have teckit_compile installed."
 else
     echo "Shucks! You do not have teckit_compile. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
-#    exit
+    exit
 fi
 
 # Check to see if txtconv is installed and in path:
@@ -69,7 +69,7 @@ if hash txtconv 2>/dev/null; then
     echo "Great you have txtconv installed."
 else
     echo "Shucks! You do not have txtconv. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
-#    exit
+    exit
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
@@ -77,7 +77,7 @@ if hash UnicodeCCount 2>/dev/null; then
     echo "Great you have UnicodeCCount installed."
 else
     echo "Shucks! You do not have UnicodeCCount. You need to get it.  SIL International is the distributor. Check here: http://scripts.sil.org/UnicodeCharacterCount "
-#    exit
+    exit
 fi
 
 
