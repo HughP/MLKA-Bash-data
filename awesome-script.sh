@@ -21,8 +21,9 @@ echo "License:" $License
  
 CMD_UNICODECCOUNT=UnicodeCCount
 DIR_INITIAL_STATS_TITLE=Initial-Stats
+DIR_SECOND_STATS_TITLE=Second_Stats
 INITIAL_STATS_TITLE=Initial-Stats
-SECOND_STATS_TITLE=Second_Stats_
+SECOND_STATS_TITLE=Second_Stats
 THIRD_STATS_TITLE=Third_Stats_
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
@@ -88,7 +89,7 @@ echo
 #Create list of Wikipedia corpora
 touch Wikipedia-list.txt
 
-#Append file names of corproa to wiki list.
+#Append file names of corpora to wiki list.
 #List all Wikipedia dumps and store results into wikipedia-list.txt file
 ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
 
@@ -96,7 +97,7 @@ ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
 ###If we find some Wikipedia data display count and kind, just like is done for james, else move on.
 
 if [ "$(cat Wikipedia-list.txt | wc -l)" -eq "0" ] ; then
-    # No wikipeida dumps were found.
+    # No wikipedia dumps were found.
     echo
 	echo
 	echo "We didn't find any Wikipedia data. We're moving on."
@@ -120,8 +121,8 @@ fi
 
 ##########
 #I need to add the wikipedia decompression and clean up scripts here. http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
-#I need to detemine the language of the wikipedia corpora and convert that to ISO 639-3
-##to do this I can look at the first two letters of the wikipdeia file name, and then I can match those letters to the ISO 639-3 standard based on the table provided in the file 'iso-639-3_20150505.tab'.
+#I need to determine the language of the wikipedia corpora and convert that to ISO 639-3
+##to do this I can look at the first two letters of the wikipedia file name, and then I can match those letters to the ISO 639-3 standard based on the table provided in the file 'iso-639-3_20150505.tab'.
 #I need to rename the Wikipedia script sometime so that it matches the other corpora. I still need to determine when this is best to take place.
 ##########
 
@@ -215,7 +216,7 @@ fi # end of main if
 
 echo
 echo
-echo "Wikipedia data takes a while to clean up. We're working on it so that it can be processed with the other copora."
+echo "Wikipedia data takes a while to clean up. We're working on the corpora now, so that it can be processed with the other corpora."
 echo
 echo
 
@@ -230,7 +231,7 @@ ls -A1r *ori*corpus*.txt > corpus-list.txt
 #Generate the LANGUAGE_ID Variables. This step looks through the corpus texts and pull out the last three characters of the corpus texts.
 touch Language_ID.txt
 
-#This puts the languages in the file every time the script runs. They will be in the file twice if run twice. I need to change this to only adding new ones if not alreay there. Consider: http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
+#This puts the languages in the file every time the script runs. They will be in the file twice if run twice. I need to change this to only adding new ones if not already there. Consider: http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
 for i in $(cat corpus-list.txt); do
 	expr "/$i" : '.*\(.\{3\}\)\.' >> Language_ID.txt
 done
@@ -352,6 +353,50 @@ I need to do some addition and subtraction for the .md files and do some sum() o
 ##############################
 After Math expression is done on the CSV files, I need to: UnicodeCCount the Keyboard files. So that I can compare the CSV of the texts and the CSV files of the keyboards.
 ##############################
+
+
+#############################
+#The first TECkit conversion
+############################
+
+teckit_compile ConvertToNFD.map -o NFD.tec
+txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
+
+
+
+
+##############################
+##The Second count of the corpus files
+#############################
+
+#The .md files should be pushed to the git hub repo sometime. look here for how: http://stackoverflow.com/questions/24677866/git-ignore-all-files-except-one-extension-and-folder-structure
+
+#
+#echo
+#echo "Starting STEP 2 STAGE 1..."
+#echo
+#echo "Doing a character count for the Book of James corpora after processing some of the typograhical characters out."
+#echo
+# 
+#if [ -d "$DIR_SECOND_STATS_TITLE" ]; then
+#    # Control will enter here if DIRECTORY exist.
+#    rm -R -f "$DIR_SECOND_STATS_TITLE"
+#    mkdir $SECOND_STATS_TITLE
+#else
+#    # Control will enter here if DIRECTORY does NOT exist.
+#    mkdir $DIR_SECOND_STATS_TITLE
+#fi
+#
+#
+##for i in $(find . -iname *ori*corpus*.txt -type f)
+##@Jon W. Suggested that 'find' is a faster more effiencent option than 'cat' or 'ls' in this process. I have things working for 'cat' so I have not changed them.
+#
+#for i in $(cat corpus-list.txt); do
+#    for flag in -c -d -u -m "-d -m"; do
+#        UnicodeCCount $flag $i > $DIR_SECOND_STATS_TITLE/Second-Stats_${flag/ /}-${i/ /}
+#    done
+#done
+
 
 
 
