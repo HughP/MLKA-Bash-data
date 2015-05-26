@@ -56,7 +56,7 @@ echo "Looking for corpora from Wikipedia data dumps. If we find anything we'll l
 echo
 echo
 
-#Create Wiki list
+#Create list of Wikipedia corpora
 touch Wikipedia-list.txt
 
 #Append file names of corproa to wiki list.
@@ -80,6 +80,7 @@ else
 	echo "It looks like we found some Wikipedia data. We think there are"$(cat wikipedia-list.txt | wc -l)" dumps to be processed."
 	echo
 	echo
+	git clone https://github.com/bwbaugh/wikipedia-extractor.git
 fi
 
 ##########
@@ -142,8 +143,6 @@ else
     # Control will enter here if DIRECTORY does NOT exist.
     mkdir $DIR_INITIAL_STATS_TITLE
 fi
-
-
  
 #for i in $(find . -iname *ori*corpus*.txt -type f)
 #@Jon W. Suggested that 'find' is a faster more effiencent option than 'cat' or 'ls' in this process. I have things working for 'cat' so I have not changed them.
