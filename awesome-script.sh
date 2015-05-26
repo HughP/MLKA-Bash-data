@@ -125,6 +125,94 @@ fi
 #I need to rename the Wikipedia script sometime so that it matches the other corpora. I still need to determine when this is best to take place.
 ##########
 
+###
+### JD edit
+###
+
+# Check to see if csvfix is installed and in path:
+if hash csvfix 2>/dev/null; then
+    echo yes you have csvfix
+else
+    echo no you do not have csvfix
+fi
+
+# Does the Wiki-Data folder exists?
+# Yes: print exists
+# No: make directory
+if [ -d "Wiki-Data" ]; then
+    echo Wiki-Data folder exists
+else
+    mkdir Wiki-Data
+fi
+
+# Does the James folder exists?
+# Yes: print exists
+# No: make directory
+if [ -d "James" ]; then
+    echo James folder exists
+else
+    mkdir James
+fi
+
+# Does the James folder exist?
+# Yes: then move all files in HOME_FOLDER *james*.txt to it.
+# NO: nothing.
+if [ -d "James" ]; then
+    mv *james*.txt James
+fi
+
+# Double check then run:
+if [ -d "Wiki-Data" ]; then
+    # So we're are in HOME_FOLDER here:
+    for I in $(ls -A1r *.bz2); do
+	# Now we're reaching into Wiki-Data folder:
+	# If the file exists then do NOT copy.
+	if [ -f Wiki-Data/$I ]; then
+	    # There is already a file in the Wiki-Data folder so don't overwrite and notify:
+	    echo Duplicate file found in Wiki-Data: $I
+	    echo
+	else
+	    # print some sort of notification to the screen that we're doing something:
+	    printf "."
+
+	    # safe to move the bz2 file into Wiki-Data:
+	    mv $I Wiki-Data
+
+	    # this will uncompress the file if needed (disabled for now):
+#	    bzip2 -d Wiki-Data/$I
+
+	    # does our output directory exist?
+	    # Yes: notify
+	    # No: notify and create directory
+	    if [ -d Wiki-Data/iso-639-1 ]; then
+		echo iso-639 folder exists.
+	    else
+		echo creating iso-639 folder in Wiki-Data.
+		mkdir Wiki-Data/iso-639
+	    fi
+
+	    #
+	    # JD->HP: All the prep stuff is done. Now on to processing the file
+	    # Pseudocode:
+	    #    1. what are the first two letters of the filename
+	    #
+	    #    2. open: iso-639-3_20150505.tab 
+	    #    2. may want to use something like: iso-639-3*.tab
+	    #
+	    #    3. grab columbs: 
+	    #python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
+
+	fi
+    done # end of for loop
+
+    echo done.
+fi # end of main if
+
+###
+### JD edit
+###
+
+
 echo
 echo
 echo "Wikipedia data takes a while to clean up. We're working on it so that it can be processed with the other copora."
