@@ -51,7 +51,7 @@ echo
 if hash csvfix 2>/dev/null; then
     echo "Great you have csvfix installed."
 else
-    echo "Shucks! You do not have csvfix. You need to get it.  You can use Mercurial and compile it yourself from: https://bitbucket.org/neilb/csvfix
+    echo "Shucks! You do not have csvfix. You need to get it.  You can use Mercurial and compile it yourself from: https://bitbucket.org/neilb/csvfix"
     echo "Or, you can use Homebrew. 'Brew install csvfix'."
 fi
 
@@ -162,10 +162,12 @@ fi
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
 if [ -d "James" ]; then
-    mv *james*.txt James
+    for I in $(ls -A1r *james*.txt); do
+	mv $I James
+    done
 fi
 
-# Double check then run:
+# Double Wiki-Data folder is there then run:
 if [ -d "Wiki-Data" ]; then
     # So we're are in HOME_FOLDER here:
     for I in $(ls -A1r *.bz2); do
