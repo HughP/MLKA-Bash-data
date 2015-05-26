@@ -63,7 +63,7 @@ else
     echo
     echo "       Or, you can use Homebrew. 'Brew install csvfix'."
     echo
-#    exit
+    exit
 fi
 
 # Check to see if TECkit is installed and in path:
@@ -80,7 +80,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads"
     echo
-#    exit
+    exit
 fi
 
 # Check to see if txtconv is installed and in path:
@@ -97,7 +97,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads "
     echo
-#    exit
+    exit
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
@@ -111,7 +111,7 @@ else
     echo
     echo "       http://scripts.sil.org/UnicodeCharacterCount"
     echo
-#    exit
+    exit
 fi
 
 # Clean up the working folder. Remove files from
