@@ -27,4 +27,4 @@ pass( NFD )
 ; The purpose here was to create a file in NFC
 
 ; Compensate for Whitespace Characters
-; U+00A0 <> U+0020	 	; no_break_space --> Breaking Space
+U+00A0 <> U+0020	 	; no_break_space --> Breaking Space
