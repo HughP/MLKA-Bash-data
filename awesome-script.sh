@@ -186,10 +186,10 @@ if [ -d "Wiki-Data" ]; then
 	    # Yes: notify
 	    # No: notify and create directory
 	    if [ -d Wiki-Data/iso-639-1 ]; then
-		echo iso-639 folder exists.
+		echo iso-639-1 folder exists.
 	    else
-		echo creating iso-639 folder in Wiki-Data.
-		mkdir Wiki-Data/iso-639
+		echo creating iso-639-1 folder in Wiki-Data.
+		mkdir Wiki-Data/iso-639-1
 	    fi
 
 	    #
