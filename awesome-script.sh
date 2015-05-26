@@ -53,7 +53,7 @@ if hash csvfix 2>/dev/null; then
 else
     echo "Shucks! You do not have csvfix. You need to get it.  You can use Mercurial and compile it yourself from: https://bitbucket.org/neilb/csvfix"
     echo "Or, you can use Homebrew. 'Brew install csvfix'."
-    exit
+#    exit
 fi
 
 # Check to see if TECkit is installed and in path:
@@ -61,7 +61,7 @@ if hash teckit_compile 2>/dev/null; then
     echo "Great you have teckit_compile installed."
 else
     echo "Shucks! You do not have teckit_compile. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
-    exit
+#    exit
 fi
 
 # Check to see if txtconv is installed and in path:
@@ -69,7 +69,7 @@ if hash txtconv 2>/dev/null; then
     echo "Great you have txtconv installed."
 else
     echo "Shucks! You do not have txtconv. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
-    exit
+#    exit
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
@@ -77,7 +77,7 @@ if hash UnicodeCCount 2>/dev/null; then
     echo "Great you have UnicodeCCount installed."
 else
     echo "Shucks! You do not have UnicodeCCount. You need to get it.  SIL International is the distributor. Check here: http://scripts.sil.org/UnicodeCharacterCount "
-    exit
+#    exit
 fi
 
 
@@ -126,7 +126,9 @@ touch Wikipedia-list.txt
 
 #Append file names of corpora to wiki list.
 #List all Wikipedia dumps and store results into wikipedia-list.txt file
-ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
+
+#ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
+find * -maxdepth 0 -iname '*wiki*.bz2' >> Wikipedia-list.txt
 
 ###If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
 ###If we find some Wikipedia data display count and kind, just like is done for james, else move on.
@@ -142,7 +144,7 @@ else
     # Some uncompressed wikipedia dumps exist. 
 	echo
 	echo
-	echo "It looks like we found some Wikipedia data. We think there are"$(cat wikipedia-list.txt | wc -l)" dumps to be processed."
+	echo "It looks like we found some Wikipedia data. We think there are"$(cat Wikipedia-list.txt | wc -l)" dumps to be processed."
 	echo
 	echo
 	if [ -d wikipedia-extractor ]; then
@@ -173,6 +175,7 @@ fi
 if [ -d "Wiki-Data" ]; then
     echo Wiki-Data folder exists
 else
+    echo Creating Wiki-Data folder
     mkdir Wiki-Data
 fi
 
@@ -182,6 +185,7 @@ fi
 if [ -d "James" ]; then
     echo James folder exists
 else
+    echo Creating James folder
     mkdir James
 fi
 
@@ -189,7 +193,8 @@ fi
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
 if [ -d "James" ]; then
-    for I in $(ls -A1r *james*.txt); do
+    for I in $(find * -maxdepth 0 -iname '*james*.txt'); do
+    #for I in $(ls -A1r *james*.txt); do
 	mv $I James
     done
 fi
@@ -197,7 +202,8 @@ fi
 # Double Wiki-Data folder is there then run:
 if [ -d "Wiki-Data" ]; then
     # So we're are in HOME_FOLDER here:
-    for I in $(ls -A1r *.bz2); do
+    for I in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
+    #for I in $(ls -A1r *wiki*.bz2); do
 	# Now we're reaching into Wiki-Data folder:
 	# If the file exists then do NOT copy.
 	if [ -f Wiki-Data/$I ]; then
@@ -218,9 +224,9 @@ if [ -d "Wiki-Data" ]; then
 	    # Yes: notify
 	    # No: notify and create directory
 	    if [ -d Wiki-Data/iso-639-1 ]; then
-		echo iso-639-1 folder exists.
+		#echo iso-639-1 folder exists.
 	    else
-		echo creating iso-639-1 folder in Wiki-Data.
+		#echo creating iso-639-1 folder in Wiki-Data.
 		mkdir Wiki-Data/iso-639-1
 	    fi
 
@@ -258,7 +264,9 @@ echo
 # 1: print one file per line
 # r: recursive
 # F: append / to directory entries
-ls -A1r *ori*corpus*.txt > corpus-list.txt
+
+#ls -A1r *ori*corpus*.txt > corpus-list.txt
+find * -maxdepth 0 -iname '*ori*corpus*.txt' > corpus-list.txt
 
 #Generate the LANGUAGE_ID Variables. This step looks through the corpus texts and pull out the last three characters of the corpus texts.
 touch Language_ID.txt
@@ -318,8 +326,9 @@ echo "Creating some CSV files from the intial character counts."
 echo
  
 cd "$DIR_INITIAL_STATS_TITLE"
- 
-ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
+
+#ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
+find * -maxdepth 0 -iname '*"$INITIAL_STATS_TITLE"*.txt' > "$INITIAL_STATS_TITLE"-list.txt
  
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
     csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
@@ -341,7 +350,7 @@ echo
 ##"#${i/ /}"
 
 ##############################
-Alternate code by Jonathan D.
+#Alternate code by Jonathan D.
 ##############################
 #Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
 
@@ -376,14 +385,14 @@ Alternate code by Jonathan D.
 
 
 ##############################
-I need to do some addition and subtraction for the .md files and do some sum() on a column and get the sum of characters.
+#I need to do some addition and subtraction for the .md files and do some sum() on a column and get the sum of characters.
 
 #to find the sum of a culumn I need to use the 'expr'(no spaces) or 'let'(spaces) command '$expr 5 + 10' see: http://faculty.salina.k-state.edu/tim/unix_sg/bash/math.html http://www.bashguru.com/2010/12/math-in-shell-scripts.html 
 ##############################
 
 
 ##############################
-After Math expression is done on the CSV files, I need to: UnicodeCCount the Keyboard files. So that I can compare the CSV of the texts and the CSV files of the keyboards.
+#After Math expression is done on the CSV files, I need to: UnicodeCCount the Keyboard files. So that I can compare the CSV of the texts and the CSV files of the keyboards.
 ##############################
 
 
