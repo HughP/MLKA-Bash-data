@@ -32,6 +32,19 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 
 * Here is some thing about fetching from upstream and syncing your repo: https://help.github.com/articles/syncing-a-fork/
 
+```
+git remote -v
+git remote add upstream https://   <<--put link here
+git remote -v
+git fetch upstream
+git merge upstream/master
+
+>>> Check and fix merged files <<<
+
+git add --all
+git push
+```
+
 ###Notes for Hugh
 
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
