@@ -1,24 +1,40 @@
 #########################
 #!/bin/bash
 # Script Name: awesome-script.bash
-# Authors: Hugh Paterson III and Jonathan Duff
-# Version: 0.01
+# Authors: Hugh Paterson III <email here>
+#          Jonathan Duff <jonathan@dufffamily.org>
+# Version: 0.02
 # License: GPL
 # Dependencies are mentioned and linked in the README.md file.
 
  
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.01"
+VERSION="0.02"
 License="GPL"
  
-#Print Program Author and Version number
- 
+# Print Program Authors and Version number
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
  
+# Set to root folder of project
+HOME_FOLDER=`pwd`
+ 
+echo 
+echo "INFO: Your data is being processed in the following folder:"
+echo "      $HOME_FOLDER"
+echo 
+ 
+# Print starting step 1 stage 1 and 2: generating data
+echo
+echo "INFO: Pre-flighting. Setting some of the variables,"
+echo "      looking to see if you have the correct"
+echo "      dependencies installed, and looking at the"
+echo "      corpus data on hand."
+echo
+
 CMD_UNICODECCOUNT=UnicodeCCount
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second_Stats
@@ -29,155 +45,176 @@ THIRD_STATS_TITLE=Third_Stats_
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
 LANGUAGE_CODE=blabla #This is same as Language_ID
 INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
- 
 
-#Set to root folder of project
-#define home_folder as location of project
-HOME_FOLDER=`pwd`
- 
-#Change to working folder
-#cd "$HOME_FOLDER"
-echo 
-echo "Your data is being processed in the following folder:"
-echo $HOME_FOLDER
- 
- 
-#Print starting step 1 stage 1 and 2: generating data
-echo
-echo "Pre-flighting. Setting some of the variables, looking to see if you have the correct dependencies installed, and looking at the corpus data on hand."
-echo
 
 # Check to see if csvfix is installed and in path:
 if hash csvfix 2>/dev/null; then
-    echo "Great you have csvfix installed."
+    echo
+    echo "INFO: Great you have csvfix installed."
+    echo
 else
-    echo "Shucks! You do not have csvfix. You need to get it.  You can use Mercurial and compile it yourself from: https://bitbucket.org/neilb/csvfix"
-    echo "Or, you can use Homebrew. 'Brew install csvfix'."
+    echo
+    echo "! ERROR: Shucks! You do not have csvfix."
+    echo "       You need to get it."
+    echo "       You can use Mercurial and compile it"
+    echo "       yourself from:"
+    echo
+    echo "       https://bitbucket.org/neilb/csvfix"
+    echo
+    echo "       Or, you can use Homebrew. 'Brew install csvfix'."
+    echo
 #    exit
 fi
 
 # Check to see if TECkit is installed and in path:
 if hash teckit_compile 2>/dev/null; then
-    echo "Great you have teckit_compile installed."
+    echo
+    echo "INFO: Great you have teckit_compile installed."
+    echo
 else
-    echo "Shucks! You do not have teckit_compile. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
+    echo
+    echo "! ERROR: Shucks! You do not have teckit_compile."
+    echo "       You need to get it.  SIL International is the"
+    echo "       distributor. It is part of TECkit."
+    echo "       Check here:"
+    echo
+    echo "       http://scripts.sil.org/TECkitDownloads"
+    echo
 #    exit
 fi
 
 # Check to see if txtconv is installed and in path:
 if hash txtconv 2>/dev/null; then
-    echo "Great you have txtconv installed."
+    echo
+    echo "INFO: Great you have txtconv installed."
+    echo
+
 else
-    echo "Shucks! You do not have txtconv. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads "
+    echo
+    echo "! ERROR: Shucks! You do not have txtconv. You need to"
+    echo "       get it.  SIL International is the distributor."
+    echo "       It is part of TECkit. Check here:"
+    echo
+    echo "       http://scripts.sil.org/TECkitDownloads "
+    echo
 #    exit
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
 if hash UnicodeCCount 2>/dev/null; then
-    echo "Great you have UnicodeCCount installed."
+    echo "INFO: Great you have UnicodeCCount installed."
 else
-    echo "Shucks! You do not have UnicodeCCount. You need to get it.  SIL International is the distributor. Check here: http://scripts.sil.org/UnicodeCharacterCount "
+    echo
+    echo "! ERROR: Shucks! You do not have UnicodeCCount."
+    echo "       You need to get it.  SIL International is"
+    echo "       the distributor. Check here:"
+    echo
+    echo "       http://scripts.sil.org/UnicodeCharacterCount"
+    echo
 #    exit
 fi
 
-
-
-##########
-#Clean up the working folder. Remove files from a previous run of the script. Data folders are processed before they are created.
-##########
+# Clean up the working folder. Remove files from
+# a previous run of the script. Data folders
+# are processed before they are created.
 
 if [ -f Wikipedia-list.txt ]; then
     # Delete the file
-    rm -R -f Wikipedia-list.txt
+    rm -f Wikipedia-list.txt
 else
     # Create the Wikipedia-list.txt
-    echo Clean!
+    echo "Clean!"
 fi
 
 if [ -f corpus-list.txt ]; then
     # Delete the file
-    rm -R -f corpus-list.txt
+    rm -f corpus-list.txt
 else
     # Create the corpus-list.txt
-   echo Clean!Clean!
+   echo "Clean!Clean!"
 fi
 
 if [ -f Language_ID.txt ]; then
     # Delete the file
-    rm -R -f Language_ID.txt
+    rm -f Language_ID.txt
 else
     # Create the Language_ID.txt
-   echo Clean!Clean!Clean!
+   echo "Clean!Clean!Clean!"
 fi
 
-
-##########
-#search for compressed wiki dumps
-##########
+# Search for compressed wiki dumps
 
 echo
-echo
-echo "Looking for corpora from Wikipedia data dumps. If we find anything we'll let you know."
-echo
+echo "INFO: Looking for corpora from Wikipedia data dumps."
+echo "      If we find anything we'll let you know."
 echo
 
-#Create list of Wikipedia corpora
+# Create list of Wikipedia corpora
 touch Wikipedia-list.txt
 
-#Append file names of corpora to wiki list.
-#List all Wikipedia dumps and store results into wikipedia-list.txt file
-
-#ls -A1r *wiki*.bz2 >> Wikipedia-list.txt
+# Append file names of corpora to wiki list.
+# Then list all Wikipedia dumps and store
+# results into wikipedia-list.txt file
 find * -maxdepth 0 -iname '*wiki*.bz2' >> Wikipedia-list.txt
 
-###If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
-###If we find some Wikipedia data display count and kind, just like is done for james, else move on.
+### If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
+### If we find some Wikipedia data display count and kind, just like is done for james, else move on.
 
-if [ "$(cat Wikipedia-list.txt | wc -l)" -eq "0" ] ; then
+if [ "$(cat Wikipedia-list.txt | wc -l)" -eq "0" ]; then
     # No wikipedia dumps were found.
     echo
-	echo
-	echo "We didn't find any Wikipedia data. We're moving on."
-	echo
-	echo
+    echo "INFO:  We didn't find any Wikipedia data. We're moving on."
+    echo
 else
     # Some uncompressed wikipedia dumps exist. 
-	echo
-	echo
-	echo "It looks like we found some Wikipedia data. We think there are"$(cat Wikipedia-list.txt | wc -l)" dumps to be processed."
-	echo
-	echo
-	if [ -d wikipedia-extractor ]; then
-    	# Control will enter here if DIRECTORY does NOT exist.
-		echo "It looks like you already have wikipedia-extractor in place. Must not be your first time around the block."
-		else
-		echo "Since we found some Wikipedia data, we now need some tools to handle them. Time to git the python script."
-		git clone https://github.com/bwbaugh/wikipedia-extractor.git
-	fi	
+    echo
+    echo "INFO: It looks like we found some Wikipedia data."
+    echo "      We think there are:"
+    echo "      $(cat Wikipedia-list.txt | wc -l)"
+    echo "      dumps to be processed."
+    echo
+fi    
+
+if [ -d wikipedia-extractor ]; then
+    # Control will enter here if DIRECTORY does NOT exist.
+    echo
+    echo "INFO: It looks like you already have wikipedia-extractor in place."
+    echo "      Must not be your first time around the block."
+    echo
+else
+    echo
+    echo "INFO: Since we found some Wikipedia data, we now need some"
+    echo "      tools to handle them. Time to git the python script."
+    echo
+    git clone https://github.com/bwbaugh/wikipedia-extractor.git	
 fi
 
-##########
-#I need to add the wikipedia decompression and clean up scripts here. http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
-#I need to determine the language of the wikipedia corpora and convert that to ISO 639-3
-##to do this I can look at the first two letters of the wikipedia file name, and then I can match those letters to the ISO 639-3 standard based on the table provided in the file 'iso-639-3_20150505.tab'.
-#I need to rename the Wikipedia script sometime so that it matches the other corpora. I still need to determine when this is best to take place.
-##########
+# I need to add the wikipedia decompression and clean up scripts here.
+# http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
 
-###
-### JD edit
-###
+# I need to determine the language of the wikipedia corpora
+# and convert that to ISO 639-3
 
-echo
-echo "### JD ###"
-echo
+# To do this I can look at the first two letters of the wikipedia
+# file name, and then I can match those letters to the
+# ISO 639-3 standard based on the table provided
+# in the file 'iso-639-3_20150505.tab'.
+
+# I need to rename the Wikipedia script sometime so that it
+# matches the other corpora. I still need to determine
+# when this is best to take place.
 
 # Does the Wiki-Data folder exists?
 # Yes: print exists
 # No: make directory
 if [ -d "Wiki-Data" ]; then
+    echo
     echo "INFO: Wiki-Data folder exists"
+    echo
 else
+    echo
     echo "INFO: Creating Wiki-Data folder"
+    echo
     mkdir Wiki-Data
 fi
 
@@ -185,9 +222,13 @@ fi
 # Yes: print exists
 # No: make directory
 if [ -d "James" ]; then
+    echo
     echo "INFO: James folder exists"
+    echo
 else
+    echo
     echo "INFO: Creating James folder"
+    echo
     mkdir James
 fi
 
@@ -196,44 +237,32 @@ fi
 # NO: nothing.
 if [ -d "James" ]; then
     for I in $(find * -maxdepth 0 -iname '*james*.txt'); do
-    #for I in $(ls -A1r *james*.txt); do
 	mv $I James
     done
 fi
 
-# This is a temporary directory and soon go away.
+# This is a temporary directory and may soon go away.
 # I had trouble with an empty if else clause,
 # this NOT exist solved the problem.
 # Does our output directory NOT exist?
-#
 # True: if its not there make it 
 # False: if its there do nothing
 if [ ! -d Wiki-Data/iso-639-1 ]; then
     mkdir Wiki-Data/iso-639-1
 fi
 
-
 # Double check Wiki-Data folder is there then run:
 if [ -d "Wiki-Data" ]; then
     # So we're are in HOME_FOLDER here:
     for I in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-    #for I in $(ls -A1r *wiki*.bz2); do
 	# Now we're reaching into Wiki-Data folder:
 	# If the file exists then do NOT copy.
-	if [ -f Wiki-Data/$I ]; then
-	    # There is already a file in the Wiki-Data folder so don't overwrite and notify:
-	    echo "WARNING: Duplicate file found in Wiki-Data: $I"
-	    echo "WARNING: File not moved"
-	    echo
-	else
+	if [ ! -f Wiki-Data/$I ]; then
 	    # print some sort of notification to the screen that we're doing something:
 	    printf "."
 
 	    # safe to move the bz2 file into Wiki-Data:
 	    mv $I Wiki-Data
-
-	    # this will uncompress the file if needed (disabled for now):
-#	    bzip2 -d Wiki-Data/$I
 
 	    # JD->HP: All the prep stuff is done. Now on to processing the file.
 	    # Pseudocode:
@@ -244,77 +273,64 @@ if [ -d "Wiki-Data" ]; then
 	    #
 	    #    3. grab columbs: 
 	    #python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
-
 	fi
     done # end of for loop
 fi # end of main if
 
 echo
-echo "### JD ###"
+echo "INFO: Wikipedia data takes a while to clean up."
+echo "      We're working on the corpora now, so that"
+echo "      it can be processed with the other corpora."
 echo
 
-###
-### JD edit
-###
-
-echo
-echo
-echo "Wikipedia data takes a while to clean up. We're working on the corpora now, so that it can be processed with the other corpora."
-echo
-echo
-
-
-#list all original corpus files and store results into corpus-list.txt file
-# A: print almost everything... exclude the . and ..
-# 1: print one file per line
-# r: recursive
-# F: append / to directory entries
-
-#ls -A1r *ori*corpus*.txt > corpus-list.txt
+# This may be able to be deleted because what uses it
+# uses find instead of cat
 find * -maxdepth 0 -iname '*ori*corpus*.txt' > corpus-list.txt
 
-#Generate the LANGUAGE_ID Variables. This step looks through the corpus texts and pull out the last three characters of the corpus texts.
+# Generate the LANGUAGE_ID Variables.
+# This step looks through the corpus texts and pull out
+# the last three characters of the corpus texts.
 touch Language_ID.txt
 
-#This puts the languages in the file every time the script runs. They will be in the file twice if run twice. I need to change this to only adding new ones if not already there. Consider: http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
-for i in $(cat corpus-list.txt); do
-	expr "/$i" : '.*\(.\{3\}\)\.' >> Language_ID.txt
+# This puts the languages in the file every time
+# the script runs. They will be in the file twice if run twice.
+# I need to change this to only adding new ones if not already
+# there. Consider:
+#
+# http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
+
+for i in $(find * -maxdepth 0 -iname '*ori*corpus*.txt'); do
+    expr "/$i" : '.*\(.\{3\}\)\.' >> Language_ID.txt
 done
 
-#Set the Variables.
-LANGUAGE_IDString=$(cat LANGUAGE_ID.txt |tr "\n" " ")
+# Set the Variables.
+LANGUAGE_IDString=$(cat Language_ID.txt |tr "\n" " ")
 LANGUAGE_ID=($LANGUAGE_IDString)
 
-#######
-#This section needs to be modified and allow the arangement of info to be corpus by type: Wikpedia/James or Language Navajo/ibgo
-#######
+# This section needs to be modified and allow the arangement of info
+# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 echo
-echo
-echo "It looks like altogether we found ${#LANGUAGE_ID[@]} corpora. Including the following: ${LANGUAGE_ID[*]}"
-echo
+echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]}"
+echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
 echo
 
- 
-## STEP 1 STAGE 1 & 2:
+# STEP 1 STAGE 1 & 2:
  
 #Print starting step 1 stage 1 and 2: generating data
 echo
-echo "Starting STEP 1 STAGE 1 & 2..."
-echo
-echo "Doing an initial character count of the book of James before further processing."
+echo "INFO: Starting STEP 1 STAGE 1 & 2..."
+echo "      Doing an initial character count of the book"
+echo "      of James before further processing."
 echo
  
 if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
     # Control will enter here if DIRECTORY exist.
     rm -R -f "$DIR_INITIAL_STATS_TITLE"
-    mkdir $DIR_INITIAL_STATS_TITLE
+    mkdir "$DIR_INITIAL_STATS_TITLE"
 else
     # Control will enter here if DIRECTORY does NOT exist.
-    mkdir $DIR_INITIAL_STATS_TITLE
+    mkdir "$DIR_INITIAL_STATS_TITLE"
 fi
- 
-#for i in $(find . -iname *ori*corpus*.txt -type f)
-#@Jon W. Suggested that 'find' is a faster more effiencent option than 'cat' or 'ls' in this process. I have things working for 'cat' so I have not changed them.
 
 for i in $(cat corpus-list.txt); do
     for flag in -c -d -u -m "-d -m"; do
@@ -322,26 +338,32 @@ for i in $(cat corpus-list.txt); do
     done
 done
  
-##The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
-##@Jonathan D. or Jon W. Any help here would be a grate asset.
- 
-#Next task: Create CSV of counts
-echo
-echo "Creating some CSV files from the intial character counts."
-echo
- 
-cd "$DIR_INITIAL_STATS_TITLE"
+# The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
 
-#ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
-find * -maxdepth 0 -iname '*"$INITIAL_STATS_TITLE"*.txt' > "$INITIAL_STATS_TITLE"-list.txt
+#@Jonathan D. or Jon W. Any help here would be a grate asset.
+ 
+# Next task: Create CSV of counts
+echo
+echo "INFO: Creating some CSV files from the intial character counts."
+echo
+
+# Not sure if we want to change directory?   
+#cd "$DIR_INITIAL_STATS_TITLE"
+
+# Origional: ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
+
+# Using a double quote as it allows the variable to pass
+find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" > "$INITIAL_STATS_TITLE"-list.txt
  
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
-    csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
+    csvfix read_DSV -s '\t' "$INITIAL_STATS_TITLE/$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
 done
 
-#Next task2: Create .md of counts.
+# Next task2: Create .md of counts.
 echo
-echo "Everybody on Github likes to read Markdown. So we're making some markdown tables from the CSV files."
+echo "INFO: Everybody on Github likes to read Markdown."
+echo "      So we're making some markdown tables from"
+echo "      the CSV files."
 echo
  
 #ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
