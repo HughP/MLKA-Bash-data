@@ -45,7 +45,18 @@ echo $HOME_FOLDER
 ############################
 
 
+cd TECkit-Files
 
+teckit_compile TypographicalCharacterRemoval.map -o TypographicalCharacterRemoval.tec
+
+cd "$HOME_FOLDER"
+
+
+for i in $(cat corpus-list.txt); do
+    for flag in -c -d -u -m "-d -m"; do
+        UnicodeCCount $flag $i > $DIR_SECOND_STATS_TITLE/Second-Stats_${flag/ /}-${i/ /}
+    done
+done
 
 teckit_compile ConvertToNFD.map -o NFD.tec
 txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
