@@ -121,6 +121,25 @@ else
     exit
 fi
 
+# Fetch wikipedia-extractor
+if [ -d wikipedia-extractor ]; then
+    # Control will enter here if DIRECTORY does NOT exist.
+    echo
+    echo "INFO: It looks like you already have wikipedia-extractor in place."
+    echo "      Must not be your first time around the block."
+    echo
+else
+    echo
+    echo "! ERROR: Since we found some Wikipedia data, we now need some"
+    echo "         tools to handle them. Time to `git` the python script."
+    echo
+    echo "         You need to install:"
+    echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
+    echo
+    exit
+fi
+
+
 ##############################
 ##############################
 
@@ -166,24 +185,6 @@ fi
 ##############################
 #Look for and process Wikiedia data.
 ##############################
-
-# Fetch wikipedia-extractor
-if [ -d wikipedia-extractor ]; then
-    # Control will enter here if DIRECTORY does NOT exist.
-    echo
-    echo "INFO: It looks like you already have wikipedia-extractor in place."
-    echo "      Must not be your first time around the block."
-    echo
-else
-    echo
-    echo "! ERROR: Since we found some Wikipedia data, we now need some"
-    echo "         tools to handle them. Time to git the python script."
-    echo
-    echo "         You need to install:"
-    echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
-    echo
-    exit
-fi
 
 # Does the Wiki-Data folder exists?
 # Yes: print exists
