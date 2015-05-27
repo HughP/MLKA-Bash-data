@@ -169,8 +169,7 @@ else
     # Some uncompressed wikipedia dumps exist. 
     echo
     echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are:"
-    echo "      $(cat Wikipedia-list.txt | wc -l)"
+    echo "      We think there are: $(cat Wikipedia-list.txt | wc -l)"
     echo "      dumps to be processed."
     echo
 fi    
