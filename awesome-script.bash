@@ -156,12 +156,44 @@ fi
 ##############################
 ##############################
 
+
 ##############################
 #Look for and process Wikiedia data.
 ##############################
 
-# Search for compressed wiki dumps
+# Fetch wikipedia-extractor
+if [ -d wikipedia-extractor ]; then
+    # Control will enter here if DIRECTORY does NOT exist.
+    echo
+    echo "INFO: It looks like you already have wikipedia-extractor in place."
+    echo "      Must not be your first time around the block."
+    echo
+else
+    echo
+    echo "! ERROR: Since we found some Wikipedia data, we now need some"
+    echo "         tools to handle them. Time to git the python script."
+    echo
+    echo "         You need to install:"
+    echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
+    echo
+    exit
+fi
 
+# Does the Wiki-Data folder exists?
+# Yes: print exists
+# No: make directory
+if [ -d "Wiki-Data" ]; then
+    echo
+    echo "INFO: Wiki-Data folder exists"
+    echo
+else
+    echo
+    echo "INFO: Creating Wiki-Data folder"
+    echo
+    mkdir Wiki-Data
+fi
+
+# Search for compressed wiki dumps
 echo
 echo "INFO: Looking for corpora from Wikipedia data dumps."
 echo "      If we find anything we'll let you know."
@@ -170,10 +202,29 @@ echo
 # Create list of Wikipedia corpora
 touch Wikipedia-list.txt
 
+### JD->HP: this doesn't make sense to append
+
 # Append file names of corpora to wiki list.
 # Then list all Wikipedia dumps and store
 # results into wikipedia-list.txt file
 find * -maxdepth 0 -iname '*wiki*.bz2' >> Wikipedia-list.txt
+
+# Double check Wiki-Data folder is there then run:
+if [ -d "Wiki-Data" ]; then
+    # So we're are in HOME_FOLDER here:
+    for I in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
+        # Now we're reaching into Wiki-Data folder:
+        # If the file exists then do NOT copy.
+        if [ ! -f Wiki-Data/$I ]; then
+	    # print some status of when moving the files:
+	    printf "+"
+            # safe to move the bz2 file into Wiki-Data:
+            mv $I Wiki-Data
+	else
+	    printf "!"
+        fi
+    done # end of for loop
+fi # end of main if
 
 ### If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
 ### If we find some Wikipedia data display count and kind, just like is done for james, else move on.
@@ -192,19 +243,16 @@ else
     echo
 fi    
 
-if [ -d wikipedia-extractor ]; then
-    # Control will enter here if DIRECTORY does NOT exist.
-    echo
-    echo "INFO: It looks like you already have wikipedia-extractor in place."
-    echo "      Must not be your first time around the block."
-    echo
-else
-    echo
-    echo "INFO: Since we found some Wikipedia data, we now need some"
-    echo "      tools to handle them. Time to git the python script."
-    echo
-    git clone https://github.com/bwbaugh/wikipedia-extractor.git	
-fi
+# JD->HP: All the prep stuff is done. Now on to processing the file.
+# Pseudocode:
+#    1. what are the first two letters of the filename
+#
+#    2. open: iso-639-3_20150505.tab
+#    2. may want to use something like: iso-639-3*.tab
+#
+#    3. grab columbs:
+#       python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
+
 
 # I need to add the wikipedia decompression and clean up scripts here.
 # http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
@@ -221,22 +269,11 @@ fi
 # matches the other corpora. I still need to determine
 # when this is best to take place.
 
-# Does the Wiki-Data folder exists?
-# Yes: print exists
-# No: make directory
-if [ -d "Wiki-Data" ]; then
-    echo
-    echo "INFO: Wiki-Data folder exists"
-    echo
-else
-    echo
-    echo "INFO: Creating Wiki-Data folder"
-    echo
-    mkdir Wiki-Data
-fi
+##############################
+##############################
 
-##############################
-##############################
+# BREAKPOINT:
+exit
 
 ##############################
 #Look for James data and process it.
