@@ -216,6 +216,12 @@ touch Wikipedia-list.txt
 # results into wikipedia-list.txt file
 find * -maxdepth 0 -iname '*wiki*.bz2' >> Wikipedia-list.txt
 
+echo
+echo "INFO: Wikipedia data takes a while to clean up."
+echo "      We're working on the corpora now, so that"
+echo "      it can be processed with the other corpora."
+echo
+
 # Double check Wiki-Data folder is there then run:
 if [ -d "Wiki-Data" ]; then
     # So we're are in HOME_FOLDER here:
@@ -279,8 +285,6 @@ fi
 ##############################
 ##############################
 
-# BREAKPOINT:
-exit
 
 ##############################
 #Look for James data and process it.
@@ -308,48 +312,6 @@ if [ -d "James" ]; then
 	mv $I James
     done
 fi
-
-# This is a temporary directory and may soon go away.
-# I had trouble with an empty if else clause,
-# this NOT exist solved the problem.
-# Does our output directory NOT exist?
-# True: if its not there make it 
-# False: if its there do nothing
-if [ ! -d Wiki-Data/iso-639-1 ]; then
-    mkdir Wiki-Data/iso-639-1
-fi
-
-# Double check Wiki-Data folder is there then run:
-if [ -d "Wiki-Data" ]; then
-    # So we're are in HOME_FOLDER here:
-    for I in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-	# Now we're reaching into Wiki-Data folder:
-	# If the file exists then do NOT copy.
-	if [ ! -f Wiki-Data/$I ]; then
-	    # print some sort of notification to the screen that we're doing something:
-	    printf "."
-
-	    # safe to move the bz2 file into Wiki-Data:
-	    mv $I Wiki-Data
-
-	    # JD->HP: All the prep stuff is done. Now on to processing the file.
-	    # Pseudocode:
-	    #    1. what are the first two letters of the filename
-	    #
-	    #    2. open: iso-639-3_20150505.tab 
-	    #    2. may want to use something like: iso-639-3*.tab
-	    #
-	    #    3. grab columbs: 
-	    #python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
-	fi
-    done # end of for loop
-fi # end of main if
-
-echo
-echo "INFO: Wikipedia data takes a while to clean up."
-echo "      We're working on the corpora now, so that"
-echo "      it can be processed with the other corpora."
-echo
 
 ##############################
 ##############################
