@@ -66,7 +66,8 @@ else
     echo
     echo "       https://bitbucket.org/neilb/csvfix"
     echo
-    echo "       Or, you can use Homebrew. 'Brew install csvfix'."
+    echo "       If you are on OS X you can use Homebrew."
+    echo "        'Brew install csvfix'."
     echo
     exit
 fi
