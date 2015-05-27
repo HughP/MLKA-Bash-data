@@ -38,11 +38,18 @@ echo "      corpus data on hand."
 echo
 
 CMD_UNICODECCOUNT=UnicodeCCount
+
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second_Stats
-INITIAL_STATS_TITLE=Initial-Stats
+DIR_JAMES_DATA=James
+
+INITIAL_STATS_TITLE=First_Stats
 SECOND_STATS_TITLE=Second_Stats
 THIRD_STATS_TITLE=Third_Stats_
+
+WIKI_LIST_FILE=Wikipedia-list.txt
+CORPUS_LIST_FILE=Corpus-list.txt
+LANGAUGE_LIST_FILE=Language_ID.txt
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
 LANGUAGE_CODE=blabla #This is same as Language_ID
@@ -56,7 +63,6 @@ INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
 if hash csvfix 2>/dev/null; then
     echo
     echo "INFO: Great you have csvfix installed."
-#    echo
 else
     echo
     echo "! ERROR: Shucks! You do not have csvfix."
@@ -74,9 +80,7 @@ fi
 
 # Check to see if TECkit is installed and in path:
 if hash teckit_compile 2>/dev/null; then
-#    echo
     echo "INFO: Great you have teckit_compile installed."
-#    echo
 else
     echo
     echo "! ERROR: Shucks! You do not have teckit_compile."
@@ -109,7 +113,6 @@ fi
 # Check to see if UnicodeCCount is installed and in path:
 if hash UnicodeCCount 2>/dev/null; then
     echo "INFO: Great you have UnicodeCCount installed."
-    echo
 else
     echo
     echo "! ERROR: Shucks! You do not have UnicodeCCount."
@@ -122,9 +125,8 @@ else
 fi
 
 # Fetch wikipedia-extractor
-if [ -d wikipedia-extractor ]; then
+if [ -f wikipedia-extractor/WikiExtractor.py ]; then
     # Control will enter here if DIRECTORY does NOT exist.
-    echo
     echo "INFO: It looks like you already have wikipedia-extractor in place."
     echo "      Must not be your first time around the block."
     echo
@@ -150,112 +152,217 @@ fi
 # Clean up the working folder. Remove files from
 # a previous run of the script. Data folders
 # are processed before they are created.
+# After deletion this section creates all the temp files created in the script.
+# If the files are not found then this section creates empty ones.
+# In this script standard practice is to create files here.
 
-if [ -f Wikipedia-list.txt ]; then
+
+# Files to clean up
+if [ -f $WIKI_LIST_FILE ]; then
     # Delete the file
-    rm -f Wikipedia-list.txt
-    echo "INFO: Cleaned previously generated files!"
+    rm -f $WIKI_LIST_FILE
+    echo "INFO: Replacting previously generated files!"
+    touch $WIKI_LIST_FILE
 else
     # Create the Wikipedia-list.txt
-#This needs a touch here.    
+	touch $WIKI_LIST_FILE 
 fi
 
-if [ -f corpus-list.txt ]; then
+if [ -f $CORPUS_LIST_FILE ]; then
     # Delete the file
-    rm -f corpus-list.txt
+    rm -f $CORPUS_LIST_FILE
     echo "      Clean! Clean!"
+    touch $CORPUS_LIST_FILE
 else
-    # Create the corpus-list.txt
-#This nees the create corpus-list command. BTW: should this be the James-list? or the -corpus-list. 
+    # Create the Corpus-list.txt
+	touch $CORPUS_LIST_FILE
 fi
 
-if [ -f Language_ID.txt ]; then
+if [ -f $LANGAUGE_LIST_FILE ]; then
     # Delete the file
-    rm -f Language_ID.txt
-    echo "     Clean! Clean! Clean!"
+    rm -f $LANGAUGE_LIST_FILE
+    echo "      Clean! Clean! Clean!"
+    touch $LANGAUGE_LIST_FILE
 else
     # Create the Language_ID.txt
-#This needs the Language_ID.txt touch, however this might need to be updated.
+	touch $LANGAUGE_LIST_FILE
 fi
 
+# Folders to clean up.
+if [ -d $DIR_INITIAL_STATS_TITLE ]; then
+    # Delete the folder
+    rm -Rf $DIR_INITIAL_STATS_TITLE
+    echo "      Clean! Clean! Clean! Cleaned the $DIR_INITIAL_STATS_TITLE folder"
+fi
+
+
+
 ##############################
 ##############################
 
+##############################
+#Check for proper data locations
+##############################
+
+echo
+echo "INFO: We're looking for text data and moving it to the correct locations."
+
+
+#Wiki
 
 ##############################
-#Look for and process Wikiedia data.
+#Look for Wikipedia data.
 ##############################
 
 # Does the Wiki-Data folder exists?
 # Yes: print exists
 # No: make directory
 if [ -d "Wiki-Data" ]; then
-    echo
-    echo "INFO: Wiki-Data folder exists"
+    echo "INFO: Wiki-Data folder exists."
+    echo "      If we find Wikidata we will move it to the Wiki-Data folder."
     echo
 else
-    echo
     echo "INFO: Creating Wiki-Data folder"
+    echo "      If we find Wikidata we will move it Wiki-Data folder."
     echo
     mkdir Wiki-Data
 fi
 
 # Search for compressed wiki dumps
-echo
-echo "INFO: Looking for corpora from Wikipedia data dumps."
-echo "      If we find anything we'll let you know."
-echo
+#echo
+#echo "INFO: Looking for corpora from Wikipedia data dumps."
+#echo "      If we find anything we'll let you know."
+#echo
 
-# Create list of Wikipedia corpora
-touch Wikipedia-list.txt
-
-### JD->HP: this doesn't make sense to append
 
 # Append file names of corpora to wiki list.
 # Then list all Wikipedia dumps and store
-# results into wikipedia-list.txt file
-find * -maxdepth 0 -iname '*wiki*.bz2' >> Wikipedia-list.txt
+# results into the file Wikipedia-list.txt 
+find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
 
-echo
-echo "INFO: Wikipedia data takes a while to clean up."
-echo "      We're working on the corpora now, so that"
-echo "      it can be processed with the other corpora."
-echo
-
+# Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
 if [ -d "Wiki-Data" ]; then
     # So we're are in HOME_FOLDER here:
-    for I in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
+    for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         # Now we're reaching into Wiki-Data folder:
         # If the file exists then do NOT copy.
-        if [ ! -f Wiki-Data/$I ]; then
+        if [ ! -f Wiki-Data/$i ]; then
 	    # print some status of when moving the files:
 	    printf "+"
             # safe to move the bz2 file into Wiki-Data:
-            mv $I Wiki-Data
+            mv $i Wiki-Data
 	else
 	    printf "!"
         fi
     done # end of for loop
 fi # end of main if
 
-### If we find some Wikipedia data then display message 1 if we don't find anything then message 2.
-### If we find some Wikipedia data display count and kind, just like is done for james, else move on.
-
-if [ "$(cat Wikipedia-list.txt | wc -l)" -eq "0" ]; then
+if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
     # No wikipedia dumps were found.
     echo
     echo "INFO:  We didn't find any Wikipedia data. We're moving on."
     echo
 else
-    # Some uncompressed wikipedia dumps exist. 
+    # Some uncompressed Wikipedia dumps exist. 
     echo
     echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are: $(cat Wikipedia-list.txt | wc -l)"
-    echo "      dumps to be processed."
-    echo
+    echo "      We think there are:$(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
+    echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 fi    
 
+
+
+#James
+
+##############################
+#Look for James data.
+##############################
+
+# Does the James folder exists?
+# Yes: print exists
+# No: make directory
+if [ -d "$DIR_JAMES_DATA" ]; then
+    echo "INFO: $DIR_JAMES_DATA folder exists"
+    echo
+else
+    echo "INFO: Creating $DIR_JAMES_DATA folder"
+    echo
+    mkdir $DIR_JAMES_DATA
+fi
+
+# Does the James folder exist?
+# Yes: then move all files in HOME_FOLDER *james*.txt to it.
+# NO: nothing.
+if [ -d "$DIR_JAMES_DATA" ]; then
+    for i in $(find * -maxdepth 0 -iname '*james*.txt'); do
+	mv "$i" "$DIR_JAMES_DATA"
+	echo "INFO: Moved some James texts into the /$DIR_JAMES_DATA folder."
+    done
+fi
+
+
+##############################
+##############################
+
+##############################
+#Create Language IDs
+##############################
+
+# This may be able to be deleted because what uses it
+# uses find instead of cat
+find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
+cd $DIR_JAMES_DATA
+find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
+cd ../
+
+
+
+# Generate the LANGUAGE_ID Variables.
+# This step looks through the James corpus texts and pull out
+# the last three characters of the corpus texts.
+
+######
+# Jonathan's Language look-up table needs to go here.
+#####
+
+# James-corpus.txt is a tem file.
+for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
+    expr "/$i" : '.*\(.\{3\}\)\.' >> James-corpus.txt
+done
+
+for i in $(cat James-corpus.txt);do
+	grep -Fxq "$i" $LANGAUGE_LIST_FILE || echo $i >> $LANGAUGE_LIST_FILE
+done
+
+# James-corpus.txt is deleted.
+rm James-corpus.txt
+
+
+
+# Set the Variables.
+LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE |tr "\n" " ")
+LANGUAGE_ID=($LANGUAGE_IDString)
+
+# This section needs to be modified and allow the arangement of info
+# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
+echo
+echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
+echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
+echo
+
+##############################
+##############################
+
+
+
+#echo
+#echo "INFO: Wikipedia data takes a while to clean up."
+#echo "      We're working on the corpora now, so that"
+#echo "      it can be processed with the other corpora."
+#echo
+
+ 
 # JD->HP: All the prep stuff is done. Now on to processing the file.
 # Pseudocode:
 #    1. what are the first two letters of the filename
@@ -286,70 +393,6 @@ fi
 ##############################
 
 
-##############################
-#Look for James data and process it.
-##############################
-
-# Does the James folder exists?
-# Yes: print exists
-# No: make directory
-if [ -d "James" ]; then
-    echo
-    echo "INFO: James folder exists"
-    echo
-else
-    echo
-    echo "INFO: Creating James folder"
-    echo
-    mkdir James
-fi
-
-# Does the James folder exist?
-# Yes: then move all files in HOME_FOLDER *james*.txt to it.
-# NO: nothing.
-if [ -d "James" ]; then
-    for I in $(find * -maxdepth 0 -iname '*james*.txt'); do
-	mv $I James
-    done
-fi
-
-##############################
-##############################
-
-##############################
-#Create Language IDs !!!!This needs to be moved to the top !!!!
-##############################
-
-# This may be able to be deleted because what uses it
-# uses find instead of cat
-find * -maxdepth 0 -iname '*ori*corpus*.txt' > corpus-list.txt
-
-# Generate the LANGUAGE_ID Variables.
-# This step looks through the corpus texts and pull out
-# the last three characters of the corpus texts.
-touch Language_ID.txt
-
-# This puts the languages in the file every time
-# the script runs. They will be in the file twice if run twice.
-# I need to change this to only adding new ones if not already
-# there. Consider:
-#
-# http://stackoverflow.com/questions/3557037/appending-a-line-to-a-file-only-if-it-doesnt-already-exist-using-sed
-
-for i in $(find * -maxdepth 0 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> Language_ID.txt
-done
-
-# Set the Variables.
-LANGUAGE_IDString=$(cat Language_ID.txt |tr "\n" " ")
-LANGUAGE_ID=($LANGUAGE_IDString)
-
-# This section needs to be modified and allow the arangement of info
-# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
-echo
-echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]}"
-echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
-echo
 
 ##############################
 ##############################
@@ -376,9 +419,9 @@ else
     mkdir "$DIR_INITIAL_STATS_TITLE"
 fi
 
-for i in $(cat corpus-list.txt); do
+for i in $(cat $CORPUS_LIST_FILE); do
     for flag in -c -d -u -m "-d -m"; do
-        UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Initial-Stats_${flag/ /}-${i/ /}
+        UnicodeCCount $flag $DIR_JAMES_DATA/$i > $DIR_INITIAL_STATS_TITLE/$INITIAL_STATS_TITLE${flag/ /}-${i/ /}
     done
 done
 
@@ -397,16 +440,16 @@ echo
 echo "INFO: Creating some CSV files from the intial character counts."
 echo
 
-# Not sure if we want to change directory?   
-#cd "$DIR_INITIAL_STATS_TITLE"
+cd "$DIR_INITIAL_STATS_TITLE"
 
 # Origional: ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
 
 # Using a double quote as it allows the variable to pass
 find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" > "$INITIAL_STATS_TITLE"-list.txt
- 
+
+
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
-    csvfix read_DSV -s '\t' "$INITIAL_STATS_TITLE/$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
+    csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
 done
 
 # Next task2: Create .md of counts.
@@ -477,8 +520,8 @@ echo
 #The first TECkit conversion
 ############################
 
-teckit_compile ConvertToNFD.map -o NFD.tec
-txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
+#teckit_compile ConvertToNFD.map -o NFD.tec
+#txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
 
 
 
