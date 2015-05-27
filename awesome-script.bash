@@ -14,6 +14,8 @@ VERSION="0.02"
 License="GPL"
  
 # Print Program Authors and Version number
+echo
+echo
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
@@ -132,25 +134,28 @@ fi
 if [ -f Wikipedia-list.txt ]; then
     # Delete the file
     rm -f Wikipedia-list.txt
+    echo "INFO: Cleaned previously generated files!"
 else
     # Create the Wikipedia-list.txt
-    echo "Clean!"
+#This needs a touch here.    
 fi
 
 if [ -f corpus-list.txt ]; then
     # Delete the file
     rm -f corpus-list.txt
+    echo "      Clean! Clean!"
 else
     # Create the corpus-list.txt
-   echo "Clean! Clean!"
+#This nees the create corpus-list command. BTW: should this be the James-list? or the -corpus-list. 
 fi
 
 if [ -f Language_ID.txt ]; then
     # Delete the file
     rm -f Language_ID.txt
+    echo "     Clean! Clean! Clean!"
 else
     # Create the Language_ID.txt
-   echo "Clean! Clean! Clean!"
+#This needs the Language_ID.txt touch, however this might need to be updated.
 fi
 
 ##############################
@@ -307,6 +312,13 @@ echo "      We're working on the corpora now, so that"
 echo "      it can be processed with the other corpora."
 echo
 
+##############################
+##############################
+
+##############################
+#Create Language IDs !!!!This needs to be moved to the top !!!!
+##############################
+
 # This may be able to be deleted because what uses it
 # uses find instead of cat
 find * -maxdepth 0 -iname '*ori*corpus*.txt' > corpus-list.txt
@@ -338,11 +350,18 @@ echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]}"
 echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
 echo
 
+##############################
+##############################
+
+##############################
+#Set up the character counts for corpora.
+##############################
+
 # STEP 1 STAGE 1 & 2:
  
 #Print starting step 1 stage 1 and 2: generating data
 echo
-echo "INFO: Starting STEP 1 STAGE 1 & 2..."
+echo "INFO: Processing James."
 echo "      Doing an initial character count of the book"
 echo "      of James before further processing."
 echo
@@ -361,11 +380,17 @@ for i in $(cat corpus-list.txt); do
         UnicodeCCount $flag $i > $INITIAL_STATS_TITLE/Initial-Stats_${flag/ /}-${i/ /}
     done
 done
- 
+
+
+##############################
+##############################
+
 # The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
 
 #@Jonathan D. or Jon W. Any help here would be a grate asset.
- 
+##############################
+#Create CSV counts of counted files.
+##############################
 # Next task: Create CSV of counts
 echo
 echo "INFO: Creating some CSV files from the intial character counts."
