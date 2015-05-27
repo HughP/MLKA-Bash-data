@@ -420,8 +420,7 @@ txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
 #fi
 #
 #
-##for i in $(find . -iname *ori*corpus*.txt -type f)
-##@Jon W. Suggested that 'find' is a faster more effiencent option than 'cat' or 'ls' in this process. I have things working for 'cat' so I have not changed them.
+##for i in $(find . -maxdepth 1 -iname *ori*corpus*.txt -type f)
 #
 #for i in $(cat corpus-list.txt); do
 #    for flag in -c -d -u -m "-d -m"; do
@@ -430,6 +429,36 @@ txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
 #done
 
 
+##############################
+##The Third count of the corpus files
+#############################
+
+#The .md files should be pushed to the git hub repo sometime. look here for how: http://stackoverflow.com/questions/24677866/git-ignore-all-files-except-one-extension-and-folder-structure
+
+#
+#echo
+#echo "Starting STEP 2 STAGE 1..."
+#echo
+#echo "Doing a character count for the Book of James corpora after processing some of the typograhical characters out."
+#echo
+# 
+#if [ -d "$DIR_SECOND_STATS_TITLE" ]; then
+#    # Control will enter here if DIRECTORY exist.
+#    rm -R -f "$DIR_SECOND_STATS_TITLE"
+#    mkdir $SECOND_STATS_TITLE
+#else
+#    # Control will enter here if DIRECTORY does NOT exist.
+#    mkdir $DIR_SECOND_STATS_TITLE
+#fi
+#
+#
+##for i in $(find . -maxdepth 1 -iname *ori*corpus*.txt -type f)
+#
+#for i in $(cat corpus-list.txt); do
+#    for flag in -c -d -u -m "-d -m"; do
+#        UnicodeCCount $flag $i > $DIR_SECOND_STATS_TITLE/Second-Stats_${flag/ /}-${i/ /}
+#    done
+#done
 
 
 

@@ -44,15 +44,21 @@ echo $HOME_FOLDER
 #The first TECkit conversion
 ############################
 
-
+#Move to TECkit folder
 cd TECkit-Files
 
-teckit_compile TypographicalCharacterRemoval.map -o TypographicalCharacterRemoval.tec
+#Complie new .tec from latest character cleaner. Apply this to all texts.
+teckit_compile TypographicalCharacterRemoval.map -o TCR.tec
 
 cd "$HOME_FOLDER"
 
+#Appply Transformation to corpora
+
 
 for i in $(cat corpus-list.txt); do
+   txtconv -t TECkit-Files/TCR.tec -i "$i" -o combined-conv-nfd.txt
+   
+   
     for flag in -c -d -u -m "-d -m"; do
         UnicodeCCount $flag $i > $DIR_SECOND_STATS_TITLE/Second-Stats_${flag/ /}-${i/ /}
     done

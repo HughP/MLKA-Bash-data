@@ -11,7 +11,7 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
  * `git clone https://github.com/michaeldickens/Typing.git`
 4. [CSVfix](https://bitbucket.org/neilb/csvfix) version 1.6 [More info](http://neilb.bitbucket.org/csvfix/)
- * `git clone https://bitbucket.org/neilb/csvfix` Or use `hg` instead of `git`. Hugh used homebrew and `brew install csvfix`.
+ * `hg clone https://bitbucket.org/neilb/csvfix`. Hugh used homebrew and `brew install csvfix`.
 5. [WikiExtractor Script](https://github.com/bwbaugh/wikipedia-extractor) extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
  * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
 6. Stave Python script for Cleaning Wikipedia
@@ -20,10 +20,12 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 
 
 ##Roadmap
+- [ ] 0.1 Process and compute Wikipedia, Keyboard layouts, and James texts.
+- [x] 0.3 Check for dependencies exit script if not present.
+ - [ ] 0.3.5 Install dependencies if needed. 
+- [ ] 0.4 Hook up carpalx
+- [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 
-* 0.3 Eventually I would like to check for dependencies and install them if needed. This script plus wget(not included on OS X by default) or curl (works on OSX by default) should work: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
-
-* 0.4 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 
 
 ##Notes
@@ -54,6 +56,70 @@ git push
 @Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now.
  
 
+####From Martin
+
+>I have no such tool to hand, but using the palaso-python library, we could write one. The first thing is to work out exactly what you want. Do you simply want a list of every possible unicode character that a keyboard could produce or do you want a list of possible minimal strings that a keyboard could produce or a simple keymapping (for which I already have a tool)?
+>
+>Basically you will want something along the lines of:
+
+```
+import palaso.kmfl as kmfl
+from palaso import kmn
+
+kbd = kmfl(sys.argv[1])
+allchars = set()
+for i in range(kbd.numrules) :
+        for s in map(kmn.item_to_char, kbd.flatten_context(i, side = 'r')) :
+                allchars.add(s)
+print allchars
+```
+>beware this code is completely untested and therefore is highly unlikely not to have bugs in it. You'll want to write some code to prettify the output to what you want.
+
+>GB,
+>Martin
+####
+>From Marc
+>
+>Hi Hugh,
+> 
+>I don’t have an immediate solution to your question – the Keyman source language is non-trivial to parse, although some for your requirements you may be able to get away with a lot less processing. We have Windows-based tools for analysis of a keyboard layout, but this may not be all that helpful to you.
+> 
+>I am not sure if you are up for writing your own script to parse the source files or not. If you are, then I would advise the following process:
+>
+>*       The file format can be ANSI, UTF-8, or UTF-16. Convert the file to your preferred format before parsing.
+>
+>*       Comments: For each line, strip any text following “c “ or “C “ – but only outside quotation marks
+>
+>*       Line concatenation: Then, if a line ends in a “\” (ignore whitespace), delete the backslash and concatenate with the next line
+>
+>*       Then there are only two types of lines to analyse, pseudo tokenized:
+>
+>o   “store” “(“ store_name “)”  value
+>
+>o   context [“+” key] “>” value
+>
+>*       Ignore all other lines
+>
+>*       If the store_name token starts with “&” ignore the line.
+>
+>*       You will be interested only in the value and output tokens.  These are delimited by the close paren “)” token in the store lines and the greater than “>” token in the rule lines and finish at end of line in each case.
+>
+>*       Parse the value and output tokens:
+>
+>o   Any “U+xxxx” is a Unicode character.
+>
+>o   Any string of Unicode characters starts with a single quote (') or a double quote (") and finishes with the same quote.
+>
+>o   Ignore any tokens between an open and a close paren.
+>
+>o   Ignore any other tokens
+>
+> 
+>I hope this helps and that I haven’t forgotten anything.
+> 
+>Cheers,
+> 
+>Marc
 
 ###Notes for all
 
