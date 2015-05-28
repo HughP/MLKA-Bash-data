@@ -219,7 +219,7 @@ fi
 
 echo
 echo "INFO: We're looking for text data and moving it to the correct locations."
-
+8
 
 # Wiki
 
@@ -247,12 +247,6 @@ fi
 #echo "      If we find anything we'll let you know."
 #echo
 
-
-# Append file names of corpora to wiki list.
-# Then list all Wikipedia dumps and store
-# results into the file Wikipedia-list.txt 
-find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
-
 # Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
 if [ -d "$DIR_WIKI_DATA" ]; then
@@ -260,17 +254,25 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         # Now we're reaching into Wiki-Data folder:
         # If the file exists then do NOT copy.
-        if [ ! -f $DIR_WIKI_DATA/$i ]; then
+        if [ ! -f "$DIR_WIKI_DATA/$i" ]; then
 	    # print some status of when moving the files:
 	    printf "+"
             # safe to move the bz2 file into Wiki-Data:
-            mv "$i" $DIR_WIKI_DATA
-#JONATHAN: Shouldn't this Wiki-Data instance in 267  become $DIR_WIKI_DATA ??? I am not sure what the syntax is saying here.#JD->HP: Yes you're right on.       
+            mv "$i" "$DIR_WIKI_DATA"
 	else
 	    printf "!"
         fi
     done # end of for loop
 fi # end of main if
+
+### HUGH:
+### This was moved from above to here because we don't want to index
+### something then move it to a different folder.
+ 
+# List all Wikipedia dumps and store
+# results into the file Wikipedia-list.txt
+find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
+
 
 if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
     # No wikipedia dumps were found.
@@ -283,8 +285,9 @@ else
     echo "INFO: It looks like we found some Wikipedia data."
     echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l)"
     echo "      dumps to be processed."
-    echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
-    # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
+    echo
+#There is a bug here in that the above line has a long space in it when returned to the command prompt.
+# JD->HP: It might be able to be solved by just moving the trailing text to the next line.
 fi    
 
 # James
