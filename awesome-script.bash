@@ -167,7 +167,7 @@ fi
 if [ -f $WIKI_LIST_FILE ]; then
     # Delete the file
     rm -f $WIKI_LIST_FILE
-    echo "INFO: Replacting previously generated files!"
+    echo "INFO: Replacing previously generated files!"
     touch $WIKI_LIST_FILE
 else
     # Create the Wikipedia-list.txt
@@ -213,14 +213,13 @@ fi
 
 ##############################
 #Check for proper data locations
-#Wiki
+#Wiki 
 #James
 #Others - not yet implemented
 ##############################
 
 echo
 echo "INFO: We're looking for text data and moving it to the correct locations."
-
 
 # Wiki
 
@@ -248,30 +247,44 @@ fi
 #echo "      If we find anything we'll let you know."
 #echo
 
-
-# Append file names of corpora to wiki list.
-# Then list all Wikipedia dumps and store
-# results into the file Wikipedia-list.txt 
-find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
-
 # Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
+WIKI_DATA_FILE_COUNT=0
 if [ -d "$DIR_WIKI_DATA" ]; then
     # So we're are in HOME_FOLDER here:
     for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         # Now we're reaching into Wiki-Data folder:
         # If the file exists then do NOT copy.
-        if [ ! -f $DIR_WIKI_DATA/$i ]; then
-	    # print some status of when moving the files:
-	    printf "+"
+        if [ ! -f "$DIR_WIKI_DATA/$i" ]; then
+
             # safe to move the bz2 file into Wiki-Data:
-            mv $i Wiki-Data 
-#JONATHAN: Shouldn't this Wiki-Data instance in 267  become $DIR_WIKI_DATA ??? I am not sure what the syntax is saying here.       
-	else
-	    printf "!"
+            mv "$i" "$DIR_WIKI_DATA"
+	    (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
+	    # http://www.tldp.org/LDP/abs/html/dblparens.html
+
         fi
     done # end of for loop
-fi # end of main if
+    echo
+    echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata into the $DIR_WIKI_DATA folder."
+fi
+
+### HUGH:
+### This was moved from above to here because we don't want to index
+### something then move it to a different folder.
+
+### HUGH:
+### The result of running find with maxdepth 1 may not be ideal.
+### Since all *wiki*.bz2 files are in $DIR_WIKI_DATA
+### we would want to just have the $WIKI_LIST_FILE
+### contain the file_names. Not dir/file_names
+### Proposed change:
+
+# List all Wikipedia dumps and store
+# results into the file Wikipedia-list.txt
+#find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
+cd "$DIR_WIKI_DATA"
+find * -maxdepth 0 -iname '*wiki*.bz2' >> ../$WIKI_LIST_FILE
+cd ..
 
 if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
     # No wikipedia dumps were found.
@@ -282,8 +295,11 @@ else
     # Some uncompressed Wikipedia dumps exist. 
     echo
     echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are:$(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
-    echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
+    echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l)"
+    echo "      dumps to be processed."
+    echo
+#There is a bug here in that the above line has a long space in it when returned to the command prompt.
+# JD->HP: It might be able to be solved by just moving the trailing text to the next line.
 fi    
 
 # James
@@ -307,11 +323,20 @@ fi
 # Does the James folder exist?
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
+JAMES_DATA_FILE_COUNT=0
 if [ -d "$DIR_JAMES_DATA" ]; then
     for i in $(find * -maxdepth 0 -iname '*james*.txt'); do
-	mv "$i" "$DIR_JAMES_DATA"
-	echo "INFO: Moved some James texts into the /$DIR_JAMES_DATA folder."
+	# Added a check so it doesn't clobber files:
+        if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
+
+            # safe to move the bz2 file into Wiki-Data:
+	    mv "$i" "$DIR_JAMES_DATA"
+	    (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
+	    # http://www.tldp.org/LDP/abs/html/dblparens.html
+        fi
     done
+    echo
+    echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
 fi
 
 # Other
@@ -349,11 +374,29 @@ fi
 #Create Language IDs
 ##############################
 
+
+### HUGH:
+### Since we have wiki and james files moved into folders
+### shouldn't we handle *ori*corpus*.txt files the same way
+### and move corpus files into something like Corpus folder?
+###
+### Also is there suppost to be james and corpus files mixed
+### together in the same folder?
+
 # Find James corpora in both root and in DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
 cd $DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
 cd ../
+
+###
+###
+### BREAKPOINT: stopping here and waiting for your approval to continue.
+exit
+###
+###
+###
+
 
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
