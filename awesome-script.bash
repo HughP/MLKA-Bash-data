@@ -264,8 +264,8 @@ if [ -d "$DIR_WIKI_DATA" ]; then
 	    # print some status of when moving the files:
 	    printf "+"
             # safe to move the bz2 file into Wiki-Data:
-            mv $i Wiki-Data 
-#JONATHAN: Shouldn't this Wiki-Data instance in 267  become $DIR_WIKI_DATA ??? I am not sure what the syntax is saying here.       
+            mv "$i" $DIR_WIKI_DATA
+#JONATHAN: Shouldn't this Wiki-Data instance in 267  become $DIR_WIKI_DATA ??? I am not sure what the syntax is saying here.#JD->HP: Yes you're right on.       
 	else
 	    printf "!"
         fi
@@ -281,8 +281,10 @@ else
     # Some uncompressed Wikipedia dumps exist. 
     echo
     echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are:$(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
+    echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l)"
+    echo "      dumps to be processed."
     echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
+    # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
 fi    
 
 # James
