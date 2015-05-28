@@ -40,8 +40,9 @@ echo
 CMD_UNICODECCOUNT=UnicodeCCount
 
 DIR_INITIAL_STATS_TITLE=Initial-Stats
-DIR_SECOND_STATS_TITLE=Second_Stats
+DIR_SECOND_STATS_TITLE=Second-Stats
 DIR_JAMES_DATA=James
+DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
 
 INITIAL_STATS_TITLE=First_Stats
 SECOND_STATS_TITLE=Second_Stats
@@ -141,6 +142,9 @@ else
     exit
 fi
 
+#We need to add the jonathan compile script for renaming.
+#We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
+#We might want to consider dependendies for carpalx.
 
 ##############################
 ##############################
@@ -195,18 +199,28 @@ if [ -d $DIR_INITIAL_STATS_TITLE ]; then
     echo "      Clean! Clean! Clean! Cleaned the $DIR_INITIAL_STATS_TITLE folder"
 fi
 
+# Folders to clean up.
+if [ -d DIR_SECOND_STATS_TITLE ]; then
+    # Delete the folder
+    rm -Rf DIR_SECOND_STATS_TITLE
+    echo "      Clean! Clean! Clean! Cleaned the $DIR_SECOND_STATS_TITLE folder"
+fi
+
 ##############################
 ##############################
 
 ##############################
 #Check for proper data locations
+#Wiki
+#James
+#Others - not yet implemented
 ##############################
 
 echo
 echo "INFO: We're looking for text data and moving it to the correct locations."
 
 
-#Wiki
+# Wiki
 
 ##############################
 #Look for Wikipedia data.
@@ -269,7 +283,7 @@ else
     echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 fi    
 
-#James
+# James
 
 ##############################
 #Look for James data.
@@ -297,8 +311,9 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     done
 fi
 
-
 ##############################
+##############################
+#######End of Data Check######
 ##############################
 
 ##############################
@@ -507,13 +522,66 @@ echo
 
 #############################
 #The first TECkit conversion
-############################
+# Applies to all corpora
+#############################
 
-#teckit_compile ConvertToNFD.map -o NFD.tec
-#txtconv -t NFD.tec -i combined.txt -o combined-conv-nfd.txt
+cd "$HOME_FOLDER"
+
+# Move to TECkit folder
+cd TECkit-Files
+
+# Compile new .tec from latest character cleaner. Apply this .tec file will apply to all texts.
+teckit_compile TypographicalCharacterRemoval.map -o TCR.tec
+
+cd "$HOME_FOLDER"
+
+if [ -d "$DIR_TYPOGRAHICAL_CORRECT_DATA" ]; then
+    # Control will enter here if DIRECTORY exist.
+    rm -R -f "$DIR_TYPOGRAHICAL_CORRECT_DATA"
+    mkdir "$DIR_TYPOGRAHICAL_CORRECT_DATA"
+else
+    # Control will enter here if DIRECTORY does NOT exist.
+    mkdir "$DIR_TYPOGRAHICAL_CORRECT_DATA"
+fi
+
+# Apply Transformation to corpora
+#The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point.
+for i in $(cat $CORPUS_LIST_FILE); do
+   txtconv -t TECkit-Files/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
+done
+
+# Go through the created texts and rename them to Match the typographical setting.
+
+cd $DIR_TYPOGRAHICAL_CORRECT_DATA
+
+for i in $(find * -iname *ori*.txt);do
+ 	mv "$i" Typographical.${i:3} 
+done
+
+cd "$HOME_FOLDER"
+
+##########Hugh takes a break here. Needs actual testing#####
 
 
+if [ -d "$DIR_SECOND_STATS_TITLE" ]; then
+    # Control will enter here if DIRECTORY exist.
+    rm -R -f "$DIR_SECOND_STATS_TITLE"
+    mkdir "$DIR_SECOND_STATS_TITLE"
+else
+    # Control will enter here if DIRECTORY does NOT exist.
+    mkdir "$DIR_SECOND_STATS_TITLE"
+fi
 
+
+ls -A1r "$DIR_TYPOGRAHICAL_CORRECT_DATA"/*.txt > typographically-correct-corpora.txt
+
+for i in $(cat typographically-correct-corpora.txt); do
+   for flag in -c -d -u -m "-d -m"; do
+       UnicodeCCount "$flag" "$i" > $SECOND_STATS_TITLE${flag/ /}-${i/ /}
+   done
+done
+
+rm -f typographically-correct-corpora.txt
 
 ##############################
 ##The Second count of the corpus files
