@@ -195,8 +195,6 @@ if [ -d $DIR_INITIAL_STATS_TITLE ]; then
     echo "      Clean! Clean! Clean! Cleaned the $DIR_INITIAL_STATS_TITLE folder"
 fi
 
-
-
 ##############################
 ##############################
 
@@ -271,8 +269,6 @@ else
     echo #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 fi    
 
-
-
 #James
 
 ##############################
@@ -309,14 +305,11 @@ fi
 #Create Language IDs
 ##############################
 
-# This may be able to be deleted because what uses it
-# uses find instead of cat
+# Find James corpora in both root and in DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
 cd $DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
 cd ../
-
-
 
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
@@ -338,8 +331,6 @@ done
 # James-corpus.txt is deleted.
 rm James-corpus.txt
 
-
-
 # Set the Variables.
 LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE |tr "\n" " ")
 LANGUAGE_ID=($LANGUAGE_IDString)
@@ -353,8 +344,6 @@ echo
 
 ##############################
 ##############################
-
-
 
 #echo
 #echo "INFO: Wikipedia data takes a while to clean up."
@@ -587,38 +576,6 @@ echo
 ##change to newly created folder
 ##cd $NEW_FOLDER
 # 
-# 
-#	run UnicodeCCount with “-d” and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#	copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#	run UnicodeCCount with “-c” and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#	copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#run UnicodeCCount with “-u”  and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
-#
-#run UnicodeCCount with “-d -m”  and store into tmp.txt
-#rename tmp.txt to Corpus-ori-[corpus_type]-[language_code]-text-[flag].txt
-#copy above created file to *.md instead of *.txt
-#open that file and convert all tabspaces U+0009 to pipes
-#convert all U+0027 ‘ to \’
-#EX: #Corpus ori james nav text
-#	prepend newline with hash then file name in sentence case to *.md file
 #
 #
 #
@@ -720,29 +677,6 @@ echo
 ##########################
 #
 #
-#
-##This is a bash script to automate the transformation of corpora.
-#
-##Requires these dependencies
-## 1. UnicodeCCount
-## 2. TECKit
-## 3. Typing by Michael Dickens
-## 4. Stave Python script for Cleaning Wikipedia
-## 5. Stave Python script for counting digrams
-## 6. JavaScript count
-#
-#
-## common commands
-##
-## echo "changing directories"
-## cd ~/Multi-lingual\ Keyboard\ Assessment/MLKA/
-#
-## echo "adding to git"
-## git add --all
-## git commit -m 'some updates'
-#
-## UnicodeCCount -d -m > sometextfile.txt
-#
 ### Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
 ### #!/bin/bash
 ### #Define bash global variable
@@ -839,8 +773,6 @@ echo
 ##
 ##10. Use javascript to count distance.	
 ##			
-##
-#
 #
 ###############################
 #List of files for each keyboard and corpus
