@@ -26,6 +26,57 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 - [ ] 0.4 Hook up carpalx
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 
+##List of files
+_The purpose of this section is to list the kinds of files and the qantitiy of files which are created and used durring the data processing process. There are two kinds of files: those we start off with, and those which are generated along the way._
+
+###Files we start off with
+
+####Corpus Data
+* metadata file for corups.
+* no touch copy of corpus.
+* working copy of corpus.
+
+####Character Transforms
+* global Unicode to nfd mapping .map file.
+* global Typographical clean up. .map file to support the removal of typographical characters.
+* Corpus based clean up.
+* .map file for each keyboard layout to transform the text to ASCII.
+
+####Keybords
+* metadata file for keyboard.
+* text description for keyboard (how it works).
+* .kmn file for keyboard
+* .kmx file for keyboard
+* image of keyboard layout for layout.
+* Base image of keyboard for heatmap.
+* .keylayout file for keyboard.
+
+###Files Produced
+
+####Corpus Data
+
+* Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
+* Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
+* Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
+* Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
+
+* list of characters to be removed from text.
+
+####Character Transforms
+
+* .map file to support the removal of untypeable characters.
+* global unicode to nfd compiled mapping .tec file.
+* list of characters to be removed from text.
+* .tec file for each keyboard layout to transform the text to ASCII.
+* .tec file to implement the removal of untypeable characters.
+* .tec file to implement the conversions the typographical characters.
+
+
+####Keybords
+
+* image of keyboard for heatmap sample text.
+* image of keyboard for heatmap full text.
+* list of all characters supported by keyboard.
 
 
 ##Notes

@@ -146,6 +146,7 @@ fi
 #We need to add the jonathan compile script for renaming.
 #We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
 #We might want to consider dependendies for carpalx.
+#We might need to add KMFL and the Plaso-Python dependencies.
 
 ##############################
 ##############################
@@ -313,9 +314,35 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     done
 fi
 
+# Other
+
+##############################
+#Look for Other Corpora data. - Not yet implemented.
+##############################
+
 ##############################
 ##############################
-#######End of Data Check######
+###End of Corpora Data Check##
+##############################
+
+##############################
+##############################
+####### Action Point #########
+##############################
+##############################
+#Parse Keyboard File data, this is another form of data so it should be parsed with the data.
+##############################
+#.keylayout files need to be parsed with XML for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processsing tool for this.
+#.kmn files need to be parsed for the characters which they can produced. To do this I should look at the Palaos-python tools.
+#Windows ketboards are unacconted for. Adobe did create a script to convert MSKLC files to .keylayout files. This script could be investigated with the Me'phaa keyboard layout.
+#
+#All the characters from the keyboard files, need to be compared with the characters which are used in the various corpora in the target languages.
+#A report needs to be generated to show the characters used in the corpora, and the characters which are possible via the keyboards.
+#Characters which are not in the keyboard layouts, need to be purged from the corpora. The presence of characters in corpora which are not on standard keyboards shows the percentage of extra-keyboard effort in each language. This is a percentage of the writing task which does require a special solution. Special solutions should be expected in all languages. But what is the standard amount by which people should expect to be required to use these special solutions?
+#
+#The techincal task for keyboard layout file processing, is the following:
+#All the possible characters producable by the keyboard layout need to be listed. They should be listed in a CSV file with the format ' U+xxxx, glyph ' for each keyboard file. This CSV represents the capable output of the keyboard file. Then these files can be compared with the CSV output of the Texts which have gone through the UnicodeCCount Process.
+##############################
 ##############################
 
 ##############################
@@ -368,6 +395,16 @@ echo
 #echo "      it can be processed with the other corpora."
 #echo
 
+
+
+##############################
+##############################
+####### Action Point #########
+##############################
+##############################
+#Intergrate Wikipedia Extraction and Renaming
+##############################
+
  
 # JD->HP: All the prep stuff is done. Now on to processing the file.
 # Pseudocode:
@@ -398,18 +435,24 @@ echo
 ##############################
 ##############################
 
+##############################
+##############################
+####### Action Point #########
+##############################
+##############################
+#Intergrate Wikipedia cleaing python script
+##############################
+
 
 
 ##############################
 ##############################
 
 ##############################
-#Set up the character counts for corpora.
+#Set up the character counts for corpora. This includes James and Wikipedia data. Actually, James and Wikipedia data are both classes of data and also fit into a super-class. If we want to think about them in those terms.
 ##############################
 
-# STEP 1 STAGE 1 & 2:
- 
-#Print starting step 1 stage 1 and 2: generating data
+#This should be for all corpora not just james
 echo
 echo "INFO: Processing James."
 echo "      Doing an initial character count of the book"
@@ -431,13 +474,9 @@ for i in $(cat $CORPUS_LIST_FILE); do
     done
 done
 
-
 ##############################
 ##############################
 
-# The name pattern I want is {Intial-Stats_${flag}_{$LANGAGUE_ID}_File-Name.txt}
-
-#@Jonathan D. or Jon W. Any help here would be a grate asset.
 ##############################
 #Create CSV counts of counted files.
 ##############################
@@ -465,12 +504,17 @@ echo "      So we're making some markdown tables from"
 echo "      the CSV files."
 echo
  
-#ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
+#needs testing 
+ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
 # 
 #for i in $(cat Intial_Stats-list-csv.txt); do
 ##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
-# 
+
+for i in $(cat $LANGAUGE_LIST_FILE);do
+	ls -A1r *Intial_Stats*"$i"*.csv > Intial_Stats-"$i"-list-csv.txt
+done
+
 ##trying to cat a header to the .md files then do a something to the header.
 # 
 ##"#${i/ /}"
@@ -479,8 +523,6 @@ echo
 #Alternate code by Jonathan D.
 ##############################
 #Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
-
-#
 #
 #cd $DIR_INITIAL_STATS_TITLE
 #
@@ -547,7 +589,7 @@ else
 fi
 
 # Apply Transformation to corpora
-#The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point.
+#The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point. This is partiall dependent on getting the Wiki-data folder connected.
 for i in $(cat $CORPUS_LIST_FILE); do
    txtconv -t TECkit-Files/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
 done
@@ -617,10 +659,30 @@ rm -f typographically-correct-corpora.txt
 #    done
 #done
 
-
-
-
-
+#
+##########################
+#
+#
+### Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
+### #!/bin/bash
+### #Define bash global variable
+### #This variable is global and can be used anywhere in this bash script
+### VAR="global variable"
+### function bash {
+### #Define bash local variable
+### #This variable is local to bash function only
+### local VAR="local variable"
+### echo $VAR
+### }
+### echo $VAR
+### bash
+### # Note the bash global variable did not change
+### # "local" is bash reserved word
+### echo $VAR
+#
+###Bash for and while loops
+##########################
+#
 # 
 ##COUNTER=0
 ##while [  $COUNTER -lt 10 ]; do
@@ -743,30 +805,7 @@ rm -f typographically-correct-corpora.txt
 ##
 #
 #
-#
-##########################
-#
-#
-### Something about variables sourced from: http://linuxconfig.org/bash-scripting-tutorial
-### #!/bin/bash
-### #Define bash global variable
-### #This variable is global and can be used anywhere in this bash script
-### VAR="global variable"
-### function bash {
-### #Define bash local variable
-### #This variable is local to bash function only
-### local VAR="local variable"
-### echo $VAR
-### }
-### echo $VAR
-### bash
-### # Note the bash global variable did not change
-### # "local" is bash reserved word
-### echo $VAR
-#
-###Bash for and while loops
-#
-#
+
 #
 ##
 ##1. Collect texts from source.
@@ -842,38 +881,3 @@ rm -f typographically-correct-corpora.txt
 ##9. Use python to count digrams.
 ##
 ##10. Use javascript to count distance.	
-##			
-#
-###############################
-#List of files for each keyboard and corpus
-###############################
-####Corpora###
-#metadata file for corups.
-#no touch copy of corpus.
-#working copy of corpus.
-#global Unicode to nfd mapping .map file.
-#global unicode to nfd compiled mapping .tec file.
-#
-#Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
-#Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
-#Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
-#Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
-#
-####Keybords###
-#metadata file for keyboard.
-#image of keyboard layout for layout.
-#Base image of keyboard for heatmap.
-#image of keyboard for heatmap sample text.
-#image of keyboard for heatmap full text.
-#list of all characters supported by keyboard.
-#.kmn file for keyboard
-#.kmx file for keyboard
-#.keylayout file for keyboard.
-# text description for keyboard (how it works).
-#list of characters to be removed from text.
-#.map file to support the removal of typographical characters.
-#.tec file to implement the conversions the typographical characters.
-#.map file to support the removal of untypeable characters.
-#.tec file to implement the removal of untypeable characters.
-#.map file for each keyboard layout to transform the text to ASCII.
-#.tec file for each keyboard layout to transform the text to ASCII.

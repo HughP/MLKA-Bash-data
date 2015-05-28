@@ -31,7 +31,7 @@ for item in filelist:
     '''
 content = open('/Users/Hugh/wiki_00.txt')
 
-
+''' I need to try and get this to open files at the cross platform level.'''
 """ try to set the path variable with the following:
 import os 
 path = os.getcwd()
