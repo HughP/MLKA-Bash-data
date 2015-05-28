@@ -43,6 +43,7 @@ DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
 DIR_JAMES_DATA=James
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+DIR_WIKI_DATA=Wiki-Data
 
 INITIAL_STATS_TITLE=First_Stats
 SECOND_STATS_TITLE=Second_Stats
@@ -200,9 +201,9 @@ if [ -d $DIR_INITIAL_STATS_TITLE ]; then
 fi
 
 # Folders to clean up.
-if [ -d DIR_SECOND_STATS_TITLE ]; then
+if [ -d $DIR_SECOND_STATS_TITLE ]; then
     # Delete the folder
-    rm -Rf DIR_SECOND_STATS_TITLE
+    rm -Rf $DIR_SECOND_STATS_TITLE
     echo "      Clean! Clean! Clean! Cleaned the $DIR_SECOND_STATS_TITLE folder"
 fi
 
@@ -229,15 +230,15 @@ echo "INFO: We're looking for text data and moving it to the correct locations."
 # Does the Wiki-Data folder exists?
 # Yes: print exists
 # No: make directory
-if [ -d "Wiki-Data" ]; then
-    echo "INFO: Wiki-Data folder exists."
-    echo "      If we find Wikidata we will move it to the Wiki-Data folder."
+if [ -d "$DIR_WIKI_DATA" ]; then
+    echo "INFO: $DIR_WIKI_DATA folder exists."
+    echo "      If we find Wikidata we will move it to the $DIR_WIKI_DATA folder."
     echo
 else
-    echo "INFO: Creating Wiki-Data folder"
-    echo "      If we find Wikidata we will move it Wiki-Data folder."
+    echo "INFO: Creating $DIR_WIKI_DATA folder"
+    echo "      If we find Wikidata we will move it $DIR_WIKI_DATA folder."
     echo
-    mkdir Wiki-Data
+    mkdir "$DIR_WIKI_DATA"
 fi
 
 # Search for compressed wiki dumps
@@ -254,16 +255,17 @@ find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
 
 # Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
-if [ -d "Wiki-Data" ]; then
+if [ -d "$DIR_WIKI_DATA" ]; then
     # So we're are in HOME_FOLDER here:
     for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         # Now we're reaching into Wiki-Data folder:
         # If the file exists then do NOT copy.
-        if [ ! -f Wiki-Data/$i ]; then
+        if [ ! -f $DIR_WIKI_DATA/$i ]; then
 	    # print some status of when moving the files:
 	    printf "+"
             # safe to move the bz2 file into Wiki-Data:
-            mv $i Wiki-Data
+            mv $i Wiki-Data 
+#JONATHAN: Shouldn't this Wiki-Data instance in 267  become $DIR_WIKI_DATA ??? I am not sure what the syntax is saying here.       
 	else
 	    printf "!"
         fi
