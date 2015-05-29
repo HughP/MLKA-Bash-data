@@ -292,11 +292,17 @@ fi
 ### This was moved from above to here because we don't want to index
 ### something then move it to a different folder.
 
+### JONATHAN:
+###I think I moved it to the top so that all indexing was done at the same time. I was not able to do a side by side check. Therefore I would prefere to leave it up where it was. The reason for this was that it worked with both new data and with re-runs where new data was added after the first run.
+
 ### HUGH:
 ### The result of running find with maxdepth 1 may not be ideal.
 ### Since all *wiki*.bz2 files are in $DIR_WIKI_DATA
 ### we would want to just have the $WIKI_LIST_FILE
 ### contain the file_names. Not dir/file_names
+
+###I am not sure that this is an accurate assumption. Before am convenced we sould talk in person so that I can see what you mean. Can you please present future suggestions in code blocks (Three lines of "#" on the top and two lines of "#" on the bottom) in seperate files? like a small .sh file which we can later delete.
+
 ### Proposed change:
 
 # List all Wikipedia dumps and store
@@ -320,6 +326,7 @@ else
     echo
 #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
+#Actually I think it needs {} so that the added spaces don't get added in to the output. But I am not sure about the syntax. Syntax for me on all of this is a bit fuzzy. I am mostly copy and pasting from stack exchange.
 fi    
 
 # James
@@ -394,7 +401,6 @@ fi
 #Create Language IDs
 ##############################
 
-
 ### HUGH:
 ### Since we have wiki and james files moved into folders
 ### shouldn't we handle *ori*corpus*.txt files the same way
@@ -459,7 +465,6 @@ echo
 #echo "      We're working on the corpora now, so that"
 #echo "      it can be processed with the other corpora."
 #echo
-
 
 ##############################
 ##############################
@@ -858,7 +863,6 @@ rm -f typographically-correct-corpora.txt
 #
 ##10. Use javascript to count distance.	
 
-#
 ##
 ##1. Collect texts from source.
 ##	a. Create date, time, source, and permissions metadata.
@@ -873,9 +877,7 @@ rm -f typographically-correct-corpora.txt
 ##		i. List all characters which are enabled by the keyboard layout in Unicode NFD.
 ##			(1) Create list.
 ##			(2) Convert list to NFD.
-#
-#ls *.txt > corpus-list.txt
-#
+##ls *.txt > corpus-list.txt
 ##
 ##3. For each corpus get initial corpus counts
 ##	a. Run UnicodeCCount with the following flags and output them to a single new folder in the following ways:
