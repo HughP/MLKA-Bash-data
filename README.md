@@ -27,14 +27,21 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 
 ##List of files
-_The purpose of this section is to list the kinds of files and the qantitiy of files which are created and used durring the data processing process. There are two kinds of files: those we start off with, and those which are generated along the way._
+_The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._
 
 ###Files we start off with
 
 ####Corpus Data
-* metadata file for corups.
+* metadata file for corpus.
 * no touch copy of corpus.
 * working copy of corpus.
+
+##### Types of Corpora
+* NT James
+* Wikipedia
+
+####Stats Counts from other studies
+* Some languages have stats for character frequency. Some don't.
 
 ####Character Transforms
 * global Unicode to nfd mapping .map file.
@@ -42,7 +49,7 @@ _The purpose of this section is to list the kinds of files and the qantitiy of f
 * Corpus based clean up.
 * .map file for each keyboard layout to transform the text to ASCII.
 
-####Keybords
+####Keyboards
 * metadata file for keyboard.
 * text description for keyboard (how it works).
 * .kmn file for keyboard
@@ -51,6 +58,10 @@ _The purpose of this section is to list the kinds of files and the qantitiy of f
 * Base image of keyboard for heatmap.
 * .keylayout file for keyboard.
 
+###Temp Files
+
+* **James-Corpus.txt** - This file is used to create an output of the languages of James corpora. It is different than the file created by `$JAMES_LIST_FILE` which is called
+
 ###Files Produced
 
 ####Corpus Data
@@ -58,8 +69,7 @@ _The purpose of this section is to list the kinds of files and the qantitiy of f
 * Each working copy of each corpus has initial count: -d, -u, -c, -d -m,-m (6 files)
 * Each working copy of each corpus has second count: -d, -u, -c, -d -m,-m (6 files) -following the removal of SFM
 * Each working copy of each corpus has third count: -d, -u, -c, -d -m,-m (6 files) -following the removal of typographical characters.
-* Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivelent for keyboard analysis.
-
+* Each working copy of each corpus has fourth count: -d, -u, -c, -d -m,-m (6 files) -following the conversion of Unicode text to ASCII equivalent for keyboard analysis.
 * list of characters to be removed from text.
 
 ####Character Transforms
@@ -72,7 +82,7 @@ _The purpose of this section is to list the kinds of files and the qantitiy of f
 * .tec file to implement the conversions the typographical characters.
 
 
-####Keybords
+####Keyboards
 
 * image of keyboard for heatmap sample text.
 * image of keyboard for heatmap full text.
@@ -109,7 +119,7 @@ git push
 
 ####From Martin
 
->I have no such tool to hand, but using the palaso-python library, we could write one. The first thing is to work out exactly what you want. Do you simply want a list of every possible unicode character that a keyboard could produce or do you want a list of possible minimal strings that a keyboard could produce or a simple keymapping (for which I already have a tool)?
+>I have no such tool to hand, but using the palaso-python library, we could write one. The first thing is to work out exactly what you want. Do you simply want a list of every possible unicode character that a keyboard could produce or do you want a list of possible minimal strings that a keyboard could produce or a simple key-mapping (for which I already have a tool)?
 >
 >Basically you will want something along the lines of:
 
@@ -145,9 +155,9 @@ print allchars
 >
 >*       Then there are only two types of lines to analyse, pseudo tokenized:
 >
->o   “store” “(“ store_name “)”  value
+>  *   “store” “(“ store_name “)”  value
 >
->o   context [“+” key] “>” value
+>  *   context [“+” key] “>” value
 >
 >*       Ignore all other lines
 >
@@ -157,13 +167,13 @@ print allchars
 >
 >*       Parse the value and output tokens:
 >
->o   Any “U+xxxx” is a Unicode character.
+> *   Any “U+xxxx” is a Unicode character.
 >
->o   Any string of Unicode characters starts with a single quote (') or a double quote (") and finishes with the same quote.
+> *   Any string of Unicode characters starts with a single quote (') or a double quote (") and finishes with the same quote.
 >
->o   Ignore any tokens between an open and a close paren.
+> *   Ignore any tokens between an open and a close paren.
 >
->o   Ignore any other tokens
+> *   Ignore any other tokens
 >
 > 
 >I hope this helps and that I haven’t forgotten anything.

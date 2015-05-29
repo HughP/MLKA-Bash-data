@@ -37,25 +37,45 @@ echo "      dependencies installed, and looking at the"
 echo "      corpus data on hand."
 echo
 
-CMD_UNICODECCOUNT=UnicodeCCount
+##############################
+# Variables for Directories
+##############################
 
+# Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
-DIR_JAMES_DATA=James
-DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+
+# Variables for Corproa versions
+DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
+DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
+
+##############################
+# Variables for File Names Prefixes
+##############################
 
 INITIAL_STATS_TITLE=First_Stats
 SECOND_STATS_TITLE=Second_Stats
-THIRD_STATS_TITLE=Third_Stats_
+THIRD_STATS_TITLE=Third_Stats
 
+##############################
+# Variables for Other Things
+##############################
+
+JAMES_LIST_FILE=James-list.txt 
 WIKI_LIST_FILE=Wikipedia-list.txt
-CORPUS_LIST_FILE=Corpus-list.txt
+CORPUS_LIST_FILE=Corpus-list.txt #This file is currently only the James corpus, but after the wikidata is available this file should a combined list of all corpora. (I think - hp3)
 LANGAUGE_LIST_FILE=Language_ID.txt
+
+CMD_UNICODECCOUNT=UnicodeCCount
+
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
 LANGUAGE_CODE=blabla #This is same as Language_ID
 INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
+
+
 
 ##############################
 #Dependencies Checks
@@ -382,6 +402,8 @@ fi
 ###
 ### Also is there suppost to be james and corpus files mixed
 ### together in the same folder?
+### JONATHAN: 
+### See my notes below your Breakpoint around line 416.
 
 # Find James corpora in both root and in DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
@@ -391,7 +413,7 @@ cd ../
 
 ###
 ###
-### BREAKPOINT: stopping here and waiting for your approval to continue.
+### BREAKPOINT: stopping here and waiting for your approval to continue. @Jonathan - NO. this is not the case. Actually right now these *ori*corpus* files are only James files. So they do not need to be seperate. They do not represent a third category. We need to get the Wikipedia data into the script before we can fix this. Just go with the issue now, and after the wikipedia data comes in then I 'll fix this.
 exit
 ###
 ###
@@ -437,7 +459,6 @@ echo
 #echo "      We're working on the corpora now, so that"
 #echo "      it can be processed with the other corpora."
 #echo
-
 
 
 ##############################
@@ -497,9 +518,9 @@ echo
 
 #This should be for all corpora not just james
 echo
-echo "INFO: Processing James."
-echo "      Doing an initial character count of the book"
-echo "      of James before further processing."
+echo "INFO: Processing All Corpora."
+echo "      Doing an initial character count on all corpora."
+echo "      This is the first step of many..."
 echo
  
 if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
@@ -804,14 +825,6 @@ rm -f typographically-correct-corpora.txt
 ##		vi. Create an alined data presentation for -u of (3.a.ii) and (5.a.ii). Print this to .md format (per 3.a.ii).
 ##	b. List all characters used.
 ##		i.List all characters used which are not enabled via the keyboard layout for the language of the text. __(check this for what it is being compared to)__
-##
-##6. Convert texts to NFD
-##	a. Convert texts to NFD.
-##		i. UinicodeCCount -m and compare, show diffs
-##	d. Remove untypeable characters
-##		i. UinicodeCCount -m and compare; show diffs
-#
-#
 #
 #
 ## STEP 4 STAGE 1:
@@ -844,10 +857,6 @@ rm -f typographically-correct-corpora.txt
 ## STEP 8 STAGE 1:
 #
 ##10. Use javascript to count distance.	
-##			
-##
-#
-#
 
 #
 ##
