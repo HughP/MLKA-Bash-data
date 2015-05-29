@@ -138,8 +138,31 @@ print allchars
 
 >GB,
 >Martin
-####
->From Marc
+
+#### Second Reply from Martin
+
+>> So, I am talking about single "functional units". There may be multi-key
+>> processes to achieve production, and they may be encoded in multiple
+>> Unicode code points, but at some level they are a single production target
+>> in the text production process.
+>>
+>> Does this help?
+>
+>Indeed. It's all in the requirements. OK so the fragment changes slightly to:
+>```
+>import palaso.kmfl as kmfl
+>from palaso import kmn
+>
+>kbd = kmfl(sys.argv[1])
+>allchars = set()
+>for i in range(kbd.numrules) :
+>        print map(kmn.item_to_char, kbd.flatten_context(i, side = 'r'))
+>```
+>OK. So you may want to take each of the outputs of the map and prettify it somewhat, but you get the idea? If you are still stuck, I can put together an ipython notebook for you on the topic :)
+
+
+
+####From Marc
 >
 >Hi Hugh,
 > 
