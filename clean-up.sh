@@ -13,21 +13,40 @@ AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.02"
 License="GPL"
 
-CMD_UNICODECCOUNT=UnicodeCCount
+##############################
+# Variables for Directories
+##############################
 
+# Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
-DIR_JAMES_DATA=James-Data
-DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+
+# Variables for Corpora versions
+DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
+DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
+DIR_TEC_FILES=TECkit-tec-Files
+
+##############################
+# Variables for File Names Prefixes
+##############################
 
 INITIAL_STATS_TITLE=First_Stats
 SECOND_STATS_TITLE=Second_Stats
-THIRD_STATS_TITLE=Third_Stats_
+THIRD_STATS_TITLE=Third_Stats
 
+##############################
+# Variables for Other Things
+##############################
+
+JAMES_LIST_FILE=James-list.txt 
 WIKI_LIST_FILE=Wikipedia-list.txt
-CORPUS_LIST_FILE=Corpus-list.txt
+CORPUS_LIST_FILE=Corpus-list.txt #This file is currently only the James corpus, but after the wikidata is available this file should a combined list of all corpora. (I think - hp3)
 LANGAUGE_LIST_FILE=Language_ID.txt
+
+CMD_UNICODECCOUNT=UnicodeCCount
+
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
 LANGUAGE_CODE=blabla #This is same as Language_ID
@@ -73,6 +92,13 @@ if [ -d $DIR_TYPOGRAHICAL_CORRECT_DATA ]; then
     rm -Rf $DIR_TYPOGRAHICAL_CORRECT_DATA
     echo "      Clean! Clean! Clean! Cleaned the $DIR_TYPOGRAHICAL_CORRECT_DATA folder"
 fi
+
+if [ -d $DIR_TEC_FILES ]; then
+    # Delete the folder
+    rm -Rf $DIR_TEC_FILES
+    echo "      Clean! Clean! Clean! Cleaned the $DIR_TEC_FILES folder"
+fi
+
 
 ##Need to move some files before deleting the folder
 

@@ -45,11 +45,12 @@ echo
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
 
-# Variables for Corproa versions
+# Variables for Corpora versions
 DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
+DIR_TEC_FILES=TECkit-tec-Files
 
 ##############################
 # Variables for File Names Prefixes
@@ -478,10 +479,12 @@ echo
 # Pseudocode:
 #    1. what are the first two letters of the filename
 #
-#    2. open: iso-639-3_20150505.tab
-#    2. may want to use something like: iso-639-3*.tab
+#    2. open: iso-639-3_20150505.tab, filter down the table for the ISO 639-1 codes:
+#		The following command filters the table down.
+#		csvfix read_DSV -s '\t' -f 1,4,7 iso-639-3_*.tab | csvfix remove -f 2 -l 0 iso-639-3-1-table.csv
+#    3. may want to use something like: iso-639-3*.tab
 #
-#    3. grab columbs:
+#    4. grab columbs:
 #       python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
 
 
@@ -555,10 +558,10 @@ echo
 
 cd "$DIR_INITIAL_STATS_TITLE"
 
-# Origional: ls -A1r *"$INITIAL_STATS_TITLE"*.txt > "$INITIAL_STATS_TITLE"-list.txt
+# Origional: ls -A1r *"$INITIAL_STATS_TITLE"*.txt | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list.txt
 
 # Using a double quote as it allows the variable to pass
-find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" > "$INITIAL_STATS_TITLE"-list.txt
+find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list.txt
 
 
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
@@ -573,9 +576,9 @@ echo "      the CSV files."
 echo
  
 #needs testing 
-ls -A1r *Intial_Stats*.csv > Intial_Stats-list-csv.txt
+ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list-csv.txt
 # 
-#for i in $(cat Intial_Stats-list-csv.txt); do
+#for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt); do
 ##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
 
@@ -639,13 +642,12 @@ done
 
 cd "$HOME_FOLDER"
 
-# Move to TECkit folder
-cd TECkit-Files
+# Make directory for complied TECkit files to live in.
+mkdir "$DIR_TEC_FILES"
+
 
 # Compile new .tec from latest character cleaner. Apply this .tec file will apply to all texts.
-teckit_compile TypographicalCharacterRemoval.map -o TCR.tec
-
-cd "$HOME_FOLDER"
+teckit_compile TECkit-Files/TypographicalCharacterRemoval.map -o "$DIR_TEC_FILES"/TCR.tec
 
 if [ -d "$DIR_TYPOGRAHICAL_CORRECT_DATA" ]; then
     # Control will enter here if DIRECTORY exist.
@@ -659,7 +661,7 @@ fi
 # Apply Transformation to corpora
 #The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point. This is partiall dependent on getting the Wiki-data folder connected.
 for i in $(cat $CORPUS_LIST_FILE); do
-   txtconv -t TECkit-Files/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
+   txtconv -t $DIR_TEC_FILES/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
 done
 
 # Go through the created texts and rename them to Match the typographical setting.
