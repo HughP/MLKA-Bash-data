@@ -235,6 +235,7 @@ fi
 #Check for proper data locations
 #Wiki 
 #James
+#-----------------------------
 #Others - not yet implemented
 ##############################
 
@@ -321,8 +322,7 @@ else
     # Some uncompressed Wikipedia dumps exist. 
     echo
     echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l)"
-    echo "      dumps to be processed."
+    echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
     echo
 #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
@@ -420,7 +420,6 @@ cd ../
 ###
 ###
 ### BREAKPOINT: stopping here and waiting for your approval to continue. @Jonathan - NO. this is not the case. Actually right now these *ori*corpus* files are only James files. So they do not need to be seperate. They do not represent a third category. We need to get the Wikipedia data into the script before we can fix this. Just go with the issue now, and after the wikipedia data comes in then I 'll fix this.
-exit
 ###
 ###
 ###

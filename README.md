@@ -60,7 +60,7 @@ _The purpose of this section is to list the kinds of files and the quantity of f
 
 ###Temp Files
 
-* **James-Corpus.txt** - This file is used to create an output of the languages of James corpora. It is different than the file created by `$JAMES_LIST_FILE` which is called
+* **James-Corpus.txt** - This file is used to create an output of the languages of James corpora. It is different than the file created by `$JAMES_LIST_FILE` which is called _James-list.txt_.
 
 ###Files Produced
 
