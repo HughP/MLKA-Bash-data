@@ -1,6 +1,6 @@
 ### Local Ignore:
 .DS_Store
-
+.swp
 
 # EMACS tmp files:
 *~
