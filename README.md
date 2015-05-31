@@ -25,6 +25,7 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
  - [ ] 0.3.5 Install dependencies if needed. 
 - [ ] 0.4 Hook up carpalx
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
+- [ ] 0.7 Detect and remove SFM File markers from Scripture corpora.
 
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._

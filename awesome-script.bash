@@ -382,12 +382,13 @@ fi
 ##############################
 ####### Action Point #########
 ##############################
+
 ##############################
 #Parse Keyboard File data, this is another form of data so it should be parsed with the data.
 ##############################
-#.keylayout files need to be parsed with XML for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processsing tool for this.
+#.keylayout files need to be parsed with XML (DTD here: https://developer.apple.com/library/mac/technotes/tn2056/_index.html ; Example here: https://github.com/palmerc/Ukrainian-Russian/blob/master/Ukrainian%20(Russian).keylayout) for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processsing tool for this.
 #.kmn files need to be parsed for the characters which they can produced. To do this I should look at the Palaos-python tools.
-#Windows ketboards are unacconted for. Adobe did create a script to convert MSKLC files to .keylayout files. This script could be investigated with the Me'phaa keyboard layout.
+#Windows ketboards are unacconted for. Adobe did create a script to convert .keylayout files to MSKLC files: https://github.com/adobe-type-tools/keyboard-layouts. Perhaps someone created a script for going the other way? If so, such a script could be investigated with the Me'phaa keyboard layout. There is a perl script for reading MSKLC here: https://github.com/amire80/msklc_reader. There are also several MSKLC files here: https://github.com/andjc/msklc
 #
 #All the characters from the keyboard files, need to be compared with the characters which are used in the various corpora in the target languages.
 #A report needs to be generated to show the characters used in the corpora, and the characters which are possible via the keyboards.
@@ -397,6 +398,30 @@ fi
 #All the possible characters producable by the keyboard layout need to be listed. They should be listed in a CSV file with the format ' U+xxxx, glyph ' for each keyboard file. This CSV represents the capable output of the keyboard file. Then these files can be compared with the CSV output of the Texts which have gone through the UnicodeCCount Process.
 ##############################
 ##############################
+
+##########################
+# Detect which keyboard layout files exist to be considered
+##########################
+
+##########################
+##########################
+
+##########################
+# Count keyboard layout files and list per language
+##########################
+
+##########################
+##########################
+
+##########################
+# Export the capable characters or each keyboard layout file each to a seperate CSV
+##########################
+# http://unix.stackexchange.com/questions/12273/in-bash-how-can-i-convert-a-unicode-codepoint-0-9a-f-into-a-printable-charact
+# http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash
+##########################
+##########################
+
+
 
 ##############################
 #Create Language IDs
@@ -460,6 +485,24 @@ echo
 ##############################
 ##############################
 
+
+##############################
+#Do SFM Marker checking and if positive then removal
+##############################
+#
+# Differed until version 0.7 of the script.
+#
+# Clean Biblical texts
+#	a. Remove SFM Markers
+#		i. Remove Verse #
+#		ii. Remove Chapter #
+#		iii. Remove Section headings #
+#		iv. Create stated copy of text for reference.
+##############################
+##############################
+
+
+
 #echo
 #echo "INFO: Wikipedia data takes a while to clean up."
 #echo "      We're working on the corpora now, so that"
@@ -470,6 +513,7 @@ echo
 ##############################
 ####### Action Point #########
 ##############################
+
 ##############################
 #Intergrate Wikipedia Extraction and Renaming
 ##############################
@@ -591,6 +635,16 @@ done
 ##"#${i/ /}"
 
 ##############################
+##############################
+
+##############################
+# Create gnuplot graphs of character frequencies based on CSV files
+##############################
+# http://stackoverflow.com/questions/14871272/plotting-using-a-csv-file
+
+
+
+##############################
 #Alternate code by Jonathan D.
 ##############################
 #Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
@@ -699,7 +753,7 @@ rm -f typographically-correct-corpora.txt
 
 ##############################
 ##The Second count of the corpus files
-#############################
+##############################
 
 #The .md files should be pushed to the git hub repo sometime. look here for how: http://stackoverflow.com/questions/24677866/git-ignore-all-files-except-one-extension-and-folder-structure
 
@@ -728,6 +782,9 @@ rm -f typographically-correct-corpora.txt
 #        UnicodeCCount $flag $i > $DIR_SECOND_STATS_TITLE/Second-Stats_${flag/ /}-${i/ /}
 #    done
 #done
+
+
+
 
 #
 ##########################
@@ -779,46 +836,7 @@ rm -f typographically-correct-corpora.txt
 ##cd $NEW_FOLDER
 # 
 #
-#
-#
-#
-## STEP 2 STAGE 1:
-#
-##4. Clean texts
-##	a. Remove SFM Markers
-##		i. Remove Verse #
-##		ii. Remove Chapter #
-##		iii. Remove Section headings #
-##		iv. Create stated copy of text for reference.	
-##	b. Remove typesetting characters via TECkit
-##		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
-##		ii. Create .map file
-##			(1) Create
-##			(2) Compile .tec
-##			(3) Apply
-##			(4) Save .map and .tec files 
-##		iii. Create stated copy of text for reference.	
-#
-## Clean the text files
-#print Starting step 2 stage 1: cleaning the text files
-#
-#change to home_folder
-##generate index folder list
-#list directories and store into index-folder-list.txt file
-#
-#for each folder in index-folder-list.txt {
-#	change to subfolder
-#	Find .tec file name with matching corpus element in name [language_code].
-#	run TECkit on *.txt files (but only files without SFM, and only on the corpus) using compiled [typographic].tec 
-#
-#
-#}
-#
-#for each .tec file {
-#}
-#
-## STEP 3 STAGE 1:
-#
+
 ##5. Get second set of corpus counts
 ##	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
 ##		i. -d
@@ -840,29 +858,6 @@ rm -f typographically-correct-corpora.txt
 ##		i. UinicodeCCount -m and compare, show diffs
 ##	d. Remove untypeable characters
 ##		i. UinicodeCCount -m and compare; show diffs
-#
-#
-#
-## STEP 5 STAGE 1:
-#
-##7. Count words of text.
-##	a. by counting spaces and adding 1.
-#
-#
-## STEP 6 STAGE 1:
-#
-##8. Convert texts to ASCII
-##	a. Use .map file to convert texts to ASCII
-##
-#
-## STEP 7 STAGE 1:
-#
-##9. Use python to count digrams.
-##
-#
-## STEP 8 STAGE 1:
-#
-##10. Use javascript to count distance.	
 
 ##
 ##1. Collect texts from source.
@@ -891,7 +886,7 @@ rm -f typographically-correct-corpora.txt
 ##		iv. -c
 ##		v. Create an additional concatenated version of the .md files; to top of concatenation add "#Initial Corpus Counts"
 ##	b. List all characters used.
-##		i.List all characters used which are not enabled via the keyboard layout for the language of the text (compare lists: 2.d.1.(2) with 3.a.iii).	
+##		i.List all characters used which are not enabled via the keyboard layout for the language of the text (compare lists: 2.d.1.(2) with 3.a.iii)
 ##
 ##4. Clean texts
 ##	a. Remove SFM Markers
