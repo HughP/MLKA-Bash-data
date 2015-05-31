@@ -156,7 +156,7 @@ if [ -f wikipedia-extractor/WikiExtractor.py ]; then
 else
     echo
     echo "! ERROR: Since we found some Wikipedia data, we now need some"
-    echo "         tools to handle them. Time to `git` the python script."
+    echo "         tools to handle them. Time to 'git' the python script."
     echo
     echo "         You need to install:"
     echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
@@ -609,7 +609,7 @@ find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" | sort -t - -k 7 > "$INIT
 
 
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
-    csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/ /}.csv
+	csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/%.txt/.csv}
 done
 
 # Next task2: Create .md of counts.
