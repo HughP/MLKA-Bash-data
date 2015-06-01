@@ -63,9 +63,12 @@ The list of these characters should be added to a .map file to produce a .tec fi
  [] - Create CSVfix Transform of XML - SVG image
  [] - Create second transform from .keylayout XML to enriched SVG - XML.
 [] - Take out put of Typing, by dickens, and put it into an XML CSV.
-
+ * - I could do this by using the python script here: http://askubuntu.com/questions/74686/is-there-a-utility-to-transpose-a-csv-file
+ * - Or the CSV fix here: https://groups.google.com/forum/#!topic/csvfix/2hgr8j9dmbo
 [] - If I can transpose the CSV file for stats, then I could import it to Pygal and make a chart. Use python command and
-
+[ - making bar charts
+ * I could try and use D3: http://bost.ocks.org/mike/bar/
+ * I could try and use pygal: http://pygal.org/basic_customizations/#idusing-keyword-args]
 for i in $();do
 	python script.py "$i" {$i/.csv /-transpose.csv}
 	
