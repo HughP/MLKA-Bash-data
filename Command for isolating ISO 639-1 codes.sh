@@ -53,6 +53,26 @@ There is an additional set of control characters which might be good to remove o
 
 The list of these characters should be added to a .map file to produce a .tec file. Then .keylayout files should convert old strings to new strings.
 
+
+[] - Transform a .keylayout file to an SVG image.
+ [] - Find SVG image.
+ * https://www.google.com/search?q=apple+keyboard+SVG&es_sm=91&tbm=isch&imgil=xxHmlnaGZeIz4M%253A%253BBqzEtPsLabdRpM%253Bhttp%25253A%25252F%25252Fblog.lemmonjuice.com%25252F&source=iu&pf=m&fir=xxHmlnaGZeIz4M%253A%252CBqzEtPsLabdRpM%252C_&usg=__Qp4Nfp9RmTZS2-tN6SbpJfvDjIw%3D&biw=1174&bih=846&dpr=0.9&ved=0CCgQyjc&ei=nJ9qVY61CIWpyQSNu4OQBg#imgrc=xxHmlnaGZeIz4M%253A%3BBqzEtPsLabdRpM%3Bhttp%253A%252F%252Fblog.lemmonjuice.com%252Fwp-content%252Fuploads%252F2011%252F03%252FScreen-shot-2011-03-09-at-4.55.34-PM.png%3Bhttp%253A%252F%252Fblog.lemmonjuice.com%252F%3B600%3B300
+ * http://blog.lemmonjuice.com/2011/03/css-apple-keyboard/
+ * https://creativemarket.com/SimonClavey/8086-Flapples
+ * https://dribbble.com/shots/978890-Apple-Keyboard-Free-PSD
+ [] - Create CSVfix Transform of XML - SVG image
+ [] - Create second transform from .keylayout XML to enriched SVG - XML.
+[] - Take out put of Typing, by dickens, and put it into an XML CSV.
+
+[] - If I can transpose the CSV file for stats, then I could import it to Pygal and make a chart. Use python command and
+
+for i in $();do
+	python script.py "$i" {$i/.csv /-transpose.csv}
+	
+ 
+
+Use color to indicated Dead keys.
+
 csvfix from_xml -re 'keyMapSet@keyMap@key' -np -nc Ukrainian\ \(Russian\).keylayout
 
 keyMapSet@keyMap@key

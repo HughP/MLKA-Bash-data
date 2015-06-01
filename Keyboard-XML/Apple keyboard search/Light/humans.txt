@@ -1,0 +1,16 @@
+/* TEAM */
+
+Author: Dustin Cartwright.
+Site: http://noxxten.com/Experiments
+Twitter: http://www.twitter.com/#!/noxxten
+Location: Greenville, Kentucky. United States
+
+							
+/* THANKS */
+Dustin Hoffman : http://breefield.com
+
+
+/* SITE */
+
+Last update: November 11, 2011
+Standards: HTML5, CSS3,..
