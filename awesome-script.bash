@@ -147,6 +147,48 @@ else
     exit
 fi
 
+# Python Check
+if hash python 2>/dev/null; then
+    echo "INFO: Great you have Python installed. Looks like you are using the following version:"
+    echo "      $(python --version)"
+else
+    echo
+    echo "! ERROR: Shucks! You do not have Python."
+    echo "       You need to get it."
+    echo
+    echo "       On OS X, you can 'brew install python' this will get you a instance which is not your 'system instance'."
+    echo
+    echo "       BTW: We're going to check for pip and for pygal as best we can. So you should install both of those."
+    exit
+fi
+
+# PIP Check
+if hash pip 2>/dev/null; then
+    echo "INFO: Great you have PIP installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have PIP."
+    echo "       You need to get it."
+    echo
+    echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
+    echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
+    exit
+fi
+
+# PyGal Check
+if python -c 'import pygal' 2>/dev/null; then
+    echo "INFO: Great you have PyGal installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have PyGal."
+    echo "       You need to get it."
+    echo
+    echo "       You can get it via pip 'pip install pygal'"
+    echo "       or it's website: http://pygal.org/"
+    exit
+fi
+
+
 # Fetch wikipedia-extractor
 if [ -f wikipedia-extractor/WikiExtractor.py ]; then
     # Control will enter here if DIRECTORY does NOT exist.
@@ -255,11 +297,9 @@ echo "INFO: We're looking for text data and moving it to the correct locations."
 if [ -d "$DIR_WIKI_DATA" ]; then
     echo "INFO: $DIR_WIKI_DATA folder exists."
     echo "      If we find Wikidata we will move it to the $DIR_WIKI_DATA folder."
-    echo
 else
     echo "INFO: Creating $DIR_WIKI_DATA folder"
     echo "      If we find Wikidata we will move it $DIR_WIKI_DATA folder."
-    echo
     mkdir "$DIR_WIKI_DATA"
 fi
 
@@ -363,8 +403,8 @@ if [ -d "$DIR_JAMES_DATA" ]; then
 	    # http://www.tldp.org/LDP/abs/html/dblparens.html
         fi
     done
-    echo
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
+	echo
 fi
 
 ### BREAKPOINT
@@ -462,7 +502,7 @@ cd ../
 # Jonathan's Language look-up table needs to go here.
 #####
 
-# James-corpus.txt is a tem file.
+# James-corpus.txt is a temp file.
 for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
     expr "/$i" : '.*\(.\{3\}\)\.' >> James-corpus.txt
 done
@@ -480,7 +520,7 @@ LANGUAGE_ID=($LANGUAGE_IDString)
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
-echo
+
 echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
 echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
 echo
@@ -592,13 +632,13 @@ for i in $(cat $CORPUS_LIST_FILE); do
     done
 done
 
+
 ##############################
 ##############################
 
 ##############################
 #Create CSV counts of counted files.
 ##############################
-# Next task: Create CSV of counts
 echo
 echo "INFO: Creating some CSV files from the intial character counts."
 echo
@@ -610,21 +650,105 @@ cd "$DIR_INITIAL_STATS_TITLE"
 # Using a double quote as it allows the variable to pass
 find * -maxdepth 0 -iname "*$INITIAL_STATS_TITLE*.txt" | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list.txt
 
-
 for i in $(cat "$INITIAL_STATS_TITLE"-list.txt); do
 	csvfix read_DSV -s '\t' "$i" | csvfix remove -if '$line <2' -o ${i/%.txt/.csv}
 done
 
-# Next task2: Create .md of counts.
+# Create a list of just the CSV files.
+ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list-csv.txt
+
+##############################
+##############################
+
+
+##############################
+#Create transposed CSV Files
+##############################
+
+
+# Let's transpose the CSV files so that CSVfix can drop a table in the comparison with the keyboard CSV and so that we can use PYgal to create a chart.
+# Embed the python code in the bash script so that it creates a new python script.
+
+cat << EOF > csv_transposer.py
+#!/usr/bin/python
+"""
+Source: http://askubuntu.com/questions/74686/is-there-a-utility-to-transpose-a-csv-file
+Date accessed: 31 May 2015
+Author: xubuntix
+Date Authored: Nov 2 '11 at 7:32, updated at Aug 25 '12 at 7:07
+License: Creative Commons-With Attribution-Share Alike 3.0.
+License info: The CC-BY-SA 3.0 license is required as part of the user agreement for askubuntu.com. Thee script was a user contribution.
+Use: From the command line type: python csv_transposer.py <theinfilename> <theoutfilename>
+"""
+
+import csv
+import sys
+infile = sys.argv[1]
+outfile = sys.argv[2]
+
+with open(infile) as f:
+    reader = csv.reader(f)
+    cols = []
+    for row in reader:
+        cols.append(row)
+
+with open(outfile, 'wb') as f:
+    writer = csv.writer(f)
+    for i in range(len(max(cols, key=len))):
+        writer.writerow([(c[i] if i<len(c) else '') for c in cols])
+EOF
+
+# Give write permissions to the python script
+chmod 755 csv_transposer.py
+
+# If I wanted to call the python script directly I could
+#./pyscript.py
+
+# For every file in the list of CSV files, we want to know they are being transposed, copy the files with a new name, then do the transpose on the original file name, Rename the transposed ones, then change the copies back to what they were.
+for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt);do
+	echo "Transposing CSV files via Python."
+	cp "$i" ${i/%.csv/-ori.csv}
+	python csv_transposer.py "$i" ${i/%.csv/-transpose.csv}
+	mv ${i/%.csv/-ori.csv} ${i/%-ori.csv/.csv}
+done
+
+# Let's git rid of that python file so it doesn't do anything else.
+rm csv_transposer.py
+
+##############################
+##############################
+
+##############################
+# Create PyGal graphs of character frequencies based on transposed CSV files
+##############################
+
+
+
+
+
+##############################
+##############################
+
+
+
+
+##############################
+# Create gnuplot graphs of character frequencies based on CSV files
+##############################
+# http://stackoverflow.com/questions/14871272/plotting-using-a-csv-file
+##############################
+##############################
+
+
+
+#Create .md of counts.
 echo
 echo "INFO: Everybody on Github likes to read Markdown."
 echo "      So we're making some markdown tables from"
 echo "      the CSV files."
 echo
 
-#needs testing
-ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list-csv.txt
-#
+
 #for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt); do
 ##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
