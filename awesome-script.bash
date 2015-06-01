@@ -7,12 +7,12 @@
 # License: GPL
 # Dependencies are mentioned and linked in the README.md file.
 
- 
+
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.02"
 License="GPL"
- 
+
 # Print Program Authors and Version number
 echo
 echo
@@ -20,15 +20,15 @@ echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
- 
+
 # Set to root folder of project
 HOME_FOLDER=`pwd`
- 
-echo 
+
+echo
 echo "INFO: Your data is being processed in the following folder:"
 echo "      $HOME_FOLDER"
-echo 
- 
+echo
+
 # Print starting step 1 stage 1 and 2: generating data
 echo
 echo "INFO: Pre-flighting. Setting some of the variables,"
@@ -64,7 +64,7 @@ THIRD_STATS_TITLE=Third_Stats
 # Variables for Other Things
 ##############################
 
-JAMES_LIST_FILE=James-list.txt 
+JAMES_LIST_FILE=James-list.txt
 WIKI_LIST_FILE=Wikipedia-list.txt
 CORPUS_LIST_FILE=Corpus-list.txt #This file is currently only the James corpus, but after the wikidata is available this file should a combined list of all corpora. (I think - hp3)
 LANGAUGE_LIST_FILE=Language_ID.txt
@@ -192,7 +192,7 @@ if [ -f $WIKI_LIST_FILE ]; then
     touch $WIKI_LIST_FILE
 else
     # Create the Wikipedia-list.txt
-	touch $WIKI_LIST_FILE 
+	touch $WIKI_LIST_FILE
 fi
 
 if [ -f $CORPUS_LIST_FILE ]; then
@@ -234,7 +234,7 @@ fi
 
 ##############################
 #Check for proper data locations
-#Wiki 
+#Wiki
 #James
 #-----------------------------
 #Others - not yet implemented
@@ -320,7 +320,7 @@ if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
     echo "INFO:  We didn't find any Wikipedia data. We're moving on."
     echo
 else
-    # Some uncompressed Wikipedia dumps exist. 
+    # Some uncompressed Wikipedia dumps exist.
     echo
     echo "INFO: It looks like we found some Wikipedia data."
     echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
@@ -328,7 +328,7 @@ else
 #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
 #Actually I think it needs {} so that the added spaces don't get added in to the output. But I am not sure about the syntax. Syntax for me on all of this is a bit fuzzy. I am mostly copy and pasting from stack exchange.
-fi    
+fi
 
 # James
 
@@ -366,6 +366,9 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     echo
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
 fi
+
+### BREAKPOINT
+exit
 
 # Other
 
@@ -434,7 +437,7 @@ fi
 ###
 ### Also is there suppost to be james and corpus files mixed
 ### together in the same folder?
-### JONATHAN: 
+### JONATHAN:
 ### See my notes below your Breakpoint around line 416.
 
 # Find James corpora in both root and in DIR_JAMES_DATA
@@ -518,7 +521,7 @@ echo
 #Intergrate Wikipedia Extraction and Renaming
 ##############################
 
- 
+
 # JD->HP: All the prep stuff is done. Now on to processing the file.
 # Pseudocode:
 #    1. what are the first two letters of the filename
@@ -573,7 +576,7 @@ echo "INFO: Processing All Corpora."
 echo "      Doing an initial character count on all corpora."
 echo "      This is the first step of many..."
 echo
- 
+
 if [ -d "$DIR_INITIAL_STATS_TITLE" ]; then
     # Control will enter here if DIRECTORY exist.
     rm -R -f "$DIR_INITIAL_STATS_TITLE"
@@ -618,10 +621,10 @@ echo "INFO: Everybody on Github likes to read Markdown."
 echo "      So we're making some markdown tables from"
 echo "      the CSV files."
 echo
- 
-#needs testing 
+
+#needs testing
 ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-list-csv.txt
-# 
+#
 #for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt); do
 ##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
@@ -631,7 +634,7 @@ for i in $(cat $LANGAUGE_LIST_FILE);do
 done
 
 ##trying to cat a header to the .md files then do a something to the header.
-# 
+#
 ##"#${i/ /}"
 
 ##############################
@@ -680,7 +683,7 @@ done
 ##############################
 #I need to do some addition and subtraction for the .md files and do some sum() on a column and get the sum of characters.
 
-#to find the sum of a culumn I need to use the 'expr'(no spaces) or 'let'(spaces) command '$expr 5 + 10' see: http://faculty.salina.k-state.edu/tim/unix_sg/bash/math.html http://www.bashguru.com/2010/12/math-in-shell-scripts.html 
+#to find the sum of a culumn I need to use the 'expr'(no spaces) or 'let'(spaces) command '$expr 5 + 10' see: http://faculty.salina.k-state.edu/tim/unix_sg/bash/math.html http://www.bashguru.com/2010/12/math-in-shell-scripts.html
 ##############################
 
 
@@ -723,7 +726,7 @@ done
 cd $DIR_TYPOGRAHICAL_CORRECT_DATA
 
 for i in $(find * -iname *ori*.txt);do
- 	mv "$i" Typographical.${i:3} 
+ 	mv "$i" Typographical.${i:3}
 done
 
 cd "$HOME_FOLDER"
@@ -763,7 +766,7 @@ rm -f typographically-correct-corpora.txt
 #echo
 #echo "Doing a character count for the Book of James corpora after processing some of the typograhical characters out."
 #echo
-# 
+#
 #if [ -d "$DIR_SECOND_STATS_TITLE" ]; then
 #    # Control will enter here if DIRECTORY exist.
 #    rm -R -f "$DIR_SECOND_STATS_TITLE"
@@ -810,31 +813,31 @@ rm -f typographically-correct-corpora.txt
 ###Bash for and while loops
 ##########################
 #
-# 
+#
 ##COUNTER=0
 ##while [  $COUNTER -lt 10 ]; do
 ##    echo The counter is $COUNTER
-##    let COUNTER=COUNTER+1 
+##    let COUNTER=COUNTER+1
 ##done
-# 
+#
 ##change to home_folder
 ##cd $HOME_FOLDER
-# 
+#
 ##create [corpus_type]-[language_code]-[Intial_count] sub-folder
 #CORPUS_TYPE=corpus_type
 #LANGUAGE_CODE=language_code
 #INTIAL_COUNT=intial_count
 #NEW_FOLDER=$CORPUS_TYPE-$LANGUAGE_CODE-$INTIAL_COUNT
-# 
+#
 #echo
 #echo $NEW_FOLDER
 #echo
-# 
+#
 ##mkdir $NEW_FOLDER
-# 
+#
 ##change to newly created folder
 ##cd $NEW_FOLDER
-# 
+#
 #
 
 ##5. Get second set of corpus counts
@@ -864,7 +867,7 @@ rm -f typographically-correct-corpora.txt
 ##	a. Create date, time, source, and permissions metadata.
 ##	b. Create stated copy of text for reference.
 ##		i. give each text a consistent first part in the name and a varied middle part and a consistent last part. (i.e. ori-James-NAV-text.txt)
-##	
+##
 ##2. Collect keyboard layout files from source.
 ##	a. Create date, time, source metadata.
 ##	b. Create image based on Apple keyboard template.
@@ -893,15 +896,15 @@ rm -f typographically-correct-corpora.txt
 ##		i. Remove Verse #
 ##		ii. Remove Chapter #
 ##		iii. Remove Section headings #
-##		iv. Create stated copy of text for reference.	
+##		iv. Create stated copy of text for reference.
 ##	b. Remove typesetting characters via TECkit
 ##		i. List characters to be removed. Example U+00A0 needs to be converted to U+0020.
 ##		ii. Create .map file
 ##			(1) Create
 ##			(2) Compile .tec
 ##			(3) Apply
-##			(4) Save .map and .tec files 
-##		iii. Create stated copy of text for reference.	
+##			(4) Save .map and .tec files
+##		iii. Create stated copy of text for reference.
 ##
 ##5. Get second set of corpus counts
 ##	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
@@ -924,10 +927,10 @@ rm -f typographically-correct-corpora.txt
 ##
 ##7. Count words of text.
 ##	a. by counting spaces and adding 1.
-##		
+##
 ##8. Convert texts to ASCII
 ##	a. Use .map file to convert texts to ASCII
 ##
 ##9. Use python to count digrams.
 ##
-##10. Use javascript to count distance.	
+##10. Use javascript to count distance.
