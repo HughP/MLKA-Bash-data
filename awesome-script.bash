@@ -594,8 +594,7 @@ if [ -f iso-639-3.data ]; then
                     echo "INFO: Wiki-Data/${DATA:1:3} exists"
                 else
                     mkdir ${DATA:1:3}
-                    mv $FILE ${DATA:1:3}
-                    bzip2 -d ${DATA:1:3}/$FILE
+                    python ../wikipedia-extractor/WikiExtractor.py -o ${DATA:1:3} $FILE
                 fi
             fi
         done
