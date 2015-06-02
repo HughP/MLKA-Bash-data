@@ -46,7 +46,7 @@ DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
 
 # Variables for Corpora versions
-DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
+DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
@@ -67,22 +67,25 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 ##############################
 
 # List of the file names of the Data files (corpora and keyboards).
-### ACTION NEEDED
+
 JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
 WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
 CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corproa (James + Wikipedia)
 KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perahps more) other blocks which reference this file need to take into account that there are multible file types in this file.
 
 # List of all languages used in the data processing
-LANGAUGE_LIST_FILE=Language_ID.txt #This file is for all languages, not just one of the three arrays.
-
+LANGAUGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
+CORPRA_LANGUAGES=
+JAMES_LANGUAGES=
+WIKI_LANGUAGES=
+OTHER_CORPORA_LANGUAGES=
+KEYBOARDS_LANGUAGES=
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
 
-CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
-LANGUAGE_CODE=blabla #This is same as Language_ID
-INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
+DATA_TYPE= # This should be an array made dynamically from various atribues of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
+CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.
 
 
 
@@ -460,6 +463,20 @@ fi
 ##########################
 # Detect which keyboard layout files exist to be considered
 ##########################
+
+# Find Keyboard files  in both root and in DIR_KEYBOARD_DATA
+find * -maxdepth 0 -iname '*.keylayout' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.kmn' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.kmx' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.xkb' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.bundle' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.klc' >> $KEYBOARD_LIST_FILE
+find * -maxdepth 0 -iname '*.msi' >> $KEYBOARD_LIST_FILE
+
+#Coppied from JAMES template
+#cd $DIR_JAMES_DATA
+#find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
+#cd ../
 
 ##########################
 ##########################

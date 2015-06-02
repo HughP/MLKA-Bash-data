@@ -132,7 +132,14 @@ git push
 
 ###Notes for Hugh
 
+####Bash
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
+* Arrays: http://mywiki.wooledge.org/BashGuide/Arrays ; http://tldp.org/LDP/abs/html/arrays.html
+* Nested Loops: http://www.tldp.org/LDP/abs/html/nestedloops.html
+
+####Git
+* Cherry picking with git: https://www.kernel.org/pub/software/scm/git/docs/git-cherry-pick.html
+
 
 ####Notes by Hugh for where he got what.
 
