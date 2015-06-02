@@ -8,38 +8,27 @@
 #		in Wiki-Data.
 
 # Sweep up
-if [ -f tmp_buffer.data ]; then
-    rm tmp_buffer.data
-fi
-if [ -f tmp_buffer_csv_col14.data ]; then
-    rm tmp_buffer_csv_col14.data
-fi
-if [ -f combined-iso-639-3.data ]; then
-    rm combined-iso-639-3.data
+if [ -f iso-639-3.data ]; then
+    rm iso-639-3.data
 fi
 
-# Generate a combined and complete master TAB file:
-for I in $(find * -maxdepth 0 -iname 'iso-639-3*.tab'); do
-	cat $I >> tmp_buffer.data
-	echo >> tmp_buffer.data
+THE_COUNT=0
+for I in $(ls -A1r *.tab); do
+    (( THE_COUNT = THE_COUNT + 1 ))
+    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
+        echo "What are you trying to do? Warning you are going to corrupt your data!"
+        exit
+    fi
 done
 
-# Create a new TAB with the only needed columbs:
-csvfix read_dsv -s '\t' tmp_buffer.data | csvfix order -f 1,4 > tmp_buffer_csv_col14.data
+csvfix read_dsv -f 1,4,7 -s '\t' iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
 
-if [ -f tmp_buffer_csv_col14.data ]; then
-    for Y in $(cat tmp_buffer_csv_col14.data); do
-        if [[ ${Y:7:1} != "\"" ]]; then
-            echo $Y >> combined-iso-639-3.data
-            #echo >> ready.data
-        fi
-    done
-
+if [ -f iso-639-3.data ]; then
     cd Wiki-Data
 
     # For every *wiki*.bz2 file do:
     for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-        for DATA in $(cat ../combined-iso-639-3.data); do
+        for DATA in $(cat ../iso-639-3.data); do
             if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
                 if [ -d ${DATA:1:3} ]; then
                     echo "INFO: Wiki-Data/${DATA:1:3} exists"
@@ -52,13 +41,10 @@ if [ -f tmp_buffer_csv_col14.data ]; then
         done
     done
 
-    cd ..
+    cd .. # NOTE: need to change to $HOME_FOLDER
 fi
 
 # Sweep up
-if [ -f tmp_buffer.data ]; then
-    rm tmp_buffer.data
-fi
-if [ -f tmp_buffer_csv_col14.data ]; then
-    rm tmp_buffer_csv_col14.data
+if [ -f iso-639-3.data ]; then
+    rm iso-639-3.data
 fi

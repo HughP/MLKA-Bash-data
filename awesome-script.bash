@@ -409,9 +409,6 @@ if [ -d "$DIR_JAMES_DATA" ]; then
 	echo
 fi
 
-### BREAKPOINT
-exit
-
 # Other
 
 ##############################
