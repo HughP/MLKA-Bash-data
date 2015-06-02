@@ -1,12 +1,25 @@
 #Bash-data-mlka
-Bash script for mashing mlka data
+_The purpose is to run data through UnicodeCcount and TECKit enmass. The script then processes the data counts produced against various keyboard layouts and gives evaluations on what the keyboard layout efficentcy is for the text of a specific language._
+
+This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required. 
+
+There are two related repositories:
+* The MLKA project
+	* https://github.com/HughP/MLKA
+* MLKA-Data which is a set of test data for testing and building this script.
+	* https://github.com/HughP/MLKA-data
 
 This is written to work on OS X and linux.
-The purpose is to run data through UnicodeCcount and TECKit enmass.
+Tested on: 
+* OS X 10.6.8 & 10.9.5
+* Ubuntu
+
 
 ##Requires these dependencies
 
 1. [UnicodeCCount](http://scripts.sil.org/UnicodeCharacterCount) - version 0.3
+ * A sub-dependency here is Perl
+ * The script will fail with an error if http://www.unicode.org/Public/UCA/latest/allkeys.txt is not present in your Perl instance. This is a requirement of UnicodeCcount to operate. The error message will say: Your Perl installation is missing the UCA keys file. Please download http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.
 2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
  * `git clone https://github.com/michaeldickens/Typing.git`
@@ -17,20 +30,21 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 6. Python (Preferably 2.7)
 7. pip
 8. PyGal - for SVG production of graphs.
-9. Stave Python script for Cleaning Wikipedia
-10. Stave Python script for counting digrams
-11. JavaScript count by jkpat
-12. On Ubuntu 15.04 you may see this: Your Perl installation is missing the UCA keys file. Please download
-http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into
-the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.
+9. Pandas - A python module for data processing
+10. Stave Python script for Cleaning Wikipedia
+11. Stave Python script for counting digrams
+12. JavaScript count by jkpat
+
 
 ##Roadmap
 - [ ] 0.1 Ingest, oganize, and Use UnicodCcount on data from Wikipedia, Keyboard layouts, and James texts.
 - [x] 0.2 Check for dependencies exit script if not present.
+- [ ] 0.3 Make warning items the correct color see: http://misc.flogisoft.com/bash/tip_colors_and_formatting
  - [ ] 0.3.5 Install dependencies if needed.
 - [ ] 0.4 Hook up carpalx
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 - [ ] 0.7 Detect and remove SFM File markers from Scripture corpora.
+- [ ] 0.8 Automatically check to see if the version of the ISO 639-3 file is the latest file.
 
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._

@@ -66,10 +66,16 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 # Variables for Other Things
 ##############################
 
-JAMES_LIST_FILE=James-list.txt
-WIKI_LIST_FILE=Wikipedia-list.txt
-CORPUS_LIST_FILE=Corpus-list.txt #This file is currently only the James corpus, but after the wikidata is available this file should a combined list of all corpora. (I think - hp3)
-LANGAUGE_LIST_FILE=Language_ID.txt
+# List of the file names of the Data files (corpora and keyboards).
+### ACTION NEEDED
+JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
+WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
+CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corproa (James + Wikipedia)
+KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perahps more) other blocks which reference this file need to take into account that there are multible file types in this file.
+
+# List of all languages used in the data processing
+LANGAUGE_LIST_FILE=Language_ID.txt #This file is for all languages, not just one of the three arrays.
+
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
@@ -205,6 +211,8 @@ else
     exit
 fi
 
+# Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
+
 THE_COUNT=0
 for i in $(ls -A1r *.tab); do
     (( THE_COUNT = THE_COUNT + 1 ))
@@ -216,6 +224,7 @@ for i in $(ls -A1r *.tab); do
     fi
 done
 
+# The following dependencies might be needed. However their intergration is not completed until we actually use them.
 #We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
 #We might want to consider dependendies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
@@ -246,14 +255,14 @@ else
 	touch $WIKI_LIST_FILE
 fi
 
-if [ -f $CORPUS_LIST_FILE ]; then
+if [ -f $JAMES_LIST_FILE ]; then
     # Delete the file
-    rm -f $CORPUS_LIST_FILE
+    rm -f $JAMES_LIST_FILE
     echo "      Clean! Clean!"
-    touch $CORPUS_LIST_FILE
+    touch $JAMES_LIST_FILE
 else
     # Create the Corpus-list.txt
-	touch $CORPUS_LIST_FILE
+	touch $JAMES_LIST_FILE
 fi
 
 if [ -f $LANGAUGE_LIST_FILE ]; then
@@ -301,8 +310,8 @@ echo "INFO: We're looking for text data and moving it to the correct locations."
 ##############################
 
 # Does the Wiki-Data folder exists?
-# Yes: print exists
-# No: make directory
+# Yes: print exists; inform the user we did not write over the folder and the data in it. Awesomescript does not set this folder to empty when it runs.
+# No: make directory; this is important on the first run of the script.
 if [ -d "$DIR_WIKI_DATA" ]; then
     echo "INFO: $DIR_WIKI_DATA folder exists."
     echo "      If we find Wikidata we will move it to the $DIR_WIKI_DATA folder."
@@ -386,8 +395,8 @@ fi
 ##############################
 
 # Does the James folder exists?
-# Yes: print exists
-# No: make directory
+# Yes: print exists; inform the user we did not write over the folder and the data in it. Awesomescript does not set this folder to empty when it runs.
+# No: make directory; this is important on the first run of the script.
 if [ -d "$DIR_JAMES_DATA" ]; then
     echo "INFO: $DIR_JAMES_DATA folder exists"
     echo
@@ -476,28 +485,15 @@ fi
 #Create Language IDs
 ##############################
 
-### HUGH:
-### Since we have wiki and james files moved into folders
-### shouldn't we handle *ori*corpus*.txt files the same way
-### and move corpus files into something like Corpus folder?
-###
-### Also is there suppost to be james and corpus files mixed
-### together in the same folder?
-### JONATHAN:
-### See my notes below your Breakpoint around line 416.
+
+### I think we should move the James counts to another section where James is processed.
+### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
 
 # Find James corpora in both root and in DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
+find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $JAMES_LIST_FILE
 cd $DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
+find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
 cd ../
-
-###
-###
-### BREAKPOINT: stopping here and waiting for your approval to continue. @Jonathan - NO. this is not the case. Actually right now these *ori*corpus* files are only James files. So they do not need to be seperate. They do not represent a third category. We need to get the Wikipedia data into the script before we can fix this. Just go with the issue now, and after the wikipedia data comes in then I 'll fix this.
-###
-###
-###
 
 
 # Generate the LANGUAGE_ID Variables.
@@ -570,6 +566,8 @@ echo
 #		to all iso-639-3*.tab files combined.
 #		Then creates corisponding directory
 #		in Wiki-Data.
+
+#Do we need to make the python code exicutable? with something like '$ chmod +x hello.py'?
 
 # Sweep up
 if [ -f iso-639-3.data ]; then
@@ -656,7 +654,7 @@ else
     mkdir "$DIR_INITIAL_STATS_TITLE"
 fi
 
-for i in $(cat $CORPUS_LIST_FILE); do
+for i in $(cat $JAMES_LIST_FILE); do
     for flag in -c -d -u -m "-d -m"; do
         UnicodeCCount $flag $DIR_JAMES_DATA/$i > $DIR_INITIAL_STATS_TITLE/$INITIAL_STATS_TITLE${flag/ /}-${i/ /}
     done
@@ -899,7 +897,7 @@ fi
 
 # Apply Transformation to corpora
 #The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point. This is partiall dependent on getting the Wiki-data folder connected.
-for i in $(cat $CORPUS_LIST_FILE); do
+for i in $(cat $JAMES_LIST_FILE); do
    txtconv -t $DIR_TEC_FILES/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
 done
 
