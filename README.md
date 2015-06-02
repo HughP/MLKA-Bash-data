@@ -7,7 +7,7 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 ##Requires these dependencies
 
 1. [UnicodeCCount](http://scripts.sil.org/UnicodeCharacterCount) - version 0.3
-2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4 
+2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
  * `git clone https://github.com/michaeldickens/Typing.git`
 4. [CSVfix](https://bitbucket.org/neilb/csvfix) version 1.6 [More info](http://neilb.bitbucket.org/csvfix/)
@@ -20,12 +20,14 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 9. Stave Python script for Cleaning Wikipedia
 10. Stave Python script for counting digrams
 11. JavaScript count by jkpat
-
+12. Your Perl installation is missing the UCA keys file. Please download
+http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into
+the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.
 
 ##Roadmap
 - [ ] 0.1 Ingest, oganize, and Use UnicodCcount on data from Wikipedia, Keyboard layouts, and James texts.
 - [x] 0.2 Check for dependencies exit script if not present.
- - [ ] 0.3.5 Install dependencies if needed. 
+ - [ ] 0.3.5 Install dependencies if needed.
 - [ ] 0.4 Hook up carpalx
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 - [ ] 0.7 Detect and remove SFM File markers from Scripture corpora.
@@ -119,7 +121,7 @@ git push
 ####Notes by Hugh for where he got what.
 
 @Jonathan to find this I was looking here: http://unix.stackexchange.com/questions/138634/shortest-way-to-extract-last-3-characters-of-base-minus-suffix-filename I am not sure how to implement this in this code base right now.
- 
+
 
 ####From Martin
 
@@ -169,9 +171,9 @@ print allchars
 ####From Marc
 >
 >Hi Hugh,
-> 
+>
 >I don’t have an immediate solution to your question – the Keyman source language is non-trivial to parse, although some for your requirements you may be able to get away with a lot less processing. We have Windows-based tools for analysis of a keyboard layout, but this may not be all that helpful to you.
-> 
+>
 >I am not sure if you are up for writing your own script to parse the source files or not. If you are, then I would advise the following process:
 >
 >*       The file format can be ANSI, UTF-8, or UTF-16. Convert the file to your preferred format before parsing.
@@ -202,11 +204,11 @@ print allchars
 >
 > *   Ignore any other tokens
 >
-> 
+>
 >I hope this helps and that I haven’t forgotten anything.
-> 
+>
 >Cheers,
-> 
+>
 >Marc
 
 ###Notes for all
