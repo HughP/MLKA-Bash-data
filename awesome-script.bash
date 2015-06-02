@@ -528,7 +528,7 @@ LANGUAGE_ID=($LANGUAGE_IDString)
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
 echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
-echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
+echo "      Including the following: ${LANGUAGE_ID[*]}"
 echo
 
 ##############################
@@ -549,8 +549,6 @@ echo
 #		iv. Create stated copy of text for reference.
 ##############################
 ##############################
-
-
 
 #echo
 #echo "INFO: Wikipedia data takes a while to clean up."
