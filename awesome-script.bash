@@ -120,9 +120,7 @@ fi
 
 # Check to see if txtconv is installed and in path:
 if type txtconv &>/dev/null; then
-#    echo
     echo "INFO: Great you have txtconv installed."
-#    echo
 
 else
     echo
@@ -189,7 +187,6 @@ else
     echo "       or it's website: http://pygal.org/"
     exit
 fi
-
 
 # Fetch wikipedia-extractor
 if [ -f wikipedia-extractor/WikiExtractor.py ]; then
