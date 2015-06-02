@@ -48,7 +48,7 @@ DIR_SECOND_STATS_TITLE=Second-Stats
 # Variables for Corpora versions
 DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
-DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
+DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
 DIR_TEC_FILES=TECkit-tec-Files
 
@@ -208,7 +208,17 @@ else
     exit
 fi
 
-#We need to add the jonathan compile script for renaming.
+THE_COUNT=0
+for i in $(ls -A1r *.tab); do
+    (( THE_COUNT = THE_COUNT + 1 ))
+    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
+        echo "In order to oganize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
+        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multible versions of the tab file in the folder."
+        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
+        exit
+    fi
+done
+
 #We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
 #We might want to consider dependendies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
@@ -561,17 +571,44 @@ echo
 ##############################
 
 
-# JD->HP: All the prep stuff is done. Now on to processing the file.
-# Pseudocode:
-#    1. what are the first two letters of the filename
-#
-#    2. open: iso-639-3_20150505.tab, filter down the table for the ISO 639-1 codes:
-#		The following command filters the table down.
-#		csvfix read_DSV -s '\t' -f 1,4,7 iso-639-3_*.tab | csvfix remove -f 2 -l 0 iso-639-3-1-table.csv
-#    3. may want to use something like: iso-639-3*.tab
-#
-#    4. grab columbs:
-#       python wikipedia-extractor/WikiExtractor.py -o Wiki-Data/iso-396 Wiki-Data/$I
+#		Matches all *wiki*.bx2 files
+#		to all iso-639-3*.tab files combined.
+#		Then creates corisponding directory
+#		in Wiki-Data.
+
+# Sweep up
+if [ -f iso-639-3.data ]; then
+    rm iso-639-3.data
+fi
+
+csvfix read_dsv -f 1,4,7 -s '\t' iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
+
+if [ -f iso-639-3.data ]; then
+    cd Wiki-Data
+
+    # For every *wiki*.bz2 file do:
+    for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
+        for DATA in $(cat ../iso-639-3.data); do
+            if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
+                if [ -d ${DATA:1:3} ]; then
+                    echo "INFO: Wiki-Data/${DATA:1:3} exists"
+                else
+                    mkdir ${DATA:1:3}
+                    mv $FILE ${DATA:1:3}
+                    bzip2 -d ${DATA:1:3}/$FILE
+                fi
+            fi
+        done
+    done
+
+    cd .. # NOTE: need to change to $HOME_FOLDER
+fi
+
+# Sweep up
+if [ -f iso-639-3.data ]; then
+    rm iso-639-3.data
+fi
+
 
 
 # I need to add the wikipedia decompression and clean up scripts here.
