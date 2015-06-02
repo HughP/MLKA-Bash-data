@@ -14,14 +14,17 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
  * `hg clone https://bitbucket.org/neilb/csvfix`. Hugh used homebrew and `brew install csvfix`.
 5. [WikiExtractor Script](https://github.com/bwbaugh/wikipedia-extractor) extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
  * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
-6. Stave Python script for Cleaning Wikipedia
-7. Stave Python script for counting digrams
-8. JavaScript count by jkpat
+6. Python (Preferably 2.7)
+7. pip
+8. PyGal - for SVG production of graphs.
+9. Stave Python script for Cleaning Wikipedia
+10. Stave Python script for counting digrams
+11. JavaScript count by jkpat
 
 
 ##Roadmap
-- [ ] 0.1 Process and compute Wikipedia, Keyboard layouts, and James texts.
-- [x] 0.3 Check for dependencies exit script if not present.
+- [ ] 0.1 Ingest, oganize, and Use UnicodCcount on data from Wikipedia, Keyboard layouts, and James texts.
+- [x] 0.2 Check for dependencies exit script if not present.
  - [ ] 0.3.5 Install dependencies if needed. 
 - [ ] 0.4 Hook up carpalx
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
