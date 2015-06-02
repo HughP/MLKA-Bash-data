@@ -18,16 +18,18 @@ Tested on:
 ##Requires these dependencies
 
 1. [UnicodeCCount](http://scripts.sil.org/UnicodeCharacterCount) - version 0.3
- * A sub-dependency here is Perl
- * The script will fail with an error if http://www.unicode.org/Public/UCA/latest/allkeys.txt is not present in your Perl instance. This is a requirement of UnicodeCcount to operate. The error message will say: Your Perl installation is missing the UCA keys file. Please download http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.
+ * A sub-dependency here is Perl - ** We do not check for Perl.** _We do chech for UnicodeCCount._
+ * The script will not be successful and will output an error if [allkeys.txt](http://www.unicode.org/Public/UCA/latest/allkeys.txt) is not present in your Perl instance. This is a requirement of UnicodeCcount to operate. The error message will say: `Your Perl installation is missing the UCA keys file. Please download http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.`
 2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
  * `git clone https://github.com/michaeldickens/Typing.git`
 4. [CSVfix](https://bitbucket.org/neilb/csvfix) version 1.6 [More info](http://neilb.bitbucket.org/csvfix/)
- * `hg clone https://bitbucket.org/neilb/csvfix`. Hugh used homebrew and `brew install csvfix`.
+ * `hg clone https://bitbucket.org/neilb/csvfix`.
+ * OS X users are encouraged to use homebrew via `brew install csvfix`.
 5. [WikiExtractor Script](https://github.com/bwbaugh/wikipedia-extractor) extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
  * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
 6. Python (Preferably 2.7)
+ * One option among many for OS X Users is `brew install python`.
 7. pip
 8. PyGal - for SVG production of graphs.
 9. Pandas - A python module for data processing
