@@ -100,7 +100,7 @@ else
     echo "       If you are on OS X you can use Homebrew."
     echo "        'Brew install csvfix'."
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if TECkit is installed and in path:
@@ -115,7 +115,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads"
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if txtconv is installed and in path:
@@ -130,7 +130,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads "
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
@@ -144,7 +144,7 @@ else
     echo
     echo "       http://scripts.sil.org/UnicodeCharacterCount"
     echo
-    exit
+    exit 1
 fi
 
 # Python Check
@@ -159,7 +159,7 @@ else
     echo "       On OS X, you can 'brew install python' this will get you a instance which is not your 'system instance'."
     echo
     echo "       BTW: We're going to check for pip and for pygal as best we can. So you should install both of those."
-    exit
+    exit 1
 fi
 
 # PIP Check
@@ -172,7 +172,7 @@ else
     echo
     echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
     echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
-    exit
+    exit 1
 fi
 
 # PyGal Check
@@ -185,7 +185,7 @@ else
     echo
     echo "       You can get it via pip 'pip install pygal'"
     echo "       or it's website: http://pygal.org/"
-    exit
+    exit 1
 fi
 
 # Fetch wikipedia-extractor
@@ -202,7 +202,7 @@ else
     echo "         You need to install:"
     echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
     echo
-    exit
+    exit 1
 fi
 
 THE_COUNT=0
@@ -212,7 +212,7 @@ for i in $(ls -A1r *.tab); do
         echo "In order to oganize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
         echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multible versions of the tab file in the folder."
         echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
-        exit
+        exit 1
     fi
 done
 
