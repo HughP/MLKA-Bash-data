@@ -27,6 +27,7 @@ DIR_WIKI_DATA=Wiki-Data
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corproa
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
 DIR_TEC_FILES=TECkit-tec-Files
+NEW_DATA=../MLKA-Data
 
 ##############################
 # Variables for File Names Prefixes
@@ -100,16 +101,31 @@ if [ -d $DIR_TEC_FILES ]; then
 fi
 
 
-##Need to move some files before deleting the folder
-
 if [ -d $DIR_WIKI_DATA ];then
-	mv $DIR_WIKI_DATA/* .
 	rm -rf $DIR_WIKI_DATA
+	echo "		Got rid of all that processed Wikipedia data."
 fi	
 
 if [ -d $DIR_JAMES_DATA ];then
-	mv $DIR_JAMES_DATA/* .
 	rm -rf $DIR_JAMES_DATA
+	echo "		Got rid of all that processed James data."
+
+fi	
+
+echo "We cleaned up all the files Now we are trying to coping over new test data."
+
+if [ -d $NEW_DATA ];then
+	for i in $(find "$NEW_DATA"  -name '*.txt');do
+			cp $i .
+			echo "		Added default '.txt' data back to the folder."
+	done		
+	for i in $(find "$NEW_DATA"  -name '*.bz2');do
+			cp $i .
+			echo "		Added default '.bz2' data back to the folder."
+	done
+	else
+	echo "      You should get the test data. You can do this by using the following command in the parent of this repository ($ cd ../)."
+	echo "      git clone https://github.com/HughP/MLKA-Data.git"
 fi		
 
 echo "That's all I know about... the rest is up to you..."
