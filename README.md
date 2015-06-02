@@ -20,7 +20,7 @@ The purpose is to run data through UnicodeCcount and TECKit enmass.
 9. Stave Python script for Cleaning Wikipedia
 10. Stave Python script for counting digrams
 11. JavaScript count by jkpat
-12. Your Perl installation is missing the UCA keys file. Please download
+12. On Ubuntu 15.04 you may see this: Your Perl installation is missing the UCA keys file. Please download
 http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into
 the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.
 
