@@ -77,7 +77,7 @@ KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyb
 KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
-LANGAUGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
+LANGUAGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
 CORPORA_LANGUAGES=Corpora_Languages.txt
 JAMES_LANGUAGES=James_Languages.txt
 WIKI_LANGUAGES=Wikipedia_Languages.txt
@@ -332,14 +332,14 @@ else
 	touch $KEYBOARD_LIST_FILE_FP
 fi
 
-if [ -f $LANGAUGE_LIST_FILE ]; then
+if [ -f $LANGUAGE_LIST_FILE ]; then
     # Delete the file
-    rm -f $LANGAUGE_LIST_FILE
+    rm -f $LANGUAGE_LIST_FILE
     echo "      Clean! Clean! Clean! Clean! Clean! Clean!"
-    touch $LANGAUGE_LIST_FILE
+    touch $LANGUAGE_LIST_FILE
 else
     # Create the Language_ID.txt
-	touch $LANGAUGE_LIST_FILE
+	touch $LANGUAGE_LIST_FILE
 fi
 
 if [ -f $WIKI_LANGUAGES ]; then
@@ -612,7 +612,7 @@ done
 
 # Take the languages from James and add them to the master language list.
 for i in $(cat $JAMES_LANGUAGES);do
-	grep -Fxq "$i" $LANGAUGE_LIST_FILE || echo $i >> $LANGAUGE_LIST_FILE
+	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
 done
 
 
@@ -721,7 +721,7 @@ csvfix unique Wikipedia_Languages.txt Language_ID.txt | csvfix write_dsv -s ' ' 
 
 
 # Set the Variables.
-LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
+LANGUAGE_IDString=$(cat $LANGUAGE_LIST_FILE | tr "\n" " ")
 LANGUAGE_ID=($LANGUAGE_IDString)
 
 # This section needs to be modified and allow the arangement of info
@@ -936,7 +936,7 @@ echo
 ##    | csvfix write_DSV "$i" -o ${i/ /}.md
 #done
 
-for i in $(cat $LANGAUGE_LIST_FILE);do
+for i in $(cat $LANGUAGE_LIST_FILE);do
 	ls -A1r *Intial_Stats*"$i"*.csv > Intial_Stats-"$i"-list-csv.txt
 done
 

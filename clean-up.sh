@@ -57,7 +57,7 @@ KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyb
 KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
-LANGAUGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
+LANGUAGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
 CORPORA_LANGUAGES=Corpora_Languages.txt
 JAMES_LANGUAGES=James_Languages.txt
 WIKI_LANGUAGES=Wikipedia_Languages.txt
@@ -76,94 +76,59 @@ HOME_FOLDER=`pwd`
 # Files to clean up. 
 rm -f typographically-correct-corpora.txt
 
-if [ -f $WIKI_LIST_FILE ]; then
-    # Delete the file
-    rm -f $WIKI_LIST_FILE
-    echo "INFO: Replacting previously generated files!"
-fi
+################################
+## Cleaning Up Standard Files ##
+################################
 
-if [ -f $JAMES_LIST_FILE ]; then
-    # Delete the file
-    rm -f $JAMES_LIST_FILE
-    echo "      Clean! Clean!"
-fi
+# Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-if [ -f $LANGAUGE_LIST_FILE ]; then
-    # Delete the file
-    rm -f $LANGAUGE_LIST_FILE
-    echo "      Clean! Clean! Clean!"
-fi
+clean_file_array=("$WIKI_LIST_FILE" "$JAMES_LIST_FILE" "$LANGUAGE_LIST_FILE" "$WIKI_LANGUAGES" "$JAMES_LANGUAGES" "$KEYBOARD_LIST_FILE_FP" "$KEYBOARD_LIST_FILE" "$CORPUS_LIST_FILE" )
 
-if [ -f $JAMES_LANGUAGES ]; then
-    # Delete the file
-    rm -f $JAMES_LANGUAGES
-    echo "      Clean! 4"
-fi
+FILE_COUNT=0
+for i in ${clean_file_array[@]};do
+	if [ -f ${i} ]; then
+ 	   # Delete the file
+ 	   rm -f ${i}
+ 	   (( FILE_COUNT = FILE_COUNT +1 ))
+ 	   echo -e "INFO:\t Cleaned ${i}.\t It was file # $FILE_COUNT of ${#clean_file_array[@]}."
 
-if [ -f $WIKI_LANGUAGES ]; then
-    # Delete the file
-    rm -f $WIKI_LANGUAGES
-    echo "      Clean! 5"
-fi
+	else
+		echo "WARNING: We actually couldn't find the file ${i}".
+ 	fi
+done
 
-if [ -f $KEYBOARD_LIST_FILE_FP ]; then
-    # Delete the file
-    rm -f $KEYBOARD_LIST_FILE_FP
-    echo "      Clean! 6"
-fi
+################################
+#### End of Standard Files #####
+################################
 
-if [ -f $KEYBOARD_LIST_FILE ]; then
-    # Delete the file
-    rm -f $KEYBOARD_LIST_FILE
-    echo "      Clean! 7"
-fi
+################################
+# Cleaning Up Standard Folders #
+################################
 
-if [ -f $CORPUS_LIST_FILE ]; then
-    # Delete the file
-    rm -f $CORPUS_LIST_FILE
-    echo "      Clean! 8"
-fi
+# Put standard folders in the array to remove them. The variables need to be enclosed in double quotes.
 
+clean_folder_array=("$DIR_INITIAL_STATS_TITLE" "$DIR_SECOND_STATS_TITLE" "$DIR_TYPOGRAHICAL_CORRECT_DATA" "$DIR_TEC_FILES" "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" )
 
+FOLDER_COUNT=0
+for i in ${clean_folder_array[@]};do
+	if [ -d ${i} ]; then
+ 	   # Delete the folder
+ 	   rm -Rf ${i}
+ 	   (( FOLDER_COUNT = FOLDER_COUNT +1 ))
+ 	   echo -e "INFO:\t Cleaned ${i}.\t It was folder # $FOLDER_COUNT of ${#clean_folder_array[@]}."
 
-# Folders to clean up.
-if [ -d $DIR_INITIAL_STATS_TITLE ]; then
-    # Delete the folder
-    rm -Rf $DIR_INITIAL_STATS_TITLE
-    echo "      Clean! Clean! Clean! Cleaned the $DIR_INITIAL_STATS_TITLE folder"
-fi
+	else
+		echo "WARNING: We actually couldn't find the folder ${i}".
+ 	fi
+done
 
-# Folders to clean up.
-if [ -d $DIR_SECOND_STATS_TITLE ]; then
-    # Delete the folder
-    rm -Rf $DIR_SECOND_STATS_TITLE
-    echo "      Clean! Clean! Clean! Cleaned the $DIR_SECOND_STATS_TITLE folder"
-fi
-
-if [ -d $DIR_TYPOGRAHICAL_CORRECT_DATA ]; then
-    # Delete the folder
-    rm -Rf $DIR_TYPOGRAHICAL_CORRECT_DATA
-    echo "      Clean! Clean! Clean! Cleaned the $DIR_TYPOGRAHICAL_CORRECT_DATA folder"
-fi
-
-if [ -d $DIR_TEC_FILES ]; then
-    # Delete the folder
-    rm -Rf $DIR_TEC_FILES
-    echo "      Clean! Clean! Clean! Cleaned the $DIR_TEC_FILES folder"
-fi
-
-if [ -d $DIR_WIKI_DATA ];then
-	rm -rf $DIR_WIKI_DATA
-	echo "		Got rid of all that processed Wikipedia data."
-fi	
-
-if [ -d $DIR_JAMES_DATA ];then
-	rm -rf $DIR_JAMES_DATA
-	echo "		Got rid of all that processed James data."
-
-fi	
-
-echo "We cleaned up all the files Now we are trying to coping over new test data."
+################################
+### End of Standard Folders ####
+################################
+	
+echo
+echo "We cleaned up all the files and folders. Now we are trying to coping over new test data."
+echo
 
 if [ -d $NEW_DATA ];then
 	for i in $(find "$NEW_DATA"  -name '*.txt');do
@@ -180,8 +145,9 @@ if [ -d $NEW_DATA ];then
 fi		
 
 if [ -f $KEYBOARD_FILE_TYPES  ];then
-	
+	echo
 	echo "		Glad to see you have the keyboard file types file."	
+	echo
 		else
 	cd ../
 	git clone https://github.com/HughP/Keyboard-File-Types.git 	
@@ -190,6 +156,7 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
 fi		
 
+echo
 echo "That's all I know about... the rest is up to you..."
 echo
 
