@@ -274,7 +274,7 @@ fi
 
 
 # The following dependencies might be needed. However their integration is not completed until we actually use them.
-#We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
+#We need to add the other python scripts from Matt Stave and any module dependencies they may have : Glob, OS
 #We might want to consider dependencies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
 #Phonology Data for various languages
@@ -692,6 +692,16 @@ echo
 
 exit 1
 
+##############################
+##############################
+
+##############################
+#Intergrate Wikipedia cleaing python script
+##############################
+
+##############################
+####### Action Point #########
+##############################
 #### BreakPoint by Hugh  June 2nd 2015 ###
 
 # I need to add the wikipedia decompression and clean up scripts here.
@@ -701,20 +711,10 @@ exit 1
 ##############################
 
 ##############################
-##############################
-####### Action Point #########
-##############################
-##############################
-#Intergrate Wikipedia cleaing python script
-##############################
-
-##############################
-##############################
-
-##############################
 #Report all the languages used via table
 ##############################
 
+#Use the Printf command from jonathan
 
 
 ##############################
