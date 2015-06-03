@@ -1,5 +1,5 @@
-#########################
 #!/bin/bash
+#########################
 # Script Name: awesome-script.bash
 # Authors: Hugh Paterson III <email here>
 #          Jonathan Duff <jonathan@dufffamily.org>
@@ -130,6 +130,12 @@ echo
 echo "We cleaned up all the files and folders. Now we are trying to coping over new test data."
 echo
 
+################################
+####### Copy in New Data #######
+################################
+
+# We need clean coppies of test dumps from wikipedia. This chunk pulls them in from the MLKA-Data repo
+
 if [ -d $NEW_DATA ];then
 	for i in $(find "$NEW_DATA"  -name '*.txt');do
 			cp $i .
@@ -144,6 +150,8 @@ if [ -d $NEW_DATA ];then
 	echo "      git clone https://github.com/HughP/MLKA-Data.git"
 fi		
 
+# We need to make sure that we have the file types needed to search for keyboards. This pulls the file in from the repo. If the repo does not exist it clones it from github.
+
 if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
 	echo "		Glad to see you have the keyboard file types file."	
@@ -155,6 +163,10 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
 	echo
 fi		
+
+################################
+#### End of Copy in New Data ###
+################################
 
 echo
 echo "That's all I know about... the rest is up to you..."
