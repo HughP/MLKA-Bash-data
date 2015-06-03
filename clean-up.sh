@@ -26,6 +26,7 @@ NEW_DATA=../MLKA-Data
 # Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
+DIR_THIRD_STATS_TITLE=Third-Stats
 
 # Variables for Corpora versions
 DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
@@ -82,7 +83,7 @@ rm -f typographically-correct-corpora.txt
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-clean_file_array=("$WIKI_LIST_FILE" "$JAMES_LIST_FILE" "$LANGUAGE_LIST_FILE" "$WIKI_LANGUAGES" "$JAMES_LANGUAGES" "$KEYBOARD_LIST_FILE_FP" "$KEYBOARD_LIST_FILE" "$CORPUS_LIST_FILE" )
+clean_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
 
 FILE_COUNT=0
 for i in ${clean_file_array[@]};do
@@ -107,7 +108,7 @@ done
 
 # Put standard folders in the array to remove them. The variables need to be enclosed in double quotes.
 
-clean_folder_array=("$DIR_INITIAL_STATS_TITLE" "$DIR_SECOND_STATS_TITLE" "$DIR_TYPOGRAHICAL_CORRECT_DATA" "$DIR_TEC_FILES" "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" )
+clean_folder_array=("$DIR_INITIAL_STATS_TITLE" "$DIR_SECOND_STATS_TITLE" "$DIR_THIRD_STATS_TITLE" "$DIR_TYPOGRAHICAL_CORRECT_DATA" "$DIR_CLEAN_AND_POSSIBLE_DATA" "$DIR_TEC_FILES" "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" )
 
 FOLDER_COUNT=0
 for i in ${clean_folder_array[@]};do

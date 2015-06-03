@@ -186,8 +186,8 @@ else
     echo "! ERROR: Shucks! You do not have PIP."
     echo "       You need to get it."
     echo
-    echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
     echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
+    echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
     exit 1
 fi
 
@@ -201,6 +201,19 @@ else
     echo
     echo "       You can get it via pip 'pip install pygal'"
     echo "       or it's website: http://pygal.org/"
+    exit 1
+fi
+
+# Pandas Check
+if python -c 'import pandas' &>/dev/null; then
+    echo "INFO: Great you have Pandas installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have pandas."
+    echo "       You need to get it."
+    echo
+    echo "       You can get it via pip 'pip install pandas'"
+    echo "       or it's website: http://pandas.pydata.org/"
     exit 1
 fi
 
@@ -281,86 +294,32 @@ fi
 # If the files are not found then this section creates empty ones.
 # In this script standard practice is to create files here.
 
-# Files to clean up
-if [ -f $WIKI_LIST_FILE ]; then
-    # Delete the file
-    rm -f $WIKI_LIST_FILE
-    echo "INFO: Replacing previously generated files!"
-    touch $WIKI_LIST_FILE
-else
-    # Create the Wikipedia-list.txt
-	touch $WIKI_LIST_FILE
-fi
+# Files to reset everytime the script runs.
 
-if [ -f $JAMES_LIST_FILE ]; then
-    # Delete the file
-    rm -f $JAMES_LIST_FILE
-    echo "      Clean! Clean!"
-    touch $JAMES_LIST_FILE
-else
-    # Create the James-list.txt
-	touch $JAMES_LIST_FILE
-fi
+################################
+#Reset or Create Standard Files#
+################################
 
-if [ -f $CORPUS_LIST_FILE ]; then
-    # Delete the file
-    rm -f $CORPUS_LIST_FILE
-    echo "      Clean! Clean! Clean!"
-    touch $CORPUS_LIST_FILE
-else
-    # Create the Corpus-list.txt
-	touch $CORPUS_LIST_FILE
-fi
+# Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-if [ -f $KEYBOARD_LIST_FILE ]; then
-    # Delete the file
-    rm -f $KEYBOARD_LIST_FILE
-    echo "      Clean! Clean! Clean! Clean!"
-    touch $KEYBOARD_LIST_FILE
-else
-    # Create the Keyboard-list.txt
-	touch $KEYBOARD_LIST_FILE
-fi
+rest_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
 
-if [ -f $KEYBOARD_LIST_FILE_FP ]; then
-    # Delete the file
-    rm -f $KEYBOARD_LIST_FILE_FP
-    echo "      Clean! Clean! Clean! Clean! Clean!"
-    touch $KEYBOARD_LIST_FILE_FP
-else
-    # Create the Keyboard-list.txt
-	touch $KEYBOARD_LIST_FILE_FP
-fi
+RESET_FILE_COUNT=0
+for i in ${reset_file_array[@]};do
+	if [ -f ${i} ]; then
+ 	   # Delete the file
+ 	   rm -f ${i}
+ 	   (( RESET_FILE_COUNT = RESET_FILE_COUNT +1 ))
+ 	   echo -e "INFO:\t Reset values in ${i}.\t It was file # $RESET_FILE_COUNT of ${#reset_file_array[@]}."
+	else
+		# Create an empty file if it is not found.
+		touch ${i}"
+ 	fi
+done
 
-if [ -f $LANGUAGE_LIST_FILE ]; then
-    # Delete the file
-    rm -f $LANGUAGE_LIST_FILE
-    echo "      Clean! Clean! Clean! Clean! Clean! Clean!"
-    touch $LANGUAGE_LIST_FILE
-else
-    # Create the Language_ID.txt
-	touch $LANGUAGE_LIST_FILE
-fi
-
-if [ -f $WIKI_LANGUAGES ]; then
-    # Delete the file
-    rm -f $WIKI_LANGUAGES
-    echo "      Clean! Clean! Clean! Clean! Clean! Clean!"
-    touch $WIKI_LANGUAGES
-else
-    # Create the Language_ID.txt
-	touch $WIKI_LANGUAGES
-fi
-
-if [ -f $JAMES_LANGUAGES ]; then
-    # Delete the file
-    rm -f $JAMES_LANGUAGES
-    echo "      Clean! Clean! Clean! Clean! Clean! Clean! Clean!"
-    touch $JAMES_LANGUAGES
-else
-    # Create the Language_ID.txt
-	touch $JAMES_LANGUAGES
-fi
+################################
+#### End of Standard Files #####
+################################
 
 
 # Folders to clean up.
