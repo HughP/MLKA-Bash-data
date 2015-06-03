@@ -52,16 +52,17 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 
 JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
 WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
-CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corproa (James + Wikipedia)
-KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perahps more) other blocks which reference this file need to take into account that there are multible file types in this file.
+CORPUS_LIST_FILE=Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
+KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
+KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
 LANGAUGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
-CORPRA_LANGUAGES=
-JAMES_LANGUAGES=
-WIKI_LANGUAGES=
+CORPORA_LANGUAGES=Corpora_Languages.txt
+JAMES_LANGUAGES=James_Languages.txt
+WIKI_LANGUAGES=Wikipedia_Languages.txt
 OTHER_CORPORA_LANGUAGES=
-KEYBOARDS_LANGUAGES=
+KEYBOARDS_LANGUAGES=Keyboard_Languages.txt
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
@@ -72,6 +73,7 @@ CORPUS_TYPE= # This needs to be dynamically determined and then added to an arra
 
 HOME_FOLDER=`pwd`
 
+# Files to clean up. 
 rm -f typographically-correct-corpora.txt
 
 if [ -f $WIKI_LIST_FILE ]; then
@@ -91,6 +93,26 @@ if [ -f $LANGAUGE_LIST_FILE ]; then
     rm -f $LANGAUGE_LIST_FILE
     echo "      Clean! Clean! Clean!"
 fi
+
+if [ -f $KEYBOARD_LIST_FILE_FP ]; then
+    # Delete the file
+    rm -f $KEYBOARD_LIST_FILE_FP
+    echo "      Clean! 4"
+fi
+
+if [ -f $KEYBOARD_LIST_FILE ]; then
+    # Delete the file
+    rm -f $KEYBOARD_LIST_FILE
+    echo "      Clean! 5"
+fi
+
+if [ -f $CORPUS_LIST_FILE ]; then
+    # Delete the file
+    rm -f $CORPUS_LIST_FILE
+    echo "      Clean! 6"
+fi
+
+
 
 # Folders to clean up.
 if [ -d $DIR_INITIAL_STATS_TITLE ]; then
@@ -117,7 +139,6 @@ if [ -d $DIR_TEC_FILES ]; then
     rm -Rf $DIR_TEC_FILES
     echo "      Clean! Clean! Clean! Cleaned the $DIR_TEC_FILES folder"
 fi
-
 
 if [ -d $DIR_WIKI_DATA ];then
 	rm -rf $DIR_WIKI_DATA

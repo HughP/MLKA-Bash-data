@@ -312,10 +312,20 @@ else
 	touch $CORPUS_LIST_FILE
 fi
 
+if [ -f $KEYBOARD_LIST_FILE ]; then
+    # Delete the file
+    rm -f $KEYBOARD_LIST_FILE
+    echo "      Clean! Clean! Clean! Clean!"
+    touch $KEYBOARD_LIST_FILE
+else
+    # Create the Keyboard-list.txt
+	touch $KEYBOARD_LIST_FILE
+fi
+
 if [ -f $KEYBOARD_LIST_FILE_FP ]; then
     # Delete the file
     rm -f $KEYBOARD_LIST_FILE_FP
-    echo "      Clean! Clean! Clean! Clean!"
+    echo "      Clean! Clean! Clean! Clean! Clean!"
     touch $KEYBOARD_LIST_FILE_FP
 else
     # Create the Keyboard-list.txt
@@ -325,7 +335,7 @@ fi
 if [ -f $LANGAUGE_LIST_FILE ]; then
     # Delete the file
     rm -f $LANGAUGE_LIST_FILE
-    echo "      Clean! Clean! Clean! Clean! Clean!"
+    echo "      Clean! Clean! Clean! Clean! Clean! Clean!"
     touch $LANGAUGE_LIST_FILE
 else
     # Create the Language_ID.txt
@@ -530,6 +540,11 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 
 ##########################
 # Count keyboard layout files and list per language
+
+#How to detect the ISO 639-3 code on .kmn files.
+#What to do if not set.
+#How to detect the ISO 639-3 code on .bundle files.
+#What to do if not set.
 ##########################
 
 ##########################
