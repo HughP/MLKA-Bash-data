@@ -14,6 +14,12 @@ VERSION="0.02"
 License="GPL"
 
 ##############################
+# Variables Unique to Clean-up
+##############################
+
+NEW_DATA=../MLKA-Data
+
+##############################
 # Variables for Directories
 ##############################
 
@@ -74,9 +80,9 @@ if [ -f $WIKI_LIST_FILE ]; then
     echo "INFO: Replacting previously generated files!"
 fi
 
-if [ -f $CORPUS_LIST_FILE ]; then
+if [ -f $JAMES_LIST_FILE ]; then
     # Delete the file
-    rm -f $CORPUS_LIST_FILE
+    rm -f $JAMES_LIST_FILE
     echo "      Clean! Clean!"
 fi
 
@@ -144,7 +150,7 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	
 	echo "		Glad to see you have the keyboard file types file."	
 		else
-	cd ../$HOME_FOLDER
+	cd ../
 	git clone https://github.com/HughP/Keyboard-File-Types.git 	
 	echo "      Well it looks like you needed a data file. No worries we cloned it from https://github.com/HughP/Keyboard-File-Types.git and it is parallel to this folder."
 	echo

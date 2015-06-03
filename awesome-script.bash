@@ -44,9 +44,10 @@ echo
 # Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats
+DIR_THIRD_STATS_TITLE=Third-Stats
 
 # Variables for Corpora versions
-DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
+DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
 DIR_WIKI_DATA=Wiki-Data
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
@@ -70,22 +71,22 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 
 JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
 WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
-CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corproa (James + Wikipedia)
-KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perahps more) other blocks which reference this file need to take into account that there are multible file types in this file.
+CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corpora (James + Wikipedia)
+KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
 LANGAUGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
-CORPRA_LANGUAGES=
-JAMES_LANGUAGES=
-WIKI_LANGUAGES=
+CORPORA_LANGUAGES=Corpora_Languages.txt
+JAMES_LANGUAGES=James_Languages.txt
+WIKI_LANGUAGES=Wikipedia_Languages.txt
 OTHER_CORPORA_LANGUAGES=
-KEYBOARDS_LANGUAGES=
+KEYBOARDS_LANGUAGES=Keyboard_Languages.txt
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
-KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt #This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
+KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt # This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
 
-DATA_TYPE= # This should be an array made dynamically from various atribues of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
+DATA_TYPE= # This should be an array made dynamically from various attributes of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
 CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.
 
 
@@ -227,11 +228,13 @@ THE_COUNT=0
 for i in $(ls -A1r iso-639-3_*.tab); do
     (( THE_COUNT = THE_COUNT + 1 ))
     if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
-        echo "In order to oganize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
-        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multible versions of the tab file in the folder."
+        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
+        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
         echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
         echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
         exit
+    else
+        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
     fi
 done
 
@@ -240,7 +243,7 @@ done
 if [ -f $KEYBOARD_FILE_TYPES ]; then
     # Control will enter here if FILE does NOT exist.
     echo "INFO: It looks like you already have $KEYBOARD_FILE_TYPES in place."
-    echo "      Must not be your first time around the block."
+    echo "      That great news!"
     echo
 else
     echo
@@ -255,10 +258,12 @@ else
 fi
 
 
-# The following dependencies might be needed. However their intergration is not completed until we actually use them.
+# The following dependencies might be needed. However their integration is not completed until we actually use them.
 #We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
-#We might want to consider dependendies for carpalx.
+#We might want to consider dependencies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
+#Phonology Data for various languages
+#Statistical Numbers from previous studies
 
 ##############################
 ##############################
@@ -273,7 +278,6 @@ fi
 # After deletion this section creates all the temp files created in the script.
 # If the files are not found then this section creates empty ones.
 # In this script standard practice is to create files here.
-
 
 # Files to clean up
 if [ -f $WIKI_LIST_FILE ]; then
@@ -292,14 +296,34 @@ if [ -f $JAMES_LIST_FILE ]; then
     echo "      Clean! Clean!"
     touch $JAMES_LIST_FILE
 else
-    # Create the Corpus-list.txt
+    # Create the James-list.txt
 	touch $JAMES_LIST_FILE
+fi
+
+if [ -f $CORPUS_LIST_FILE ]; then
+    # Delete the file
+    rm -f $CORPUS_LIST_FILE
+    echo "      Clean! Clean! Clean!"
+    touch $CORPUS_LIST_FILE
+else
+    # Create the Corpus-list.txt
+	touch $CORPUS_LIST_FILE
+fi
+
+if [ -f $KEYBOARD_LIST_FILE ]; then
+    # Delete the file
+    rm -f $KEYBOARD_LIST_FILE
+    echo "      Clean! Clean! Clean! Clean!"
+    touch $KEYBOARD_LIST_FILE
+else
+    # Create the Keyboard-list.txt
+	touch $KEYBOARD_LIST_FILE
 fi
 
 if [ -f $LANGAUGE_LIST_FILE ]; then
     # Delete the file
     rm -f $LANGAUGE_LIST_FILE
-    echo "      Clean! Clean! Clean!"
+    echo "      Clean! Clean! Clean! Clean! Clean!"
     touch $LANGAUGE_LIST_FILE
 else
     # Create the Language_ID.txt
@@ -328,7 +352,7 @@ fi
 #Wiki
 #James
 #-----------------------------
-#Others - not yet implemented
+#Others - not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
 
 echo
@@ -353,10 +377,11 @@ else
 fi
 
 # Search for compressed wiki dumps
-#echo
-#echo "INFO: Looking for corpora from Wikipedia data dumps."
-#echo "      If we find anything we'll let you know."
-#echo
+
+echo
+echo "INFO: Looking for corpora from Wikipedia data dumps."
+echo "      If we find anything we'll let you know."
+echo
 
 # Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
@@ -376,23 +401,8 @@ if [ -d "$DIR_WIKI_DATA" ]; then
         fi
     done # end of for loop
     echo
-    echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata into the $DIR_WIKI_DATA folder."
+    echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
 fi
-
-### HUGH:
-### This was moved from above to here because we don't want to index
-### something then move it to a different folder.
-
-### JONATHAN:
-###I think I moved it to the top so that all indexing was done at the same time. I was not able to do a side by side check. Therefore I would prefere to leave it up where it was. The reason for this was that it worked with both new data and with re-runs where new data was added after the first run.
-
-### HUGH:
-### The result of running find with maxdepth 1 may not be ideal.
-### Since all *wiki*.bz2 files are in $DIR_WIKI_DATA
-### we would want to just have the $WIKI_LIST_FILE
-### contain the file_names. Not dir/file_names
-
-###I am not sure that this is an accurate assumption. Before am convenced we sould talk in person so that I can see what you mean. Can you please present future suggestions in code blocks (Three lines of "#" on the top and two lines of "#" on the bottom) in seperate files? like a small .sh file which we can later delete.
 
 ### Proposed change:
 
@@ -411,8 +421,7 @@ if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
 else
     # Some uncompressed Wikipedia dumps exist.
     echo
-    echo "INFO: It looks like we found some Wikipedia data."
-    echo "      We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
+    echo "INFO: We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
     echo
 #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 # JD->HP: It might be able to be solved by just moving the trailing text to the next line.
@@ -442,11 +451,11 @@ fi
 # NO: nothing.
 JAMES_DATA_FILE_COUNT=0
 if [ -d "$DIR_JAMES_DATA" ]; then
-    for i in $(find * -maxdepth 0 -iname '*james*.txt'); do
+    for i in $(find * -maxdepth 0 -iname '*ori*james*.txt'); do
 	# Added a check so it doesn't clobber files:
         if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
 
-            # safe to move the bz2 file into Wiki-Data:
+            # safe to move the -ori-corpus-james*.txt files into James-Data:
 	    mv "$i" "$DIR_JAMES_DATA"
 	    (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
 	    # http://www.tldp.org/LDP/abs/html/dblparens.html
@@ -459,7 +468,7 @@ fi
 # Other
 
 ##############################
-#Look for Other Corpora data. - Not yet implemented.
+#Look for Other Corpora data. - Not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
 
 ##############################
@@ -475,9 +484,9 @@ fi
 ##############################
 #Parse Keyboard File data, this is another form of data so it should be parsed with the data.
 ##############################
-#.keylayout files need to be parsed with XML (DTD here: https://developer.apple.com/library/mac/technotes/tn2056/_index.html ; Example here: https://github.com/palmerc/Ukrainian-Russian/blob/master/Ukrainian%20(Russian).keylayout) for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processsing tool for this.
+#.keylayout files need to be parsed with XML (DTD here: https://developer.apple.com/library/mac/technotes/tn2056/_index.html ; Example here: https://github.com/palmerc/Ukrainian-Russian/blob/master/Ukrainian%20(Russian).keylayout) for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processing tool for this.
 #.kmn files need to be parsed for the characters which they can produced. To do this I should look at the Palaos-python tools.
-#Windows ketboards are unacconted for. Adobe did create a script to convert .keylayout files to MSKLC files: https://github.com/adobe-type-tools/keyboard-layouts. Perhaps someone created a script for going the other way? If so, such a script could be investigated with the Me'phaa keyboard layout. There is a perl script for reading MSKLC here: https://github.com/amire80/msklc_reader. There are also several MSKLC files here: https://github.com/andjc/msklc
+#Windows keyboards are unacconted for. Adobe did create a script to convert .keylayout files to MSKLC files: https://github.com/adobe-type-tools/keyboard-layouts. Perhaps someone created a script for going the other way? If so, such a script could be investigated with the Me'phaa keyboard layout. There is a perl script for reading MSKLC here: https://github.com/amire80/msklc_reader. There are also several MSKLC files here: https://github.com/andjc/msklc
 #
 #All the characters from the keyboard files, need to be compared with the characters which are used in the various corpora in the target languages.
 #A report needs to be generated to show the characters used in the corpora, and the characters which are possible via the keyboards.
@@ -492,11 +501,11 @@ fi
 # Detect which keyboard layout files exist to be considered
 ##########################
 
-# Find Keyboard files  in both root and in DIR_KEYBOARD_DATA
+# Find Keyboard files in both root and in DIR_KEYBOARD_DATA
 
-for i in $KEYBOARD_FILE_TYPES; do
-	find * -iname '*i' >> $KEYBOARD_LIST_FILE
-Done
+# for i in $KEYBOARD_FILE_TYPES; do
+# 	find * -iname '*i' >> $KEYBOARD_LIST_FILE
+# Done
 
 #Coppied from JAMES template
 #cd $DIR_JAMES_DATA
@@ -797,26 +806,26 @@ find * -maxdepth 0 -iname "*transpose*.csv" | sort -t - -k 7 > "$INS_TRANSPOSED"
 
 
 for i in $(cat "$INS_TRANSPOSED"-list-csv.txt);do
- csvfix remove
- remove some extra line in the file.
- ingest each line as a seperate array?
- echo each array in the format in the pyfile template for pygal?
-
- OR
-
- Hand craft the first pygal SVG chart and then turn this SVG into a CSV file via csvfix XML command. Then create the SVG template file.
-
- import pygal                                                       # First import pygal
-from pygal.style import BlueStyle
-chart = pygal.StackedLine(fill=True, interpolate='cubic', style=BlueStyle)
-
-bar_chart = pygal.Bar()                                            # Then create a bar graph object
-bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
-bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
-bar_chart.render_to_file('bar_chart.svg')                          # Save the svg to a file
-
-
-FIND a SVG to .jpg or .png application. See discussion here: http://superuser.com/questions/134679/command-line-application-for-converting-svg-to-png-on-mac-os-x
+#  csvfix remove
+#  remove some extra line in the file.
+#  ingest each line as a seperate array?
+#  echo each array in the format in the pyfile template for pygal?
+# 
+#  OR
+# 
+#  Hand craft the first pygal SVG chart and then turn this SVG into a CSV file via csvfix XML command. Then create the SVG template file.
+# 
+#  import pygal                                                       # First import pygal
+# from pygal.style import BlueStyle
+# chart = pygal.StackedLine(fill=True, interpolate='cubic', style=BlueStyle)
+# 
+# bar_chart = pygal.Bar()                                            # Then create a bar graph object
+# bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
+# bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
+# bar_chart.render_to_file('bar_chart.svg')                          # Save the svg to a file
+# 
+# 
+# FIND a SVG to .jpg or .png application. See discussion here: http://superuser.com/questions/134679/command-line-application-for-converting-svg-to-png-on-mac-os-x
 
 
 ##############################
@@ -938,7 +947,7 @@ else
 fi
 
 # Apply Transformation to corpora
-#The /James/"$i" solution was not really  viable for wikipedia data. Corpus_lits_file should have more than just james texts by this point. This is partiall dependent on getting the Wiki-data folder connected.
+#The /James/"$i" solution was not really viable for Wikipedia data. Corpus_lits_file should have more than just james texts by this point. This is partiall dependent on getting the Wiki-data folder connected.
 for i in $(cat $JAMES_LIST_FILE); do
    txtconv -t $DIR_TEC_FILES/TCR.tec -i James/"$i" -o $DIR_TYPOGRAHICAL_CORRECT_DATA/${i/ /}
 done
@@ -964,7 +973,6 @@ else
     # Control will enter here if DIRECTORY does NOT exist.
     mkdir "$DIR_SECOND_STATS_TITLE"
 fi
-
 
 ls -A1r "$DIR_TYPOGRAHICAL_CORRECT_DATA"/*.txt > typographically-correct-corpora.txt
 
@@ -1122,7 +1130,7 @@ file.close()
 ##cd $NEW_FOLDER
 #
 #
-
+#####--------------------------------------------------
 ##5. Get second set of corpus counts
 ##	a. Run UnicodeCCount on the stated copy of (4.b.iii) with the following flags and output them to a single new folder in the following ways:
 ##		i. -d
@@ -1144,7 +1152,7 @@ file.close()
 ##		i. UinicodeCCount -m and compare, show diffs
 ##	d. Remove untypeable characters
 ##		i. UinicodeCCount -m and compare; show diffs
-
+#####--------------------------------------------------
 ##
 ##1. Collect texts from source.
 ##	a. Create date, time, source, and permissions metadata.

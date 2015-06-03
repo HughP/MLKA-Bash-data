@@ -41,7 +41,10 @@ Tested on:
 
 
 ##Roadmap
-- [ ] 0.1 Ingest, oganize, and Use UnicodCcount on data from Wikipedia, Keyboard layouts, and James texts.
+- [ ] 0.1 Ingest, oganize, and use UnicodeCCount on data from Wikipedia, Keyboard layouts, and James texts.
+- [ ] 0.1.2 Graph output from UnicodeCCount
+- [ ] 0.1.3 Ingest and compare stats with other comparitive studies.
+- [ ] 0.1.4 Ingest Phonology Data and compare with orthography data.
 - [x] 0.2 Check for dependencies exit script if not present.
 - [ ] 0.3 Make warning items the correct color see: http://misc.flogisoft.com/bash/tip_colors_and_formatting
  - [ ] 0.3.5 Install dependencies if needed.
@@ -49,6 +52,10 @@ Tested on:
 - [ ] 0.5 Consider switching from CSVfix to [CSVkit](https://github.com/onyxfish/csvkit) the commands are not the same. But it seems the power is better with CSVkit. CSVkit is on github but is not in a brew tap. A fuller analysis should be done by looking at the issues and features. Documentation is here: http://csvkit.readthedocs.org/en/0.9.1/
 - [ ] 0.7 Detect and remove SFM File markers from Scripture corpora.
 - [ ] 0.8 Automatically check to see if the version of the ISO 639-3 file is the latest file.
+- [ ] 0.9 start to read JSON keyboard files, convert them to CSV See: https://github.com/archan937/jsonv.sh ; https://github.com/jehiah/json2csv
+ - [ ] 0.9.2 for going the other way consider http://stackoverflow.com/questions/24300508/csv-to-json-using-bash or [csvkit's tools](http://csvkit.readthedocs.org/en/latest/scripts/in2csv.html).
+ - [ ] 0.9.8 Add method for other corproa to exist and to be processed.
+- [ ] 1.5 add Swifter layout analysis.
 
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._

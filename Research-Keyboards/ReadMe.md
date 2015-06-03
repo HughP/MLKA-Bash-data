@@ -16,18 +16,22 @@ _This folder contains research keyboards._
 Each in a folder. Each folder contains a keyboard in one or more of the following:
 * A keyboard definition file. (Known examples to date are kept in a file at https://github.com/HughP/Keyboard-File-Types .) Examples include:
  * Multi platform
-   * Keyman ```.kmn```
+   * Keyman `.kmn`
+   * Keyman `.kmx`
+   * Keyman `.kxx`
  * Windows
-    * AutoHotKey
-    * MSKLC file
+    * AutoHotKey `.ahk`
+    * MSKLC file `.klc`
     * Compiled Keyman file `.kmx`
  * OS X
     * OS X ```.keylayout```
     * OS X ```.bundle```
  * Linux
-    * XKB
+    * XKB `.xkb`
  * iOS
  * Android
+ 	* Android `.kcm`
+ 	* kAndroid `.kl`
 * A text description of the keyboard.
 * A series of photos (.jpg, .png, or .svg) of each state of the keyboard layout
 * A training text designed to be used with that keyboard
