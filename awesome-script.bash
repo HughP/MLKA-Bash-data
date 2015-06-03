@@ -117,7 +117,7 @@ else
     echo "       If you are on OS X you can use Homebrew."
     echo "        'Brew install csvfix'."
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if TECkit is installed and in path:
@@ -132,7 +132,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads"
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if txtconv is installed and in path:
@@ -146,7 +146,7 @@ else
     echo
     echo "       http://scripts.sil.org/TECkitDownloads "
     echo
-    exit
+    exit 1
 fi
 
 # Check to see if UnicodeCCount is installed and in path:
@@ -160,7 +160,7 @@ else
     echo
     echo "       http://scripts.sil.org/UnicodeCharacterCount"
     echo
-    exit
+    exit 1
 fi
 
 # Python Check
@@ -175,7 +175,7 @@ else
     echo "       On OS X, you can 'brew install python' this will get you a instance which is not your 'system instance'."
     echo
     echo "       BTW: We're going to check for pip and for pygal as best we can. So you should install both of those."
-    exit
+    exit 1
 fi
 
 # PIP Check
@@ -188,7 +188,7 @@ else
     echo
     echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
     echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
-    exit
+    exit 1
 fi
 
 # PyGal Check
@@ -201,7 +201,7 @@ else
     echo
     echo "       You can get it via pip 'pip install pygal'"
     echo "       or it's website: http://pygal.org/"
-    exit
+    exit 1
 fi
 
 # Fetch wikipedia-extractor
@@ -219,7 +219,7 @@ else
     echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
     echo "         You should clone Wikipedia-Extractor into the same folder as $SCRIPT_NAME."
     echo
-    exit
+    exit 1
 fi
 
 # Check for critical data-files
@@ -237,6 +237,7 @@ for i in $(ls -A1r iso-639-3_*.tab); do
         exit
     else
         echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
+        exit 1
     fi
 done
 
@@ -256,7 +257,7 @@ else
     echo "         git clone https://github.com/HughP/Keyboard-File-Types.git"
     echo "         You should clone the Keyboard-File-Types repo to the the directory above your current working directory for $SCRIPT_NAME. Our script will look for the file there."
     echo
-    exit
+    exit 1
 fi
 
 
