@@ -94,22 +94,34 @@ if [ -f $LANGAUGE_LIST_FILE ]; then
     echo "      Clean! Clean! Clean!"
 fi
 
+if [ -f $JAMES_LANGUAGES ]; then
+    # Delete the file
+    rm -f $JAMES_LANGUAGES
+    echo "      Clean! 4"
+fi
+
+if [ -f $WIKI_LANGUAGES ]; then
+    # Delete the file
+    rm -f $WIKI_LANGUAGES
+    echo "      Clean! 5"
+fi
+
 if [ -f $KEYBOARD_LIST_FILE_FP ]; then
     # Delete the file
     rm -f $KEYBOARD_LIST_FILE_FP
-    echo "      Clean! 4"
+    echo "      Clean! 6"
 fi
 
 if [ -f $KEYBOARD_LIST_FILE ]; then
     # Delete the file
     rm -f $KEYBOARD_LIST_FILE
-    echo "      Clean! 5"
+    echo "      Clean! 7"
 fi
 
 if [ -f $CORPUS_LIST_FILE ]; then
     # Delete the file
     rm -f $CORPUS_LIST_FILE
-    echo "      Clean! 6"
+    echo "      Clean! 8"
 fi
 
 
