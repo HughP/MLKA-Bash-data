@@ -580,8 +580,6 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ##########################
 ##########################
 
-
-
 ##############################
 #Create Language IDs
 ##############################
@@ -655,12 +653,7 @@ echo
 #echo
 
 ##############################
-##############################
-####### Action Point #########
-##############################
-
-##############################
-#Intergrate Wikipedia Extraction and Renaming
+#Wikipedia Extraction and Renaming
 ##############################
 
 
@@ -745,18 +738,6 @@ exit 1
 # I need to add the wikipedia decompression and clean up scripts here.
 # http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
 
-# I need to determine the language of the wikipedia corpora
-# and convert that to ISO 639-3
-
-# To do this I can look at the first two letters of the wikipedia
-# file name, and then I can match those letters to the
-# ISO 639-3 standard based on the table provided
-# in the file 'iso-639-3_20150505.tab'.
-
-# I need to rename the Wikipedia script sometime so that it
-# matches the other corpora. I still need to determine
-# when this is best to take place.
-
 ##############################
 ##############################
 
@@ -772,7 +753,7 @@ exit 1
 ##############################
 
 ##############################
-#Report all the languages used and fount
+#Report all the languages used via table
 ##############################
 
 
