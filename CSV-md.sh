@@ -1,38 +1,88 @@
-#########################
 #!/bin/bash
+#########################
 # Script Name: awesome-script.bash
-# Authors: Hugh Paterson III and Jonathan Duff
-# Version: 0.01
+# Authors: Hugh Paterson III <email here>
+#          Jonathan Duff <jonathan@dufffamily.org>
+# Version: 0.02
 # License: GPL
 # Dependencies are mentioned and linked in the README.md file.
 
- 
+
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.01"
+VERSION="0.02"
 License="GPL"
- 
-#Print Program Author and Version number
- 
+
+# Print Program Authors and Version number
+echo
+echo
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
- 
-CMD_UNICODECCOUNT=UnicodeCCount
+
+# Set Home folder to root folder of project
+HOME_FOLDER=`pwd`
+
+echo
+echo "INFO: Your data is being processed in the following folder:"
+echo "      $HOME_FOLDER"
+echo
+
+# Print starting step 1 stage 1 and 2: generating data
+echo
+echo "INFO: Pre-flighting. Setting some of the variables,"
+echo "      looking to see if you have the correct"
+echo "      dependencies installed, and looking at the"
+echo "      corpus data on hand."
+echo
+
+##############################
+# Variables for Directories
+##############################
+
+# Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
-INITIAL_STATS_TITLE=Initial-Stats
-SECOND_STATS_TITLE=Second_Stats_
-THIRD_STATS_TITLE=Third_Stats_
+DIR_SECOND_STATS_TITLE=Second-Stats
+
+# Variables for Corpora versions
+DIR_JAMES_DATA=James-Data #this variable needs to be updated in the clean-up script. I wish there was a way to refernce these variables from that script.
+DIR_WIKI_DATA=Wiki-Data
+DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
+DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
+DIR_TEC_FILES=TECkit-tec-Files
+
+##############################
+# Variables for File Names Prefixes
+##############################
+
+INITIAL_STATS_TITLE=First_Stats # Prepended to the file names of files produced from the first iteration of corpora.
+SECOND_STATS_TITLE=Second_Stats
+THIRD_STATS_TITLE=Third_Stats
+
+INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
+
+##############################
+# Variables for Other Things
+##############################
+
+# List of the file names of the Data files (corpora and keyboards).
+### ACTION NEEDED
+JAMES_LIST_FILE=James-list.txt # This is a file list of the James Corpus files.
+WIKI_LIST_FILE=Wikipedia-list.txt # This file contains the file names of the Wikipedia data dumps. 
+CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corproa (James + Wikipedia)
+KEYBOARD_LIST_FILE=Keyboard-list.txt #T his file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perahps more) other blocks which reference this file need to take into account that there are multible file types in this file.
+
+# List of all languages used in the data processing
+LANGAUGE_LIST_FILE=Language_ID.txt #This file is for all languages, not just one of the three arrays.
+
+
+CMD_UNICODECCOUNT=UnicodeCCount
+
 
 CORPUS_TYPE=bla #This needs to be dynamically determined and then added to an array.
 LANGUAGE_CODE=blabla #This is same as Language_ID
 INTIAL_COUNT=blablabla #Not sure what this is or why it is needed.
- 
-
-#Set to root folder of project
-#define home_folder as location of project
-HOME_FOLDER=`pwd`
  
 #Change to working folder
 #cd "$HOME_FOLDER"

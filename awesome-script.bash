@@ -83,6 +83,7 @@ KEYBOARDS_LANGUAGES=
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
+KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt #This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
 
 DATA_TYPE= # This should be an array made dynamically from various atribues of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
 CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.
@@ -90,8 +91,12 @@ CORPUS_TYPE= # This needs to be dynamically determined and then added to an arra
 
 
 ##############################
-#Dependencies Checks
+# Dependencies Checks
+#1. Check for software/scripts
+#2. Check for critical data-files
 ##############################
+
+# Check for software/scripts
 
 # Check to see if csvfix is installed and in path:
 if type csvfix &>/dev/null; then
@@ -130,7 +135,6 @@ fi
 # Check to see if txtconv is installed and in path:
 if type txtconv &>/dev/null; then
     echo "INFO: Great you have txtconv installed."
-
 else
     echo
     echo "! ERROR: Shucks! You do not have txtconv. You need to"
@@ -199,7 +203,7 @@ fi
 
 # Fetch wikipedia-extractor
 if [ -f wikipedia-extractor/WikiExtractor.py ]; then
-    # Control will enter here if DIRECTORY does NOT exist.
+    # Control will enter here if FILE does NOT exist.
     echo "INFO: It looks like you already have wikipedia-extractor in place."
     echo "      Must not be your first time around the block."
     echo
@@ -210,22 +214,46 @@ else
     echo
     echo "         You need to install:"
     echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
+    echo "         You should clone Wikipedia-Extractor into the same folder as $SCRIPT_NAME."
     echo
     exit
 fi
 
+# Check for critical data-files
+
 # Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
 
 THE_COUNT=0
-for i in $(ls -A1r *.tab); do
+for i in $(ls -A1r iso-639-3_*.tab); do
     (( THE_COUNT = THE_COUNT + 1 ))
     if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
         echo "In order to oganize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
         echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multible versions of the tab file in the folder."
         echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
+        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
         exit
     fi
 done
+
+# Check for Keyboard File Types list.
+
+if [ -f $KEYBOARD_FILE_TYPES ]; then
+    # Control will enter here if FILE does NOT exist.
+    echo "INFO: It looks like you already have $KEYBOARD_FILE_TYPES in place."
+    echo "      Must not be your first time around the block."
+    echo
+else
+    echo
+    echo "! ERROR: We were being diligent. We were looking for some keyboard files."
+    echo "         To do that we need the file types of keyboard files. We have a nice list on github. Please install it."
+    echo
+    echo "         You need to install:"
+    echo "         git clone https://github.com/HughP/Keyboard-File-Types.git"
+    echo "         You should clone the Keyboard-File-Types repo to the the directory above your current working directory for $SCRIPT_NAME. Our script will look for the file there."
+    echo
+    exit
+fi
+
 
 # The following dependencies might be needed. However their intergration is not completed until we actually use them.
 #We need to add the other python scripts from Matt Stave and any module dependencies they may have : Pandas, Glob, OS
@@ -465,13 +493,10 @@ fi
 ##########################
 
 # Find Keyboard files  in both root and in DIR_KEYBOARD_DATA
-find * -maxdepth 0 -iname '*.keylayout' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.kmn' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.kmx' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.xkb' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.bundle' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.klc' >> $KEYBOARD_LIST_FILE
-find * -maxdepth 0 -iname '*.msi' >> $KEYBOARD_LIST_FILE
+
+for i in $KEYBOARD_FILE_TYPES; do
+	find * -iname '*i' >> $KEYBOARD_LIST_FILE
+Done
 
 #Coppied from JAMES template
 #cd $DIR_JAMES_DATA

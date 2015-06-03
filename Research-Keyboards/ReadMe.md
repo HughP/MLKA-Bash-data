@@ -14,7 +14,7 @@ _This folder contains research keyboards._
 
 ##Composition of folders
 Each in a folder. Each folder contains a keyboard in one or more of the following:
-* A keyboard definition file such as:
+* A keyboard definition file. (Known examples to date are kept in a file at https://github.com/HughP/Keyboard-File-Types .) Examples include:
  * Multi platform
    * Keyman ```.kmn```
  * Windows

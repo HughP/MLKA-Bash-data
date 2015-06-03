@@ -3,11 +3,13 @@ _The purpose is to run data through UnicodeCcount and TECKit enmass. The script 
 
 This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required. 
 
-There are two related repositories:
+There are three related repositories:
 * The MLKA project
 	* https://github.com/HughP/MLKA
 * MLKA-Data which is a set of test data for testing and building this script.
 	* https://github.com/HughP/MLKA-data
+* Keyboard-File-Types which is simply a data array of various types of keyboard layout file types.
+	* https://github.com/HughP/Keyboard-File-Types
 
 This is written to work on OS X and linux.
 Tested on: 
