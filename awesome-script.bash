@@ -342,6 +342,27 @@ else
 	touch $LANGAUGE_LIST_FILE
 fi
 
+if [ -f $WIKI_LANGUAGES ]; then
+    # Delete the file
+    rm -f $WIKI_LANGUAGES
+    echo "      Clean! Clean! Clean! Clean! Clean! Clean!"
+    touch $WIKI_LANGUAGES
+else
+    # Create the Language_ID.txt
+	touch $WIKI_LANGUAGES
+fi
+
+if [ -f $JAMES_LANGUAGES ]; then
+    # Delete the file
+    rm -f $JAMES_LANGUAGES
+    echo "      Clean! Clean! Clean! Clean! Clean! Clean! Clean!"
+    touch $JAMES_LANGUAGES
+else
+    # Create the Language_ID.txt
+	touch $JAMES_LANGUAGES
+fi
+
+
 # Folders to clean up.
 if [ -d $DIR_INITIAL_STATS_TITLE ]; then
     # Delete the folder
@@ -473,12 +494,13 @@ if [ -d "$DIR_JAMES_DATA" ]; then
 	    # http://www.tldp.org/LDP/abs/html/dblparens.html
         fi
     done
+# Report what was found and moved.    
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
 	echo
 fi
 
-#find * -maxdepth 1 -iname '*ori*james*.txt' >> $JAMES_LIST_FILE
-cd "$DIR_JAMES_DATA"
+# Record to file what was fount and moved.
+cd $DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*james*.txt' >> ../$JAMES_LIST_FILE
 cd ../
 
@@ -568,11 +590,13 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ### I think we should move the James counts to another section where James is processed.
 ### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
 
+
+# This reporting function was alread acomplished.
 # Find James corpora in both root and in DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $JAMES_LIST_FILE
-cd $DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
-cd ../
+# find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $JAMES_LIST_FILE
+# cd $DIR_JAMES_DATA
+# find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
+# cd ../
 
 
 # Generate the LANGUAGE_ID Variables.
@@ -583,27 +607,26 @@ cd ../
 # Jonathan's Language look-up table needs to go here.
 #####
 
-# James-corpus.txt is a temp file.
+# James_Languages.txt is a file for just recording the languages I have for the corpora of James.
 for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> James-corpus.txt
+    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
 done
 
-for i in $(cat James-corpus.txt);do
+# Take the languages from James and add them to the master language list.
+for i in $(cat $JAMES_LANGUAGES);do
 	grep -Fxq "$i" $LANGAUGE_LIST_FILE || echo $i >> $LANGAUGE_LIST_FILE
 done
 
-# James-corpus.txt is deleted.
-rm James-corpus.txt
 
 # Set the Variables.
-LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
-LANGUAGE_ID=($LANGUAGE_IDString)
+JAMES_LANGUAGESString=$(cat $JAMES_LANGUAGES | tr "\n" " ")
+JAMES_LANGUAGES=($JAMES_LANGUAGESString)
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
-echo "      Including the following: ${LANGUAGE_ID[*]}"
+echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES[@]} James based corpora."
+echo "      Including the following languages: ${JAMES_LANGUAGES[*]}"
 echo
 
 ##############################
@@ -666,7 +689,8 @@ if [ -f iso-639-3.data ]; then
                     echo "INFO: Wiki-Data/${DATA:1:3} exists"
                 else
                     mkdir ${DATA:1:3}
-                    python ../wikipedia-extractor/WikiExtractor.py -o ${DATA:1:3} $FILE
+                    echo "INFO: We're extracting the Wikipedia data."
+                    python ../wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
                 fi
             fi
         done
@@ -680,6 +704,43 @@ if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
 
+# Report the languages found to the wikipedia list and to the master list
+cd $DIR_WIKI_DATA
+find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> ../$WIKI_LANGUAGES
+cd "$HOME_FOLDER"
+
+
+# Set the Variables.
+WIKI_LANGUAGESString=$(cat $WIKI_LANGUAGES | tr "\n" " ")
+WIKI_LANGUAGES=($WIKI_LANGUAGESString)
+
+# This section needs to be modified and allow the arangement of info
+# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
+
+echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES[@]} Wikipedia based corpora."
+echo "      Including the following languages: ${WIKI_LANGUAGES[*]}"
+echo
+
+
+# Take the languages from Wikipedia and append them to the master language list; making sure not to add duplicates
+
+csvfix unique Wikipedia_Languages.txt Language_ID.txt | csvfix write_dsv -s ' ' -o Language_ID.txt
+
+
+# Set the Variables.
+LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
+LANGUAGE_ID=($LANGUAGE_IDString)
+
+# This section needs to be modified and allow the arangement of info
+# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
+
+echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} corpora for language(s) ."
+echo "      Including the following languages: ${LANGUAGE_ID[*]}"
+echo
+
+exit 1
+
+#### BreakPoint by Hugh  June 2nd 2015 ###
 
 # I need to add the wikipedia decompression and clean up scripts here.
 # http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
@@ -705,6 +766,13 @@ fi
 ##############################
 ##############################
 #Intergrate Wikipedia cleaing python script
+##############################
+
+##############################
+##############################
+
+##############################
+#Report all the languages used and fount
 ##############################
 
 
