@@ -71,7 +71,9 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 
 JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
 WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
-CORPUS_LIST_FILE=Corpus-list.txt #This file is currently unused. It is supposed to be a list of all corpora (James + Wikipedia)
+# OTHER_LIST_FILE= # This is for other corpora to be added in a later version. (some where around v. 0.9.8)
+CORPUS_LIST_FILE=Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
+KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
@@ -310,14 +312,14 @@ else
 	touch $CORPUS_LIST_FILE
 fi
 
-if [ -f $KEYBOARD_LIST_FILE ]; then
+if [ -f $KEYBOARD_LIST_FILE_FP ]; then
     # Delete the file
-    rm -f $KEYBOARD_LIST_FILE
+    rm -f $KEYBOARD_LIST_FILE_FP
     echo "      Clean! Clean! Clean! Clean!"
-    touch $KEYBOARD_LIST_FILE
+    touch $KEYBOARD_LIST_FILE_FP
 else
     # Create the Keyboard-list.txt
-	touch $KEYBOARD_LIST_FILE
+	touch $KEYBOARD_LIST_FILE_FP
 fi
 
 if [ -f $LANGAUGE_LIST_FILE ]; then
@@ -465,12 +467,21 @@ if [ -d "$DIR_JAMES_DATA" ]; then
 	echo
 fi
 
+#find * -maxdepth 1 -iname '*ori*james*.txt' >> $JAMES_LIST_FILE
+cd "$DIR_JAMES_DATA"
+find * -maxdepth 0 -iname '*ori*james*.txt' >> ../$JAMES_LIST_FILE
+cd ../
+
 # Other
 
 ##############################
 #Look for Other Corpora data. - Not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
 
+
+cat $WIKI_LIST_FILE >> $CORPUS_LIST_FILE
+cat $JAMES_LIST_FILE >> $CORPUS_LIST_FILE
+# cat $OTHER_LIST_FILE >> $CORPUS_LIST_FILE # version 0.9.8
 ##############################
 ##############################
 ###End of Corpora Data Check##
@@ -502,15 +513,17 @@ fi
 ##########################
 
 # Find Keyboard files in both root and in DIR_KEYBOARD_DATA
+# Discover what kind of file endings constitute a keyboard file.
 
-# for i in $KEYBOARD_FILE_TYPES; do
-# 	find * -iname '*i' >> $KEYBOARD_LIST_FILE
-# Done
+KBD_FILE_TYP_str=$(csvfix read_dsv -f 1 -s '\t' $KEYBOARD_FILE_TYPES | sed 's/\"//g' | sed 's/\.//g')
+KBD_FILE_TYP=${KBD_FILE_TYP_str//'\t'/'\n'}
 
-#Coppied from JAMES template
-#cd $DIR_JAMES_DATA
-#find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
-#cd ../
+for i in $KBD_FILE_TYP; do
+ 	find * -iname \*."${i}" | sort -t. -k 2,2 -k 1,1 >> $KEYBOARD_LIST_FILE_FP 
+done	   
+
+# Then make a list of just the file names of the keyboards
+cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 
 ##########################
 ##########################
@@ -568,7 +581,7 @@ done
 rm James-corpus.txt
 
 # Set the Variables.
-LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE |tr "\n" " ")
+LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
 LANGUAGE_ID=($LANGUAGE_IDString)
 
 # This section needs to be modified and allow the arangement of info

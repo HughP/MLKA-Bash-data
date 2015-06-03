@@ -12,17 +12,3 @@ Research-Keyboards/Nigeria Unicode Underline/Nigeria Unicode Underline.kmx
 Research-Keyboards/Obolo Keyboard/OboloUnicode.kmx
 Keyboard-XML/Apple keyboard search/Dark/Apple Keyboard made via css3._files/webfont.js
 Keyboard-XML/Apple keyboard search/Light/Apple Keyboard made via css3._files/webfont.js
-Ukrainian (Russian).keylayout
-example.keylayout
-FulUnicode.kmn
-Nigeria Unicode Dots.kmn
-Nigeria Unicode Underline.kmn
-nuu.kmn
-OboloUnicode.kmn
-cy uni_2014-6-26_19-6.kmn
-Fulfulde.kmx
-Nigeria Unicode Dots.kmx
-Nigeria Unicode Underline.kmx
-OboloUnicode.kmx
-webfont.js
-webfont.js
