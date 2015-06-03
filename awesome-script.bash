@@ -234,10 +234,9 @@ for i in $(ls -A1r iso-639-3_*.tab); do
         echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
         echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
         echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
-        exit
+        exit 1
     else
         echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
-        exit 1
     fi
 done
 
@@ -680,7 +679,6 @@ fi
 if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
-
 
 
 # I need to add the wikipedia decompression and clean up scripts here.
