@@ -31,13 +31,15 @@ Tested on:
 5. [WikiExtractor Script](https://github.com/bwbaugh/wikipedia-extractor) extracts and cleans text from Wikipedia database dump and stores output in a number of files of similar size in a given directory. This is a mirror of the script by [Giuseppe Attardi](https://github.com/attardi/wikiextractor) - Which might actually be the original. http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
  * `git clone https://github.com/bwbaugh/wikipedia-extractor.git`.
 6. Python (Preferably 2.7)
- * One option among many for OS X Users is `brew install python`.
-7. pip
-8. PyGal - for SVG production of graphs.
-9. Pandas - A python module for data processing
-10. Stave Python script for Cleaning Wikipedia
-11. Stave Python script for counting digrams
-12. JavaScript count by jkpat
+  * One option among many for OS X Users is `brew install python`.
+ * Other Python dependencies:
+  * pip
+  * PyGal - for SVG production of graphs.
+  * Pandas - A python module for data processing
+7. Stave Python script for Cleaning Wikipedia
+8. Stave + Paterson Python script for counting digrams
+9. JavaScript count by jkpat
+10. Palaso-python module
 
 
 ##Roadmap

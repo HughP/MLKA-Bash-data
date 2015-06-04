@@ -302,7 +302,7 @@ fi
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-rest_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
+reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do
@@ -313,7 +313,7 @@ for i in ${reset_file_array[@]};do
  	   echo -e "INFO:\t Reset values in ${i}.\t It was file # $RESET_FILE_COUNT of ${#reset_file_array[@]}."
 	else
 		# Create an empty file if it is not found.
-		touch ${i}"
+		touch ${i}
  	fi
 done
 
@@ -321,6 +321,9 @@ done
 #### End of Standard Files #####
 ################################
 
+################################
+#Reset or Create Standard Folders#
+################################
 
 # Folders to clean up.
 if [ -d $DIR_INITIAL_STATS_TITLE ]; then
@@ -676,6 +679,14 @@ echo
 
 # Take the languages from Wikipedia and append them to the master language list; making sure not to add duplicates
 
+# This might be able to be simplified as an array and use just bash....
+#   Some_array=(cat $WIKI_LANGUAGES)
+#   Some_other_array=(cat $JAMES_LANGUAGES)
+#   Some_third_array=("${Some_array[@]}" "${Some_other_array[@]}")
+#   Display the compined number of units: ${#Some_third_array[*]}
+#   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
+
+
 csvfix unique Wikipedia_Languages.txt Language_ID.txt | csvfix write_dsv -s ' ' -o Language_ID.txt
 
 
@@ -686,11 +697,17 @@ LANGUAGE_ID=($LANGUAGE_IDString)
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} corpora for language(s) ."
-echo "      Including the following languages: ${LANGUAGE_ID[*]}"
-echo
+##############################
+####### Action Point #########
+##############################
+# Hugh is not sure how to get the sum of all the corpora. (Wiki+James)
 
-exit 1
+# echo "INFO: It looks like altogether we found: $CORPORA_NUMBER corpora."
+
+##############################
+##############################
+echo "      These corpora exist across the following ${#LANGUAGE_ID[@]} languages: ${LANGUAGE_ID[*]}"
+echo
 
 ##############################
 ##############################
@@ -699,10 +716,123 @@ exit 1
 #Intergrate Wikipedia cleaing python script
 ##############################
 
+
+# The Python code
+
+# Embed the python code in the bash script so that it creates a new python script.
+##I need to go through this and actually read the script to see where the script needs to be located, and where the outputs need to be. The outputs also need to be named uniquely.
+
+cat << EOF > wiki_extractor_cleaner.py
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 30 23:43:48 2015
+
+@author: Matt Stave
+License: GPL
+"""
+#WikiExtractor.py -cb 250K -o extracted aywiki-latest-pages-articles.xml.bz2
+#find extracted -name '*bz2' -exec bzip2 -c {} \; > text.xml
+
+import pandas
+import glob
+
+def make_df(articles):
+    #make a data frame from the list(s)
+    df = pandas.DataFrame(index = range(len(titles)))
+#    df['title'] = titles
+    df['article'] = articles
+    return df
+
+#get all files in directory and put them into a big list
+#Adjust path to find containing folder
+'''
+path = '/Users/Hugh'
+filelist = glob.glob(path + '\*')
+content = []
+for item in filelist:
+    with open(item) as f:
+        subcontent = f.readlines()
+    content = content + subcontent
+    '''
+content = open('/Users/Hugh/wiki_00.txt')
+
+
+""" try to set the path variable with the following:
+import os 
+path = os.getcwd()
+
+"""
+
+titles = []
+articles = []
+i = 0
+while i < len(content):
+    #skip <doc> type lines
+    if content[i][0] == '<':
+#        print('skip', content[i][0], i)
+        i += 1
+        #keep text lines
+    else:
+        #first should be the title (then skip two lines to get to article text)
+        titles = titles + [content[i]]
+#        print('title', content[i][0], i)
+        i += 2
+        art = []
+        #go through each line and get the text till you reach a newline
+        while '\n' not in content[i][0]:
+            art = art + [content[i]]
+#            print('article', content[i][0], i)
+            i += 1
+        if art == []:
+            art = ['NOARTICLE']
+        if len(art) > 0:
+            art = [' '.join(art)]
+        articles = articles + art
+        i += 1
+
+wiki = []
+for i in xrange(len(articles)):
+    wiki += [titles[i]]
+    wiki += [articles[i]]
+
+with open('wiki.txt', 'w') as out_file:
+    out_file.write('\n'.join(wiki))
+
+#original file ending.
+"""
+df = make_df(articles)
+df.to_csv('quwiki.txt', index = False)
+"""
+
+EOF
+
+# Give write permissions to the python script
+chmod 755 wiki_extractor_cleaner.py
+
+# If I wanted to call the python script directly I could
+#./pyscript.py
+
+# For every file which is extracted by the fist script, this scritp needs to go behind and make a new output. These new outputs will need to have a new name.
+# The following code needs to be modified.
+for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt);do
+	echo "Transposing CSV files via Python."
+	cp "$i" ${i/%.csv/-ori.csv}
+	python wiki_extractor_cleaner.py "$i" ${i/%.csv/-transpose.csv}
+	mv ${i/%.csv/-ori.csv} ${i/%-ori.csv/.csv}
+done
+
+# Let's git rid of that python file so it doesn't do anything else.
+rm wiki_extractor_cleaner.py
+
+
+
+
+
 ##############################
 ####### Action Point #########
 ##############################
-#### BreakPoint by Hugh  June 2nd 2015 ###
+#### BreakPoint by Hugh  June 3nd 2015 ###
 
 # I need to add the wikipedia decompression and clean up scripts here.
 # http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
@@ -1051,12 +1181,16 @@ rm -f typographically-correct-corpora.txt
 #    done
 #done
 
-############
+
+
+##############################
 #Create digraph count
-############
+##############################
 
 ############
 ############
+
+#Get python header and EOF header.
 # -*- coding: utf-8 -*-
 """
 Created on Thu Mar 26 09:31:44 2015
@@ -1108,7 +1242,6 @@ file.write(len(df))
 #print (digrams.value_counts(), len(text))
 file.close()
 '''
-
 
 
 #######
