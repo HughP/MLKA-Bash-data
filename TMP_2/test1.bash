@@ -42,10 +42,10 @@ CMD_UNICODECCOUNT=UnicodeCCount
 ##############################
 
 # Find James corpora in both root and in DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
-cd $DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
-cd ../
+#find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $CORPUS_LIST_FILE
+#cd $DIR_JAMES_DATA
+#find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$CORPUS_LIST_FILE
+#cd ../
 
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
@@ -56,55 +56,83 @@ cd ../
 #####
 
 # James-corpus.txt is a temp file.
-for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> James-corpus.txt
-done
+#for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
+#    expr "/$i" : '.*\(.\{3\}\)\.' >> James-corpus.txt
+#done
 
-for i in $(cat James-corpus.txt);do
-	grep -Fxq "$i" $LANGAUGE_LIST_FILE || echo $i >> $LANGAUGE_LIST_FILE
-done
+#for i in $(cat James-corpus.txt);do
+#	grep -Fxq "$i" $LANGAUGE_LIST_FILE || echo $i >> $LANGAUGE_LIST_FILE
+#done
 
 # James-corpus.txt is deleted.
-rm James-corpus.txt
+#rm James-corpus.txt
 
 # Set the Variables.
-LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
-LANGUAGE_ID=($LANGUAGE_IDString)
+#LANGUAGE_IDString=$(cat $LANGAUGE_LIST_FILE | tr "\n" " ")
+#LANGUAGE_ID=($LANGUAGE_IDString)
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
-echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
-echo
+#echo "INFO: It looks like altogether we found: ${#LANGUAGE_ID[@]} James based corpora."
+#echo "      corpora. Including the following: ${LANGUAGE_ID[*]}"
+#echo
 
 HEADER_COLUMN1=James
 HEADER_COLUMN2=Wikipedia
 HEADER_COLUMN3=Keyboards
 HEADER_COLUMN4=Languages
 
+printf '\t'
+printf "   "
 printf $HEADER_COLUMN1
-printf "| "
 printf '\t'
+printf "   "
 printf $HEADER_COLUMN2
-printf "| "
 printf '\t'
+printf "   "
 printf $HEADER_COLUMN3
-printf "| "
 printf '\t'
+printf "   "
 printf $HEADER_COLUMN4
-printf "| "
 echo
 
-for row in row1 row2 row3 row4 row5 row6; do
-    printf "$row"
-    printf '\t'
-    printf '\t'
+printf '\t'
+printf "  "
+printf "+"
+count=61
+while (( count > 0 )); do
+    printf "-"
+    (( count = count - 1))
+done
+printf "+"
+echo
+
+row=1
+for (( ROW_COUNT=100; ROW_COUNT > 0; ROW_COUNT-- )); do
+    printf "row $row:"
+    if (( row < 100 )); then
+        printf '\t'
+    fi
+    printf "  "
     printf "|"
-    for column in 1 2 3 4; do
-            printf '\t'
+    for column in one two three four; do
             printf "$column"
+            printf '\t'
+            printf '\t'
             printf "|"
     done
     echo
+    (( row++ ))
 done
+
+printf '\t'
+printf "  "
+printf "+"
+count=61
+while (( count > 0 )); do
+    printf "-"
+    (( count = count - 1))
+done
+printf "+"
+echo
