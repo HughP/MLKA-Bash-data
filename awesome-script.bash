@@ -38,7 +38,7 @@ echo "      corpus data on hand."
 echo
 
 # Grab global variables:
-source global_vars.bash
+source global-vars.bash
 
 ##############################
 # Dependencies Checks
