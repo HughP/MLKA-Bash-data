@@ -4,6 +4,15 @@
 
 # http://stackoverflow.com/questions/10823635/how-to-include-file-in-a-bash-shell-script
 
+
+SCRIPT_NAME="awesome-script.bash"
+AUTHORS="Hugh Paterson III, Jonathan Duff"
+VERSION="0.02"
+License="GPL"
+
+# Set to root folder of project
+HOME_FOLDER=`pwd`
+
 # Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Initial-Stats
 DIR_SECOND_STATS_TITLE=Second-Stats

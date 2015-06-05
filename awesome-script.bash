@@ -7,11 +7,13 @@
 # License: GPL
 # Dependencies are mentioned and linked in the README.md file.
 
+### (MSG-001) HUGH: Moved all variables to the global-vars.bash file
+###                 so that other scripts will have access to all variables:
+###
+###
 
-SCRIPT_NAME="awesome-script.bash"
-AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.02"
-License="GPL"
+# Grab global variables:
+source global-vars.bash
 
 # Print Program Authors and Version number
 echo
@@ -20,9 +22,6 @@ echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
-
-# Set to root folder of project
-HOME_FOLDER=`pwd`
 
 echo
 echo "INFO: Your data is being processed in the following folder:"
@@ -37,8 +36,7 @@ echo "      dependencies installed, and looking at the"
 echo "      corpus data on hand."
 echo
 
-# Grab global variables:
-source global-vars.bash
+
 
 ##############################
 # Dependencies Checks
@@ -186,19 +184,54 @@ fi
 
 # Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
 
+#THE_COUNT=0
+#for i in $(ls -A1r iso-639-3_*.tab); do
+#    (( THE_COUNT = THE_COUNT + 1 ))
+#    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
+#        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
+#        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
+#        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
+#        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
+#        exit 1
+#    else
+#        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
+#    fi
+#done
+
+### (MSG-002) HUGH: The above was replaced with more readable code below:
+###
+###
+
 THE_COUNT=0
-for i in $(ls -A1r iso-639-3_*.tab); do
+for i in $(find * -maxdepth 0 -iname 'iso-639-3*.tab'); do
     (( THE_COUNT = THE_COUNT + 1 ))
-    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
-        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
-        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
-        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
-        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
-        exit 1
-    else
-        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
-    fi
 done
+
+case $THE_COUNT in
+    0)
+        echo "INFO: In order to organize the data we need the proper ISO 639-3 code tables."
+        echo "      The 'Complete Code Tables Set' are published as a .zip file here:"
+        echo "      http://www-01.sil.org/iso639-3/download.asp"
+        echo
+        echo "      It looks like you need to get the ISO 639-3 tab file which is included"
+        echo "      in UTF-8: iso-639-3_Code_Tables_*.zip file"
+        echo
+        echo "      The specific file you need is the generic looking one with the format:"
+        echo "      iso-639-3_YYYYMMDD.tab"
+        echo
+        echo "      You should copy this .tab file into the directory:"
+        echo "      $HOME_FOLDER"
+        exit 1
+        ;;
+    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and in the appropriate location."
+        ;;
+    *)  echo "! ERROR: There appears to be too many files in the $HOME_FOLDER that match:"
+        echo "         iso-639-3*.tab"
+        echo
+        echo "         Please have only one ISO 639-3 file."
+        exit 1
+esac
+
 
 # Check for Keyboard File Types list.
 
@@ -325,6 +358,10 @@ echo "INFO: Looking for corpora from Wikipedia data dumps."
 echo "      If we find anything we'll let you know."
 echo
 
+### (MSG-003) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
 # Move Wikipedia dumps into wikidata folder for processing.
 # Double check Wiki-Data folder is there then run:
 WIKI_DATA_FILE_COUNT=0
@@ -334,23 +371,23 @@ if [ -d "$DIR_WIKI_DATA" ]; then
         # Now we're reaching into Wiki-Data folder:
         # If the file exists then do NOT copy.
         if [ ! -f "$DIR_WIKI_DATA/$i" ]; then
-
             # safe to move the bz2 file into Wiki-Data:
             mv "$i" "$DIR_WIKI_DATA"
-	    (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
-	    # http://www.tldp.org/LDP/abs/html/dblparens.html
-
+            (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
+            # http://www.tldp.org/LDP/abs/html/dblparens.html
+            printf "."
         fi
     done # end of for loop
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
 fi
 
-### Proposed change:
+### (MSG-004) HUGH: For more information please see:
+###                 https://github.com/HughP/Bash-data-mlka/issues/17
+###
 
 # List all Wikipedia dumps and store
 # results into the file Wikipedia-list.txt
-#find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
 cd "$DIR_WIKI_DATA"
 find * -maxdepth 0 -iname '*wiki*.bz2' >> ../$WIKI_LIST_FILE
 cd ..
@@ -365,9 +402,8 @@ else
     echo
     echo "INFO: We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
     echo
-#There is a bug here in that the above line has a long space in it when returned to the command prompt.
-# JD->HP: It might be able to be solved by just moving the trailing text to the next line.
-#Actually I think it needs {} so that the added spaces don't get added in to the output. But I am not sure about the syntax. Syntax for me on all of this is a bit fuzzy. I am mostly copy and pasting from stack exchange.
+
+    #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 fi
 
 # James
@@ -388,6 +424,10 @@ else
     mkdir $DIR_JAMES_DATA
 fi
 
+### (MSG-005) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
 # Does the James folder exist?
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
@@ -396,11 +436,11 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     for i in $(find * -maxdepth 0 -iname '*ori*james*.txt'); do
 	# Added a check so it doesn't clobber files:
         if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
-
             # safe to move the -ori-corpus-james*.txt files into James-Data:
-	    mv "$i" "$DIR_JAMES_DATA"
-	    (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
-	    # http://www.tldp.org/LDP/abs/html/dblparens.html
+            mv "$i" "$DIR_JAMES_DATA"
+            (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
+            # http://www.tldp.org/LDP/abs/html/dblparens.html
+            printf "."
         fi
     done
 # Report what was found and moved.
@@ -413,12 +453,18 @@ cd $DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*james*.txt' >> ../$JAMES_LIST_FILE
 cd ../
 
+
+### BREAKPOINT: This can be removed. used for debugging purposes.
+###
+###
+exit
+
+
 # Other
 
 ##############################
 #Look for Other Corpora data. - Not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
-
 
 cat $WIKI_LIST_FILE >> $CORPUS_LIST_FILE
 cat $JAMES_LIST_FILE >> $CORPUS_LIST_FILE
