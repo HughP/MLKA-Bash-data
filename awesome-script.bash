@@ -15,6 +15,13 @@
 # Grab global variables:
 source global-vars.bash
 
+### (MSG-001-B) HUGH: We can use global functions like this:
+###
+###
+
+# Grab global functions:
+source global-functions.bash
+
 # Print Program Authors and Version number
 echo
 echo
@@ -23,10 +30,15 @@ echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
 
-echo
-echo "INFO: Your data is being processed in the following folder:"
-echo "      $HOME_FOLDER"
-echo
+### (MSG-001-C) HUGH: the function can be called and used just like echo
+###                   except the function does all the work. Much cleaner
+###                   when reading the script.
+###
+
+PrintInfo
+PrintInfo "Your data is being processed in the following folder:\n
+            \t $HOME_FOLDER"
+PrintInfo
 
 # Print starting step 1 stage 1 and 2: generating data
 echo
