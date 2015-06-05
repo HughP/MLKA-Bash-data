@@ -62,3 +62,9 @@ KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt # This file i
 
 DATA_TYPE= # This should be an array made dynamically from various attributes of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
 CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.
+
+# Used to set Table column headers:
+HEADER_COLUMN1=James
+HEADER_COLUMN2=Wikipedia
+HEADER_COLUMN3=Keyboards
+HEADER_COLUMN4=Languages

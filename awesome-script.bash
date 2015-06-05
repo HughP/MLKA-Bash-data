@@ -374,22 +374,26 @@ echo
 ###
 ###
 
+### (MSG-003-B) HUGH: This is an example of Bash functions in action with SafeMove.
+###
+###
+
 # Move Wikipedia dumps into wikidata folder for processing.
-# Double check Wiki-Data folder is there then run:
 WIKI_DATA_FILE_COUNT=0
 if [ -d "$DIR_WIKI_DATA" ]; then
-    # So we're are in HOME_FOLDER here:
+    printf "STATUS: "
     for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-        # Now we're reaching into Wiki-Data folder:
-        # If the file exists then do NOT copy.
-        if [ ! -f "$DIR_WIKI_DATA/$i" ]; then
-            # safe to move the bz2 file into Wiki-Data:
-            mv "$i" "$DIR_WIKI_DATA"
-            (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
-            # http://www.tldp.org/LDP/abs/html/dblparens.html
-            printf "."
-        fi
-    done # end of for loop
+        SafeMove "$i" "$DIR_WIKI_DATA/$i"
+        # $? is the return value from previous command above
+        case "$?" in
+            0) printf "+"
+                (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
+                ;;
+            1) printf "!"
+                ;;
+            *) printf "*"
+        esac
+    done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
 fi
@@ -452,7 +456,6 @@ if [ -d "$DIR_JAMES_DATA" ]; then
             mv "$i" "$DIR_JAMES_DATA"
             (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
             # http://www.tldp.org/LDP/abs/html/dblparens.html
-            printf "."
         fi
     done
 # Report what was found and moved.
@@ -464,13 +467,6 @@ fi
 cd $DIR_JAMES_DATA
 find * -maxdepth 0 -iname '*ori*james*.txt' >> ../$JAMES_LIST_FILE
 cd ../
-
-
-### BREAKPOINT: This can be removed. used for debugging purposes.
-###
-###
-exit
-
 
 # Other
 
@@ -555,6 +551,14 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ### I think we should move the James counts to another section where James is processed.
 ### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
 
+### (MSG-006) HUGH: The above statements sounds good to me too.
+###
+###
+
+### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
+###                 run above in the James section? If so, then we should remove it.
+###
+###
 
 # This reporting function was alread acomplished.
 # Find James corpora in both root and in DIR_JAMES_DATA
@@ -567,6 +571,28 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
+
+### (MSG-008) HUGH: The displaying of the table is handed off to a function
+###                 called DisplayTable. Does not fully work at the moment.
+### row 1:
+### $COLUMN_ARRAY_1[1], $COLUMN_ARRAY_2[1], $COLUMN_ARRAY_3[1], $COLUMN_ARRAY_4[1]
+### row 2:
+### $COLUMN_ARRAY_1[2], $COLUMN_ARRAY_2[2], $COLUMN_ARRAY_3[2], $COLUMN_ARRAY_4[2]
+### A simple for loop could list the entire table...
+###
+###
+
+EXAMPLE_TABLE_ARRAY1=( AAA AAA AAA AAA )
+EXAMPLE_TABLE_ARRAY2=( BBB BBB BBB BBB )
+EXAMPLE_TABLE_ARRAY3=( CCC CCC CCC CCC )
+EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD )
+#DisplayTable 1 2 3 4
+DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
+
+### BREAKPOINT: This can be removed. used for debugging purposes.
+###
+###
+exit
 
 ######
 # Jonathan's Language look-up table needs to go here.
