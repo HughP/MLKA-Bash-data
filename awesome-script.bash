@@ -396,7 +396,7 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
-#Is the output on to theterminal on the above line correct? there are two sets of quote marks.    
+#Is the output on to theterminal on the above line correct? there are two sets of quote marks.
 fi
 
 
@@ -598,11 +598,11 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ###
 ###
 
-EXAMPLE_TABLE_ARRAY1=( AAA AAA AAA AAA )
-EXAMPLE_TABLE_ARRAY2=( BBB BBB BBB BBB )
-EXAMPLE_TABLE_ARRAY3=( CCC CCC CCC CCC )
-EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD )
-#DisplayTable 1 2 3 4
+EXAMPLE_TABLE_ARRAY1=( AAA AAA AAA AAA AAA AAA )
+EXAMPLE_TABLE_ARRAY2=( BBB BBB BBB BBB BBB BBB )
+EXAMPLE_TABLE_ARRAY3=( CCC CCC CCC CCC BBB BBB )
+EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD BBB BBB )
+
 DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
 
 ### BREAKPOINT: This can be removed. used for debugging purposes.
@@ -813,7 +813,7 @@ echo "      This might take some time as we use a small python script tocycle th
 
 # Find all language folders
 # into each of the language's sub-folders copy the python code.
-# 
+#
 
 
 # The Python code
@@ -828,7 +828,7 @@ cat << EOF > wiki_extractor_cleaner.py
 """
 @author: Matt Stave
 Date Authored: Thu Apr 30 23:43:48 2015
-Modified by: Hugh Paterson 
+Modified by: Hugh Paterson
 Date Modified: Sat Jun 06 22:14:00 2015
 License: GPL 3.0
 License info: http://www.gnu.org/licenses/gpl-3.0.en.html
@@ -892,7 +892,7 @@ while i < len(content):
             art = [' '.join(art)]
         articles = articles + art
         i += 1
-        
+
 wiki = []
 for i in xrange(len(articles)):
     wiki += [titles[i]]
