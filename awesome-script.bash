@@ -211,7 +211,7 @@ fi
 #done
 
 ### (MSG-002) HUGH: The above was replaced with more readable code below:
-###
+### @JONATHAN Ok I see What you are doing here. it makes sense. but what is the use of 'case', 'esac' and ';;'?
 ###
 
 THE_COUNT=0
@@ -235,7 +235,7 @@ case $THE_COUNT in
         echo "      $HOME_FOLDER"
         exit 1
         ;;
-    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and in the appropriate location."
+    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and it is in the appropriate location."
         ;;
     *)  echo "! ERROR: There appears to be too many files in the $HOME_FOLDER that match:"
         echo "         iso-639-3*.tab"
