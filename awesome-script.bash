@@ -211,7 +211,7 @@ fi
 #done
 
 ### (MSG-002) HUGH: The above was replaced with more readable code below:
-###
+### @JONATHAN Ok I see What you are doing here. it makes sense. but what is the use of 'case', 'esac' and ';;'?
 ###
 
 THE_COUNT=0
@@ -235,7 +235,7 @@ case $THE_COUNT in
         echo "      $HOME_FOLDER"
         exit 1
         ;;
-    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and in the appropriate location."
+    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and it is in the appropriate location."
         ;;
     *)  echo "! ERROR: There appears to be too many files in the $HOME_FOLDER that match:"
         echo "         iso-639-3*.tab"
@@ -396,7 +396,9 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
+#Is the output on to theterminal on the above line correct? there are two sets of quote marks.    
 fi
+
 
 ### (MSG-004) HUGH: For more information please see:
 ###                 https://github.com/HughP/Bash-data-mlka/issues/17
@@ -520,6 +522,8 @@ cat $JAMES_LIST_FILE >> $CORPUS_LIST_FILE
 ##########################
 
 # Find Keyboard files in both root and in DIR_KEYBOARD_DATA
+#Should example keyboards be set in another repo? and then that repo data be imported?
+
 # Discover what kind of file endings constitute a keyboard file.
 
 KBD_FILE_TYP_str=$(csvfix read_dsv -f 1 -s '\t' $KEYBOARD_FILE_TYPES | sed 's/\"//g' | sed 's/\.//g')
@@ -637,7 +641,7 @@ echo
 
 
 ##############################
-#Do SFM Marker checking and if positive then removal
+#Do SFM Marker checking and if positive then remove
 ##############################
 #
 # Differed until version 0.7 of the script.
@@ -667,7 +671,8 @@ echo
 #		Then creates corisponding directory
 #		in Wiki-Data.
 
-#Do we need to make the python code exicutable? with something like '$ chmod +x hello.py'?
+# Let's make sure the python scritp is executable.
+chmod +x "$HOME_FOLDER"/wikipedia-extractor/WikiExtractor.py
 
 # Sweep up
 if [ -f iso-639-3.data ]; then
@@ -676,19 +681,34 @@ fi
 
 csvfix read_dsv -f 1,4,7 -s '\t' iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
 
+echo
+echo "INFO: We've started extracting the Wikipedia data."
+echo "      Note that large files take a long time. In testing 2.5GB files took up to 3 hours."
+echo "      Warnings in this section come from the Python script."
+echo "      They are due to the extractor script's interactions with the data."
+echo "      Explanations for the warning can be found in the in-line comments in the the WikiExtractor.py script."
+echo
+echo
+
 if [ -f iso-639-3.data ]; then
     cd Wiki-Data
-
     # For every *wiki*.bz2 file do:
     for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         for DATA in $(cat ../iso-639-3.data); do
             if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
                 if [ -d ${DATA:1:3} ]; then
-                    echo "INFO: Wiki-Data/${DATA:1:3} exists"
+                    echo "INFO: Wiki-Data/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
                 else
                     mkdir ${DATA:1:3}
-                    echo "INFO: We're extracting the Wikipedia data."
+                    echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data." #This line needs testing
+					START_EXTRACT=`date +%s` # This line needs testing.
                     python ../wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
+                    END_EXTRACT=`date +%s` # This line needs testing.
+                    RUNTIME=$((END_EXTRACT-START_EXTRACT)) # This line needs testing.
+                    echo "      We're back from processing the [${DATA:1:3}] languge data. It only took: $RUNTIME seconds." # This line needs testing.
+                    # For other methods of finding time for the script running see here: http://unix.stackexchange.com/questions/52313/how-to-get-execution-time-of-a-script-effectively
+                    echo
+                    echo
                 fi
             fi
         done
@@ -744,6 +764,7 @@ LANGUAGE_ID=($LANGUAGE_IDString)
 ####### Action Point #########
 ##############################
 # Hugh is not sure how to get the sum of all the corpora. (Wiki+James)
+# Since each value is on a line, one possible way is to count the lines of the files, http://unix.stackexchange.com/questions/25344/count-number-of-lines-bash-grep
 
 # echo "INFO: It looks like altogether we found: $CORPORA_NUMBER corpora."
 
@@ -755,30 +776,74 @@ echo
 ##############################
 ##############################
 
+
+##############################
+#RAW Wikipedia Counting
+##############################
+echo "INFO: Let's do some quick UnicodeCounts on the raw wikidata."
+
+## If I want UnicodeCCounts of the RAW Wikipdedia XML file then I need to do that here.
+#For each sub-sub folder in Wiki-Data (Wiki-data/xyx/xy/FILES-TO-BE-CAT) cat the files and give me a count.
+#Said another way give me a list of the parent folders of xyz list of files.
+#find * -iname 'wiki_*' \-type d -exec basename {} \;
+#
+#uniq
+#
+#| rev | cut -d '/' -f2 | rev
+#
+#for i in $(find * -iname 'wiki_*') ; do
+#	LANG_CODE=$(pwd | rev | cut -d '/' -f2 | rev)
+#	WIKI_RAW=$(raw-corpus-wikipedia-${LANG_CODE})
+#	cat wiki_* > ${WIKI_RAW}.txt
+#	UnicodeCCount ${WIKI_RAW}.txt > ${WIKI_RAW}.tab
+#
+#csvfix read_dsv -s '\t'
+
+##############################
+##############################
+
+
 ##############################
 #Intergrate Wikipedia cleaing python script
 ##############################
 
 
+echo "INFO: For the Wikipdia dumps which have been extracted, we are pulling the article titles and the article contents out."
+echo "      This might take some time as we use a small python script tocycle through some of the larger corpora."
+
+# Find all language folders
+# into each of the language's sub-folders copy the python code.
+# 
+
+
 # The Python code
 
 # Embed the python code in the bash script so that it creates a new python script.
-##I need to go through this and actually read the script to see where the script needs to be located, and where the outputs need to be. The outputs also need to be named uniquely.
+
 
 cat << EOF > wiki_extractor_cleaner.py
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr 30 23:43:48 2015
 
+"""
 @author: Matt Stave
-License: GPL
+Date Authored: Thu Apr 30 23:43:48 2015
+Modified by: Hugh Paterson 
+Date Modified: Sat Jun 06 22:14:00 2015
+License: GPL 3.0
+License info: http://www.gnu.org/licenses/gpl-3.0.en.html
+Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
 """
 #WikiExtractor.py -cb 250K -o extracted aywiki-latest-pages-articles.xml.bz2
 #find extracted -name '*bz2' -exec bzip2 -c {} \; > text.xml
 
 import pandas
 import glob
+import os
+
+#I tried to add the non-verbose commands with argparse.
+# Generally un successful.  More here: https://docs.python.org/2/howto/argparse.html
+# The python extractor script has several falgs.
 
 def make_df(articles):
     #make a data frame from the list(s)
@@ -789,23 +854,16 @@ def make_df(articles):
 
 #get all files in directory and put them into a big list
 #Adjust path to find containing folder
-'''
-path = '/Users/Hugh'
-filelist = glob.glob(path + '\*')
+
+path = os.getcwd()
+filelist = glob.glob(path + '/wiki_*')
 content = []
 for item in filelist:
     with open(item) as f:
         subcontent = f.readlines()
     content = content + subcontent
-    '''
-content = open('/Users/Hugh/wiki_00.txt')
 
-
-""" try to set the path variable with the following:
-import os
-path = os.getcwd()
-
-"""
+#content = content[:2110]
 
 titles = []
 articles = []
@@ -813,41 +871,36 @@ i = 0
 while i < len(content):
     #skip <doc> type lines
     if content[i][0] == '<':
-#        print('skip', content[i][0], i)
+        print('skip', content[i][0], i)
         i += 1
         #keep text lines
     else:
         #first should be the title (then skip two lines to get to article text)
         titles = titles + [content[i]]
-#        print('title', content[i][0], i)
+        print('title', content[i][0], i)
         i += 2
         art = []
         #go through each line and get the text till you reach a newline
         while '\n' not in content[i][0]:
             art = art + [content[i]]
-#            print('article', content[i][0], i)
+            print('article', content[i][0], i)
             i += 1
+            print i
         if art == []:
             art = ['NOARTICLE']
         if len(art) > 0:
             art = [' '.join(art)]
         articles = articles + art
         i += 1
-
+        
 wiki = []
 for i in xrange(len(articles)):
     wiki += [titles[i]]
     wiki += [articles[i]]
 
-with open('wiki.txt', 'w') as out_file:
+ISO_639_3code = os.path.split(os.path.dirname(path))[1]
+with open("ori-" + "corpus-" + "wikipedia-" + str(ISO_639_3code) + ".txt", 'w') as out_file:
     out_file.write('\n'.join(wiki))
-
-#original file ending.
-"""
-df = make_df(articles)
-df.to_csv('quwiki.txt', index = False)
-"""
-
 EOF
 
 # Give write permissions to the python script
@@ -856,7 +909,7 @@ chmod 755 wiki_extractor_cleaner.py
 # If I wanted to call the python script directly I could
 #./pyscript.py
 
-# For every file which is extracted by the fist script, this scritp needs to go behind and make a new output. These new outputs will need to have a new name.
+# For every file which is extracted by the fist script, this script needs to go behind and make a new output. These new outputs will need to have a new name.
 # The following code needs to be modified.
 for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt);do
 	echo "Transposing CSV files via Python."
@@ -866,19 +919,9 @@ for i in $(cat "$INITIAL_STATS_TITLE"-list-csv.txt);do
 done
 
 # Let's git rid of that python file so it doesn't do anything else.
+#THIS needs to be done in every folder.... Better do this with a find+for loop.
 rm wiki_extractor_cleaner.py
 
-
-
-
-
-##############################
-####### Action Point #########
-##############################
-#### BreakPoint by Hugh  June 3nd 2015 ###
-
-# I need to add the wikipedia decompression and clean up scripts here.
-# http://stackoverflow.com/questions/4377109/shell-script-execute-a-python-program-from-within-a-shell-script
 
 ##############################
 ##############################
@@ -959,6 +1002,8 @@ ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-l
 
 cat << EOF > csv_transposer.py
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """
 Source: http://askubuntu.com/questions/74686/is-there-a-utility-to-transpose-a-csv-file
 Date accessed: 31 May 2015
@@ -1233,12 +1278,16 @@ rm -f typographically-correct-corpora.txt
 ############
 ############
 
-#Get python header and EOF header.
+cat << EOF > digraph_counter.py
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 26 09:31:44 2015
 
-@author: Hugh + Matt
+"""
+@author: Hugh Paterson III, Matt Stave
+Date Authored: Thu Mar 26 09:31:44 2015
+License: GPL 3.0
+License info: http://www.gnu.org/licenses/gpl-3.0.en.html
+Use: From the commandline type: digraph_counter.py <theinfilename> <theoutfilename>
 """
 
 """ I need to set this text to open a file and read it, or recive from bash "cat" command """
@@ -1285,6 +1334,14 @@ file.write(len(df))
 #print (digrams.value_counts(), len(text))
 file.close()
 '''
+
+EOF
+
+# Give write permissions to the python script
+chmod 755 digraph_counter.py
+
+# If I wanted to call the python script directly I could
+#./pyscript.py
 
 
 #######
