@@ -1,0 +1,85 @@
+Not Posted:
+-----------
+
+
+
+### (MSG-009) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
+
+### (MSG-010) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
+
+
+Posted:
+-------
+
+### (MSG-001) HUGH: Moved all variables to the global-vars.bash file
+###                 so that other scripts will have access to all variables:
+###
+###
+
+### (MSG-001-B) HUGH: We can use global functions like this:
+###
+###
+
+### (MSG-001-C) HUGH: the function can be called and used just like echo
+###                   except the function does all the work. Much cleaner
+###                   when reading the script.
+###
+
+### (MSG-002) HUGH: The above was replaced with more readable code below:
+###
+###
+
+### (MSG-003) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
+### (MSG-003-B) HUGH: This is an example of Bash functions in action with SafeMove.
+###
+###
+
+### (MSG-004) HUGH: For more information please see:
+###                 https://github.com/HughP/Bash-data-mlka/issues/17
+###
+
+### (MSG-005) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
+### (MSG-006) HUGH: The above statements sounds good to me too.
+###
+###
+
+### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
+###                 run above in the James section? If so, then we should remove it.
+###
+###
+
+### (MSG-008) HUGH: The displaying of the table is handed off to a function
+###                 called DisplayTable. Does not fully work at the moment.
+### row 1:
+### $COLUMN_ARRAY_1[1], $COLUMN_ARRAY_2[1], $COLUMN_ARRAY_3[1], $COLUMN_ARRAY_4[1]
+### row 2:
+### $COLUMN_ARRAY_1[2], $COLUMN_ARRAY_2[2], $COLUMN_ARRAY_3[2], $COLUMN_ARRAY_4[2]
+### A simple for loop could list the entire table...
+###
+###
+
+### (MSG-009) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
+
+### (MSG-010) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###

@@ -402,6 +402,12 @@ fi
 ###                 https://github.com/HughP/Bash-data-mlka/issues/17
 ###
 
+### (MSG-009) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
+
 # List all Wikipedia dumps and store
 # results into the file Wikipedia-list.txt
 cd "$DIR_WIKI_DATA"
@@ -462,6 +468,12 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
 	echo
 fi
+
+### (MSG-010) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
 
 # Record to file what was fount and moved.
 cd $DIR_JAMES_DATA
