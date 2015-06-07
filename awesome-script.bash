@@ -7,11 +7,20 @@
 # License: GPL
 # Dependencies are mentioned and linked in the README.md file.
 
+### (MSG-001) HUGH: Moved all variables to the global-vars.bash file
+###                 so that other scripts will have access to all variables:
+###
+###
 
-SCRIPT_NAME="awesome-script.bash"
-AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.02"
-License="GPL"
+# Grab global variables:
+source global-vars.bash
+
+### (MSG-001-B) HUGH: We can use global functions like this:
+###
+###
+
+# Grab global functions:
+source global-functions.bash
 
 # Print Program Authors and Version number
 echo
@@ -21,13 +30,15 @@ echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $License
 
-# Set to root folder of project
-HOME_FOLDER=`pwd`
+### (MSG-001-C) HUGH: the function can be called and used just like echo
+###                   except the function does all the work. Much cleaner
+###                   when reading the script.
+###
 
-echo
-echo "INFO: Your data is being processed in the following folder:"
-echo "      $HOME_FOLDER"
-echo
+PrintInfo
+PrintInfo "Your data is being processed in the following folder:\n
+            \t $HOME_FOLDER"
+PrintInfo
 
 # Print starting step 1 stage 1 and 2: generating data
 echo
@@ -36,60 +47,6 @@ echo "      looking to see if you have the correct"
 echo "      dependencies installed, and looking at the"
 echo "      corpus data on hand."
 echo
-
-##############################
-# Variables for Directories
-##############################
-
-# Variables for UnicodeCCount output
-DIR_INITIAL_STATS_TITLE=Initial-Stats
-DIR_SECOND_STATS_TITLE=Second-Stats
-DIR_THIRD_STATS_TITLE=Third-Stats
-
-# Variables for Corpora versions
-DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
-DIR_WIKI_DATA=Wiki-Data
-DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
-DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
-DIR_TEC_FILES=TECkit-tec-Files
-
-##############################
-# Variables for File Names Prefixes
-##############################
-
-INITIAL_STATS_TITLE=First_Stats
-SECOND_STATS_TITLE=Second_Stats
-THIRD_STATS_TITLE=Third_Stats
-
-INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
-
-##############################
-# Variables for Other Things
-##############################
-
-# List of the file names of the Data files (corpora and keyboards).
-
-JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
-WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps. 
-# OTHER_LIST_FILE= # This is for other corpora to be added in a later version. (some where around v. 0.9.8)
-CORPUS_LIST_FILE=Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
-KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
-KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
-
-# List of all languages used in the data processing
-LANGUAGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
-CORPORA_LANGUAGES=Corpora_Languages.txt
-JAMES_LANGUAGES=James_Languages.txt
-WIKI_LANGUAGES=Wikipedia_Languages.txt
-OTHER_CORPORA_LANGUAGES=
-KEYBOARDS_LANGUAGES=Keyboard_Languages.txt
-
-CMD_UNICODECCOUNT=UnicodeCCount
-
-KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt # This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
-
-DATA_TYPE= # This should be an array made dynamically from various attributes of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
-CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.
 
 
 
@@ -239,19 +196,54 @@ fi
 
 # Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
 
+#THE_COUNT=0
+#for i in $(ls -A1r iso-639-3_*.tab); do
+#    (( THE_COUNT = THE_COUNT + 1 ))
+#    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
+#        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
+#        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
+#        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
+#        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
+#        exit 1
+#    else
+#        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
+#    fi
+#done
+
+### (MSG-002) HUGH: The above was replaced with more readable code below:
+###
+###
+
 THE_COUNT=0
-for i in $(ls -A1r iso-639-3_*.tab); do
+for i in $(find * -maxdepth 0 -iname 'iso-639-3*.tab'); do
     (( THE_COUNT = THE_COUNT + 1 ))
-    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
-        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
-        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
-        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
-        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
-        exit 1
-    else
-        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
-    fi
 done
+
+case $THE_COUNT in
+    0)
+        echo "INFO: In order to organize the data we need the proper ISO 639-3 code tables."
+        echo "      The 'Complete Code Tables Set' are published as a .zip file here:"
+        echo "      http://www-01.sil.org/iso639-3/download.asp"
+        echo
+        echo "      It looks like you need to get the ISO 639-3 tab file which is included"
+        echo "      in UTF-8: iso-639-3_Code_Tables_*.zip file"
+        echo
+        echo "      The specific file you need is the generic looking one with the format:"
+        echo "      iso-639-3_YYYYMMDD.tab"
+        echo
+        echo "      You should copy this .tab file into the directory:"
+        echo "      $HOME_FOLDER"
+        exit 1
+        ;;
+    1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and in the appropriate location."
+        ;;
+    *)  echo "! ERROR: There appears to be too many files in the $HOME_FOLDER that match:"
+        echo "         iso-639-3*.tab"
+        echo
+        echo "         Please have only one ISO 639-3 file."
+        exit 1
+esac
+
 
 # Check for Keyboard File Types list.
 
@@ -378,34 +370,48 @@ echo "INFO: Looking for corpora from Wikipedia data dumps."
 echo "      If we find anything we'll let you know."
 echo
 
+### (MSG-003) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
+### (MSG-003-B) HUGH: This is an example of Bash functions in action with SafeMove.
+###
+###
+
 # Move Wikipedia dumps into wikidata folder for processing.
-# Double check Wiki-Data folder is there then run:
 WIKI_DATA_FILE_COUNT=0
 if [ -d "$DIR_WIKI_DATA" ]; then
-    # So we're are in HOME_FOLDER here:
+    printf "STATUS: "
     for i in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-        # Now we're reaching into Wiki-Data folder:
-        # If the file exists then do NOT copy.
-        if [ ! -f "$DIR_WIKI_DATA/$i" ]; then
-
-            # safe to move the bz2 file into Wiki-Data:
-            mv "$i" "$DIR_WIKI_DATA"
-	    (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
-	    # http://www.tldp.org/LDP/abs/html/dblparens.html
-
-        fi
-    done # end of for loop
+        SafeMove "$i" "$DIR_WIKI_DATA/$i"
+        # $? is the return value from previous command above
+        case "$?" in
+            0) printf "+"
+                (( WIKI_DATA_FILE_COUNT = WIKI_DATA_FILE_COUNT + 1 ))
+                ;;
+            1) printf "!"
+                ;;
+            *) printf "*"
+        esac
+    done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
 #Is the output on to theterminal on the above line correct? there are two sets of quote marks.    
 fi
 
 
-### Proposed change:
+### (MSG-004) HUGH: For more information please see:
+###                 https://github.com/HughP/Bash-data-mlka/issues/17
+###
+
+### (MSG-009) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
 
 # List all Wikipedia dumps and store
 # results into the file Wikipedia-list.txt
-#find * -maxdepth 1 -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
 cd "$DIR_WIKI_DATA"
 find * -maxdepth 0 -iname '*wiki*.bz2' >> ../$WIKI_LIST_FILE
 cd ..
@@ -420,9 +426,8 @@ else
     echo
     echo "INFO: We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
     echo
-#There is a bug here in that the above line has a long space in it when returned to the command prompt.
-# JD->HP: It might be able to be solved by just moving the trailing text to the next line.
-#Actually I think it needs {} so that the added spaces don't get added in to the output. But I am not sure about the syntax. Syntax for me on all of this is a bit fuzzy. I am mostly copy and pasting from stack exchange.
+
+    #There is a bug here in that the above line has a long space in it when returned to the command prompt.
 fi
 
 # James
@@ -443,6 +448,10 @@ else
     mkdir $DIR_JAMES_DATA
 fi
 
+### (MSG-005) HUGH: You had mentioned you would like to have an indicator for each file moved.
+###
+###
+
 # Does the James folder exist?
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
@@ -451,17 +460,22 @@ if [ -d "$DIR_JAMES_DATA" ]; then
     for i in $(find * -maxdepth 0 -iname '*ori*james*.txt'); do
 	# Added a check so it doesn't clobber files:
         if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
-
             # safe to move the -ori-corpus-james*.txt files into James-Data:
-	    mv "$i" "$DIR_JAMES_DATA"
-	    (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
-	    # http://www.tldp.org/LDP/abs/html/dblparens.html
+            mv "$i" "$DIR_JAMES_DATA"
+            (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
+            # http://www.tldp.org/LDP/abs/html/dblparens.html
         fi
     done
-# Report what was found and moved.    
+# Report what was found and moved.
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
 	echo
 fi
+
+### (MSG-010) HUGH: This is a little misleading by putting an append. The file is deleted
+###                 above if it exists every time the script runs. We should change >> to >
+###                 So it's clear what we're doing at this point in the code.
+###
+###
 
 # Record to file what was fount and moved.
 cd $DIR_JAMES_DATA
@@ -473,7 +487,6 @@ cd ../
 ##############################
 #Look for Other Corpora data. - Not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
-
 
 cat $WIKI_LIST_FILE >> $CORPUS_LIST_FILE
 cat $JAMES_LIST_FILE >> $CORPUS_LIST_FILE
@@ -517,8 +530,8 @@ KBD_FILE_TYP_str=$(csvfix read_dsv -f 1 -s '\t' $KEYBOARD_FILE_TYPES | sed 's/\"
 KBD_FILE_TYP=${KBD_FILE_TYP_str//'\t'/'\n'}
 
 for i in $KBD_FILE_TYP; do
- 	find * -iname \*."${i}" | sort -t. -k 2,2 -k 1,1 >> $KEYBOARD_LIST_FILE_FP 
-done	   
+ 	find * -iname \*."${i}" | sort -t. -k 2,2 -k 1,1 >> $KEYBOARD_LIST_FILE_FP
+done
 
 # Then make a list of just the file names of the keyboards
 cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
@@ -554,6 +567,15 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ### I think we should move the James counts to another section where James is processed.
 ### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
 
+### (MSG-006) HUGH: The above statements sounds good to me too.
+###
+###
+
+### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
+###                 run above in the James section? If so, then we should remove it.
+###
+###
+
 # This reporting function was alread acomplished.
 # Find James corpora in both root and in DIR_JAMES_DATA
 # find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $JAMES_LIST_FILE
@@ -565,6 +587,28 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
+
+### (MSG-008) HUGH: The displaying of the table is handed off to a function
+###                 called DisplayTable. Does not fully work at the moment.
+### row 1:
+### $COLUMN_ARRAY_1[1], $COLUMN_ARRAY_2[1], $COLUMN_ARRAY_3[1], $COLUMN_ARRAY_4[1]
+### row 2:
+### $COLUMN_ARRAY_1[2], $COLUMN_ARRAY_2[2], $COLUMN_ARRAY_3[2], $COLUMN_ARRAY_4[2]
+### A simple for loop could list the entire table...
+###
+###
+
+EXAMPLE_TABLE_ARRAY1=( AAA AAA AAA AAA )
+EXAMPLE_TABLE_ARRAY2=( BBB BBB BBB BBB )
+EXAMPLE_TABLE_ARRAY3=( CCC CCC CCC CCC )
+EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD )
+#DisplayTable 1 2 3 4
+DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
+
+### BREAKPOINT: This can be removed. used for debugging purposes.
+###
+###
+exit
 
 ######
 # Jonathan's Language look-up table needs to go here.
@@ -818,8 +862,8 @@ for item in filelist:
     with open(item) as f:
         subcontent = f.readlines()
     content = content + subcontent
-#content = content[:2110]
 
+#content = content[:2110]
 
 titles = []
 articles = []
@@ -1019,21 +1063,21 @@ for i in $(cat "$INS_TRANSPOSED"-list-csv.txt);do
 #  remove some extra line in the file.
 #  ingest each line as a seperate array?
 #  echo each array in the format in the pyfile template for pygal?
-# 
+#
 #  OR
-# 
+#
 #  Hand craft the first pygal SVG chart and then turn this SVG into a CSV file via csvfix XML command. Then create the SVG template file.
-# 
+#
 #  import pygal                                                       # First import pygal
 # from pygal.style import BlueStyle
 # chart = pygal.StackedLine(fill=True, interpolate='cubic', style=BlueStyle)
-# 
+#
 # bar_chart = pygal.Bar()                                            # Then create a bar graph object
 # bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
 # bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])  # Add some values
 # bar_chart.render_to_file('bar_chart.svg')                          # Save the svg to a file
-# 
-# 
+#
+#
 # FIND a SVG to .jpg or .png application. See discussion here: http://superuser.com/questions/134679/command-line-application-for-converting-svg-to-png-on-mac-os-x
 
 
