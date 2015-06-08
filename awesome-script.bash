@@ -817,8 +817,6 @@ License: GPL 3.0
 License info: http://www.gnu.org/licenses/gpl-3.0.en.html
 Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
 """
-#WikiExtractor.py -cb 250K -o extracted aywiki-latest-pages-articles.xml.bz2
-#find extracted -name '*bz2' -exec bzip2 -c {} \; > text.xml
 
 import pandas
 import glob
