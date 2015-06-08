@@ -574,6 +574,10 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
 
+######
+# Jonathan\'s Language look-up table needs to go here.
+######
+
 ### (MSG-008) HUGH: The displaying of the table is handed off to a function
 ###                 called DisplayTable. Does not fully work at the moment.
 ### row 1:
@@ -591,11 +595,9 @@ EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD )
 #DisplayTable 1 2 3 4
 DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
 
-
-
 ######
-# Jonathan's Language look-up table needs to go here.
-#####
+######
+
 
 # James_Languages.txt is a file for just recording the languages I have for the corpora of James.
 for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
