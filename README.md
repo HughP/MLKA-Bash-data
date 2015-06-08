@@ -40,15 +40,20 @@ Tested on:
  * WikipediaExtractor Cleaner by Matt Stave (with edits by Hugh Paterson III)
  * Stave + Paterson python script for counting digrams
  * Script for transposing/pivoting data in CSV files
-9. JavaScript count by jkpat
-10. Palaso-python module
+8. JavaScript count by jkpat
+9. Palaso-python module
 
 
 ##Roadmap
-- [ ] 0.1 Ingest, oganize, and use UnicodeCCount on data from Wikipedia, Keyboard layouts, and James texts.
-- [ ] 0.1.2 Graph output from UnicodeCCount
-- [ ] 0.1.3 Ingest and compare stats with other comparitive studies.
-- [ ] 0.1.4 Ingest Phonology Data and compare with orthography data.
+- [x] 0.0.1 ingest and organize Wikipedia data
+- [x] 0.0.2 ingest and organize James data
+- [ ] 0.0.3 ingest and organize Keyboard data
+- [ ] 0.1 Ingest, and organize data (Wikipedia, James, and Keyboards)
+- [ ] 0.1.1 Perform text clean up tasks for corpora.
+- [ ] 0.1.2 UnicodeCCount on data from Wikipedia, Keyboard layouts, and James texts.
+- [ ] 0.1.4 Graph output from UnicodeCCount
+- [ ] 0.1.5 Ingest and compare stats with other comparitive studies.
+- [ ] 0.1.6 Ingest Phonology Data and compare with orthography data.
 - [x] 0.2 Check for dependencies exit script if not present.
 - [ ] 0.3 Make warning items the correct color see: http://misc.flogisoft.com/bash/tip_colors_and_formatting
  - [ ] 0.3.5 Install dependencies if needed.

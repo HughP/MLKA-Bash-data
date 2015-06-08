@@ -1,0 +1,16 @@
+find * '_Languages.txt'
+
+Sort alphabetical
+
+Count=0
+for i in $(find * '_Languages.txt' | Sort ); do
+#Add a numeric prefix to each line in the file
+	sed -e 's/^/"$Count + 1",/' $i > basename$i '"$Count + 1",' to the front of each line # This might be able to be done without sed via using the put command of csvfix http://neilb.bitbucket.org/csvfix/manual/csvfix16/csvfix.html?ChangeLog.html
+
+use the csvfix file_merge command http://neilb.bitbucket.org/csvfix/manual/csvfix16/csvfix.html?ChangeLog.html
+
+use the CSVfix sort command: http://neilb.bitbucket.org/csvfix/manual/csvfix16/csvfix.html?ChangeLog.html
+
+use the flatten command to flaten the various files http://neilb.bitbucket.org/csvfix/manual/csvfix16/csvfix.html?ChangeLog.html
+	
+csvfix ascii_table 
