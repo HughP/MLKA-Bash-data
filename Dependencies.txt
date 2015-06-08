@@ -1,7 +1,25 @@
+##############
+#Data format
+##############
+
+
+# Basic Data format
+
 x::y::z::
 x	y	z
 
 item in path to check::"Success message"::"Error message" --- should source be here too? as a URL?
+
+# Using the '::' as a seperator should be easy for parsing with csvfix. Or we could make the file a proper CSV file and parse it with CSVfix
+
+##############
+##############
+
+
+##############
+#Data text examples
+##############
+
 
 csvfix::"INFO: Great you have csvfix installed."::"! ERROR: Shucks! You do not have csvfix.\n\tYou need to get it. You can use Mercurial and compile it yourself from:\n\thttps://bitbucket.org/neilb/csvfix\n\tIf you are on OS X you can use Homebrew.\n\t 'Brew install csvfix'.\n"::
 
@@ -89,3 +107,5 @@ else
     echo "       or it's website: http://pandas.pydata.org/"
     exit 1
 fi
+##############
+##############

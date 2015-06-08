@@ -196,24 +196,6 @@ fi
 
 # Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
 
-#THE_COUNT=0
-#for i in $(ls -A1r iso-639-3_*.tab); do
-#    (( THE_COUNT = THE_COUNT + 1 ))
-#    if (( $THE_COUNT > 1)) || (( $THE_COUNT == 0)); then
-#        echo "In order to organize the data we need the proper ISO 639-3 code tables. The 'Complete Code Tables Set' are published as a .zip file here: http://www-01.sil.org/iso639-3/download.asp"
-#        echo "It looks like you either need to get the ISO 639-3 tab file which is included in UTF-8: iso-639-3_Code_Tables_*.zip file , or you have multiple versions of the tab file in the folder."
-#        echo "The specific file you need is the generic looking one with the format: iso-639-3_YYYYMMDD.tab"
-#        echo "You should copy this .tab file directly into the same folder as $SCRIPT_NAME."
-#        exit 1
-#    else
-#        echo "INFO: Well it looks like you already have the ISO 639-3 Code table available in the appropriate location."
-#    fi
-#done
-
-### (MSG-002) HUGH: The above was replaced with more readable code below:
-### @JONATHAN Ok I see What you are doing here. it makes sense. but what is the use of 'case', 'esac' and ';;'?
-###
-
 THE_COUNT=0
 for i in $(find * -maxdepth 0 -iname 'iso-639-3*.tab'); do
     (( THE_COUNT = THE_COUNT + 1 ))
