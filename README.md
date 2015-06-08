@@ -36,8 +36,10 @@ Tested on:
   * pip
   * PyGal - for SVG production of graphs.
   * Pandas - A python module for data processing
-7. Stave Python script for Cleaning Wikipedia
-8. Stave + Paterson Python script for counting digrams
+7. Python scripts embeded in the .bash script:
+ * WikipediaExtractor Cleaner by Matt Stave (with edits by Hugh Paterson III)
+ * Stave + Paterson python script for counting digrams
+ * Script for transposing/pivoting data in CSV files
 9. JavaScript count by jkpat
 10. Palaso-python module
 
@@ -58,6 +60,17 @@ Tested on:
  - [ ] 0.9.2 for going the other way consider http://stackoverflow.com/questions/24300508/csv-to-json-using-bash or [csvkit's tools](http://csvkit.readthedocs.org/en/latest/scripts/in2csv.html).
  - [ ] 0.9.8 Add method for other corproa to exist and to be processed.
 - [ ] 1.5 add Swifter layout analysis.
+
+##Corpus clean up process
+###Wikipedia
+* download wikipedia data
+* Extractor script
+* Extractor cleaner
+* Paterson use of TECKit to clean residue left by Extractor cleaner
+* Typography character conversion by TECKit
+
+###James
+*
 
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._
