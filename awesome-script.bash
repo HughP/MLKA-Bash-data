@@ -47,7 +47,7 @@ DIR_SECOND_STATS_TITLE=Second-Stats
 DIR_THIRD_STATS_TITLE=Third-Stats
 
 # Variables for Corpora versions
-DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
+DIR_JAMES_DATA=James-Data
 DIR_WIKI_DATA=Wiki-Data
 DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
 DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
@@ -302,7 +302,7 @@ fi
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
+reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do
