@@ -395,14 +395,9 @@ fi
 ###                 https://github.com/HughP/Bash-data-mlka/issues/17
 ###
 
-### (MSG-009) HUGH: This is a little misleading by putting an append. The file is deleted
-###                 above if it exists every time the script runs. We should change >> to >
-###                 So it's clear what we're doing at this point in the code.
-###
-###
-
 # List all Wikipedia dumps and store
 # results into the file Wikipedia-list.txt
+# We will use the >> rather than the > notation here because the file already exists. When we create new files we should use the > notation. However, in this case the file has aready been created by the `touch` command in the script initialization.
 cd "$DIR_WIKI_DATA"
 find * -maxdepth 0 -iname '*wiki*.bz2' >> ../$WIKI_LIST_FILE
 cd ..
