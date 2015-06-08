@@ -1,0 +1,91 @@
+x::y::z::
+x	y	z
+
+item in path to check::"Success message"::"Error message" --- should source be here too? as a URL?
+
+csvfix::"INFO: Great you have csvfix installed."::"! ERROR: Shucks! You do not have csvfix.\n\tYou need to get it. You can use Mercurial and compile it yourself from:\n\thttps://bitbucket.org/neilb/csvfix\n\tIf you are on OS X you can use Homebrew.\n\t 'Brew install csvfix'.\n"::
+
+
+{x}::"INFO: Great you have {x} installed."::"! ERROR: Shucks! You do not have {x}.\n\tYou need to get it. You can use Mercurial and compile it yourself from:\n\thttps://bitbucket.org/neilb/csvfix\n\tIf you are on OS X you can use Homebrew.\n\t 'Brew install csvfix'.\n"::
+
+
+
+# Check to see if TECkit is installed and in path:
+teckit_compile::"INFO: Great you have teckit_compile installed."::
+else
+"! ERROR: Shucks! You do not have teckit_compile.\n\tYou need to get it.  SIL International is the\n\tdistributor. It is part of TECkit.\n\tCheck here:"
+"       http://scripts.sil.org/TECkitDownloads"
+
+# Check to see if txtconv is installed and in path:
+txtconv::"INFO: Great you have txtconv installed."::
+"! ERROR: Shucks! You do not have txtconv. You need to\n\tget it.  SIL International is the distributor.\n\tIt is part of TECkit. Check here:"
+"       http://scripts.sil.org/TECkitDownloads "
+
+
+# Check to see if UnicodeCCount is installed and in path:
+if type UnicodeCCount &>/dev/null; then
+    echo "INFO: Great you have UnicodeCCount installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have UnicodeCCount."
+    echo "       You need to get it.  SIL International is"
+    echo "       the distributor. Check here:"
+    echo
+    echo "       http://scripts.sil.org/UnicodeCharacterCount"
+    echo
+    exit 1
+fi
+
+# Python Check
+if type python &>/dev/null; then
+    echo "INFO: Great you have Python installed. Looks like you are using the following version:"
+    echo "      $(python --version)"
+else
+    echo
+    echo "! ERROR: Shucks! You do not have Python."
+    echo "       You need to get it."
+    echo
+    echo "       On OS X, you can 'brew install python' this will get you a instance which is not your 'system instance'."
+    echo
+    echo "       BTW: We're going to check for pip and for pygal as best we can. So you should install both of those."
+    exit 1
+fi
+
+# PIP Check
+if type pip &>/dev/null; then
+    echo "INFO: Great you have PIP installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have PIP."
+    echo "       You need to get it."
+    echo
+    echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
+    echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
+    exit 1
+fi
+
+# PyGal Check
+if python -c 'import pygal' &>/dev/null; then
+    echo "INFO: Great you have PyGal installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have PyGal."
+    echo "       You need to get it."
+    echo
+    echo "       You can get it via pip 'pip install pygal'"
+    echo "       or it's website: http://pygal.org/"
+    exit 1
+fi
+
+# Pandas Check
+if python -c 'import pandas' &>/dev/null; then
+    echo "INFO: Great you have Pandas installed."
+else
+    echo
+    echo "! ERROR: Shucks! You do not have pandas."
+    echo "       You need to get it."
+    echo
+    echo "       You can get it via pip 'pip install pandas'"
+    echo "       or it's website: http://pandas.pydata.org/"
+    exit 1
+fi
