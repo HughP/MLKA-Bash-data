@@ -1,4 +1,0 @@
-Keyboard-XML/Ukrainian-Russian/Ukrainian (Russian).keylayout
-Keyboard-XML/example.keylayout
-Keyboard-XML/Apple keyboard search/Dark/Apple Keyboard made via css3._files/webfont.js
-Keyboard-XML/Apple keyboard search/Light/Apple Keyboard made via css3._files/webfont.js
