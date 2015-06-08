@@ -574,6 +574,28 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
 
+
+
+# James_Languages.txt is a file for just recording the languages I have for the corpora of James.
+for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
+    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
+done
+
+# Take the languages from James and add them to the master language list.
+for i in $(cat $JAMES_LANGUAGES);do
+	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
+done
+
+
+# This section needs to be modified and allow the arangement of info
+# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
+
+echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES[@]} James based corpora."
+echo "      Including the following languages: ${JAMES_LANGUAGES[*]}"
+echo
+
+
+
 ######
 # Jonathan\'s Language look-up table needs to go here.
 ######
@@ -588,38 +610,16 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 ###
 ###
 
-EXAMPLE_TABLE_ARRAY1=( AAA AAA AAA AAA AAA AAA )
+EXAMPLE_TABLE_ARRAY1=( $(cat ${JAMES_LANGUAGES[*]}) )
 EXAMPLE_TABLE_ARRAY2=( BBB BBB BBB BBB BBB BBB )
 EXAMPLE_TABLE_ARRAY3=( CCC CCC CCC CCC BBB BBB )
-EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD BBB BBB )
+# Problem: the output of the 4th array is only the union of the first and the fouth arrays.
+EXAMPLE_TABLE_ARRAY4=( $(cat $LANGUAGE_LIST_FILE) )
 
 DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
 
 ######
 ######
-
-
-# James_Languages.txt is a file for just recording the languages I have for the corpora of James.
-for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
-done
-
-# Take the languages from James and add them to the master language list.
-for i in $(cat $JAMES_LANGUAGES);do
-	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
-done
-
-
-# Set the Variables.
-JAMES_LANGUAGESString=$(cat $JAMES_LANGUAGES | tr "\n" " ")
-JAMES_LANGUAGES=($JAMES_LANGUAGESString)
-
-# This section needs to be modified and allow the arangement of info
-# to be corpus by type: Wikpedia/James or Language Navajo/ibgo
-
-echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES[@]} James based corpora."
-echo "      Including the following languages: ${JAMES_LANGUAGES[*]}"
-echo
 
 ##############################
 ##############################
