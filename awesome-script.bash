@@ -28,12 +28,12 @@ echo
 echo "Script Name:" $SCRIPT_NAME
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
-echo "License:" $License
+echo "License:" $LICENSE
 
 ### (MSG-001-C) HUGH: the function can be called and used just like echo
 ###                   except the function does all the work. Much cleaner
 ###                   when reading the script.
-###
+###				JONATHAN: I need to orally hear this from you. I am not sure I get it.
 
 PrintInfo
 PrintInfo "Your data is being processed in the following folder:\n
@@ -263,10 +263,19 @@ else
     echo
     exit 1
 fi
+##############################
+##############################
+####### Action Point  ########
+##############################
+
+# Need to add the REPO on keyboards
+# Need a REPO for phonoloy data
+# Need a Repo for Previous stats projects
+##############################
+##############################
 
 
 # The following dependencies might be needed. However their integration is not completed until we actually use them.
-#We need to add the other python scripts from Matt Stave and any module dependencies they may have : Glob, OS
 #We might want to consider dependencies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
 #Phonology Data for various languages
@@ -294,7 +303,7 @@ fi
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
+reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do
@@ -506,7 +515,7 @@ cat $JAMES_LIST_FILE >> $CORPUS_LIST_FILE
 ##############################
 #.keylayout files need to be parsed with XML (DTD here: https://developer.apple.com/library/mac/technotes/tn2056/_index.html ; Example here: https://github.com/palmerc/Ukrainian-Russian/blob/master/Ukrainian%20(Russian).keylayout) for the characters which are contained in them. There might be an XML/bash script processing tool, or there might be a Python XML processing tool for this.
 #.kmn files need to be parsed for the characters which they can produced. To do this I should look at the Palaos-python tools.
-#Windows keyboards are unacconted for. Adobe did create a script to convert .keylayout files to MSKLC files: https://github.com/adobe-type-tools/keyboard-layouts. Perhaps someone created a script for going the other way? If so, such a script could be investigated with the Me'phaa keyboard layout. There is a perl script for reading MSKLC here: https://github.com/amire80/msklc_reader. There are also several MSKLC files here: https://github.com/andjc/msklc
+#Windows keyboards are unacconted for. Adobe did create a script to convert .keylayout files to MSKLC files: https://github.com/adobe-type-tools/keyboard-layouts. Perhaps someone created a script for going the other way? If so, such a script could be investigated with the Me\'phaa keyboard layout. There is a perl script for reading MSKLC here: https://github.com/amire80/msklc_reader. There are also several MSKLC files here: https://github.com/andjc/msklc
 #
 #All the characters from the keyboard files, need to be compared with the characters which are used in the various corpora in the target languages.
 #A report needs to be generated to show the characters used in the corpora, and the characters which are possible via the keyboards.
@@ -605,10 +614,7 @@ EXAMPLE_TABLE_ARRAY4=( DDD DDD DDD DDD )
 #DisplayTable 1 2 3 4
 DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY3[*] EXAMPLE_TABLE_ARRAY4[*]
 
-### BREAKPOINT: This can be removed. used for debugging purposes.
-###
-###
-exit
+
 
 ######
 # Jonathan's Language look-up table needs to go here.

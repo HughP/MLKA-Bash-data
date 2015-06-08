@@ -83,7 +83,7 @@ rm -f typographically-correct-corpora.txt
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-clean_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "KEYBOARDS_LANGUAGES" )
+clean_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
 FILE_COUNT=0
 for i in ${clean_file_array[@]};do
