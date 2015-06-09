@@ -1,0 +1,2 @@
+type csvfix &>/dev/null%"INFO: Great you have csvfix installed."%"! ERROR: Shucks! You do not have csvfix.\n\tYou need to get it. You can use Mercurial and compile it yourself from:\n\thttps://bitbucket.org/neilb/csvfix\n\tIf you are on OS X you can use Homebrew.\n\t 'Brew install csvfix'.\n"
+type teckit_compile &>/dev/null%"INFO: Great you have teckit_compile installed."%"! ERROR: Shucks! You do not have teckit_compile. You need to get it.  SIL International is the distributor. It is part of TECkit. Check here: http://scripts.sil.org/TECkitDownloads"
