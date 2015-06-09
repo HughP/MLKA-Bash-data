@@ -1,0 +1,36 @@
+It’s important to note that submodules these days keep all their Git data in the top project’s .git directory, so unlike much older versions of Git, destroying a submodule directory won’t lose any commits or branches that you had.
+
+With these tools, submodules can be a fairly simple and effective method for developing on several related but still separate projects simultaneously.
+
+
+# To clone the whole project: (repo and submodules)
+$ git clone --recursive https://github.com/user/repo
+# It will automatically initialize and update each submodule in the repository
+
+
+# To add a submodule to an already existing repo:
+$ git submodule add https://github.com
+
+
+# Make changes:
+$ cd submodule
+$ vim some.file
+$ cd ..
+$ git commit -am 'message'
+# -a OR --all
+# Tell the command to automatically stage files that have been modified and deleted, but new files you have not told Git about are not affected.
+# In parent push all changes: (in parent repo and submodules)
+$ git push --recurse-submodules=on-demand
+
+
+$ cd submodule/
+$ git merge upstream
+Updating eb41d76..9fd905e   # example output
+Fast-forward
+$ cd ..
+$ git add submodule
+$ git commit -am 'Fast forwarded to a common submodule child'
+
+
+# To pull or update submodule (including upstream) repo and merge:
+$ git submodule update --remote --merge
