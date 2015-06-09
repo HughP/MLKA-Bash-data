@@ -1,0 +1,3 @@
+[submodule "MLKA-Data"]
+	path = MLKA-Data
+	url = https://github.com/HughP/MLKA-Data
