@@ -50,6 +50,7 @@ Tested on:
 - [ ] 0.0.3 ingest and organize Keyboard data
 - [ ] 0.1 Ingest, and organize data (Wikipedia, James, and Keyboards)
 - [ ] 0.1.1 Perform text clean up tasks for corpora.
+- [ ] 0.1.1.1 Perform transforms and needed XML opertations on keyboard files: for where csvfix does not work with keyboard files. Then see if [xmllint](http://xmlsoft.org/xmllint.html) or xmlstarlet will work. [XMLstarlet](http://xmlstar.sourceforge.net/docs.php) is availible via homebrew. 
 - [ ] 0.1.2 UnicodeCCount on data from Wikipedia, Keyboard layouts, and James texts.
 - [ ] 0.1.4 Graph output from UnicodeCCount
 - [ ] 0.1.5 Ingest and compare stats with other comparitive studies.
