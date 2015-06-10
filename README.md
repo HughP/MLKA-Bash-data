@@ -161,13 +161,15 @@ git push
 ```
 
 ###Notes for Hugh
-_Yes you "can" write anything with as little code as possible. The question is do you want to ACTUALLY work on code that is READABLE._
+_Yes you "can" write anything with as little code as possible. The question is do you want to actually work on code that is readable._
 
 I've been programming my whole life and went to school for Computer Science. In my journey you come across people that write short cryptic code and they think, less is better. It is not. Six months from now when you don't have the code in your working memory you'll read some line that makes no sense because the programmer sacrificed readability for "impressive" or "quick" or "condensed" code.
 
-_This Code is for EVERYBODY NOT JUST PROGRAMMERS!_
+_This Code is for everybody not just programmers!_
 
 You want people to understand the code so they trust the code with their data. Yes, short code with little comments may work for you, now. But this project is on GitHub for everybody in the world. Do you want to have your code only "serviceable" by you right now? Or do you want others to use and adapt your code?
+
+_Your idea for this project is truely awesome! And giving it to the world is truely a blessing to all._
 
 ####Bash
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
