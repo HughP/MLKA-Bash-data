@@ -169,7 +169,9 @@ _This Code is for everybody not just programmers!_
 
 You want people to understand the code so they trust the code with their data. Yes, short code with little comments may work for you, now. But this project is on GitHub for everybody in the world. Do you want to have your code only "serviceable" by you right now? Or do you want others to use and adapt your code?
 
-_Your idea for this project is truely awesome! And giving it to the world is truely a blessing to all._
+* Here is some great advice: http://mywiki.wooledge.org/BashGuide/Practices
+
+_Your idea for this project is truly awesome! And giving it to the world is truly a blessing to all._
 
 ####Bash
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
