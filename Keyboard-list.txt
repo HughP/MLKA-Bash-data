@@ -1,3 +1,0 @@
-example.keylayout
-webfont.js
-webfont.js

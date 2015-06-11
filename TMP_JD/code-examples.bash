@@ -101,9 +101,3 @@ if (( ONE == TWO )) || (( ONE == FOUR )); then
 fi
 echo
 echo
-
-
-    for i in ${x}; do
-        echo ${x[$i]}
-        echo
-    done

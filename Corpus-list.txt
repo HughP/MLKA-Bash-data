@@ -1,8 +1,0 @@
-ffwiki-latest-pages-articles.xml.bz2
-hawiki-latest-pages-articles.xml.bz2
-igwiki-latest-pages-articles.xml.bz2
-nvwiki-latest-pages-articles.xml.bz2
-example-ori-corpus-james-asg.txt
-example-ori-corpus-james-bkv.txt
-example-ori-corpus-james-ibo.txt
-example-ori-corpus-james-nav.txt

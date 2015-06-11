@@ -1,7 +1,7 @@
 #Bash-data-mlka
 _The purpose is to run data through UnicodeCcount and TECKit enmass. The script then processes the data counts produced against various keyboard layouts and gives evaluations on what the keyboard layout efficentcy is for the text of a specific language._
 
-This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required. 
+This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required.
 
 There are three related repositories:
 * The MLKA project
@@ -12,7 +12,7 @@ There are three related repositories:
 	* https://github.com/HughP/Keyboard-File-Types
 
 This is written to work on OS X and linux.
-Tested on: 
+Tested on:
 * OS X 10.6.8 & 10.9.5
 * Ubuntu
 
@@ -50,7 +50,7 @@ Tested on:
 - [ ] 0.0.3 ingest and organize Keyboard data
 - [ ] 0.1 Ingest, and organize data (Wikipedia, James, and Keyboards)
 - [ ] 0.1.1 Perform text clean up tasks for corpora.
-- [ ] 0.1.1.1 Perform transforms and needed XML opertations on keyboard files: for where csvfix does not work with keyboard files. Then see if [xmllint](http://xmlsoft.org/xmllint.html) or xmlstarlet will work. [XMLstarlet](http://xmlstar.sourceforge.net/docs.php) is availible via homebrew. 
+- [ ] 0.1.1.1 Perform transforms and needed XML opertations on keyboard files: for where csvfix does not work with keyboard files. Then see if [xmllint](http://xmlsoft.org/xmllint.html) or xmlstarlet will work. [XMLstarlet](http://xmlstar.sourceforge.net/docs.php) is availible via homebrew.
 - [ ] 0.1.2 UnicodeCCount on data from Wikipedia, Keyboard layouts, and James texts.
 - [ ] 0.1.4 Graph output from UnicodeCCount
 - [ ] 0.1.5 Ingest and compare stats with other comparitive studies.
@@ -143,7 +143,7 @@ _The purpose of this section is to list the kinds of files and the quantity of f
 
 ##Notes
 
-###Notes for Jonathan about git.
+###Notes about git.
 
 * Here is some thing about fetching from upstream and syncing your repo: https://help.github.com/articles/syncing-a-fork/
 
@@ -161,6 +161,17 @@ git push
 ```
 
 ###Notes for Hugh
+_Yes you "can" write anything with as little code as possible. The question is do you want to actually work on code that is readable._
+
+I've been programming my whole life and went to school for Computer Science. In my journey you come across people that write short cryptic code and they think, less is better. It is not. Six months from now when you don't have the code in your working memory you'll read some line that makes no sense because the programmer sacrificed readability for "impressive" or "quick" or "condensed" code.
+
+_This Code is for everybody not just programmers!_
+
+You want people to understand the code so they trust the code with their data. Yes, short code with little comments may work for you, now. But this project is on GitHub for everybody in the world. Do you want to have your code only "serviceable" by you right now? Or do you want others to use and adapt your code?
+
+* Here is some great advice: http://mywiki.wooledge.org/BashGuide/Practices
+
+_Your idea for this project is truly awesome! And giving it to the world is truly a blessing to all._
 
 ####Bash
 * For reference: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html

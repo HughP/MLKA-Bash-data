@@ -5,18 +5,25 @@
 #          Jonathan Duff <jonathan@dufffamily.org>
 # Version: 0.02
 # License: GPL
-# Dependencies are mentioned and linked in the README.md file.
+# Dependencies are mentioned in detail with linkes in the README.md file.
 
-### (MSG-001) HUGH: Moved all variables to the global-vars.bash file
-###                 so that other scripts will have access to all variables:
-###
-###
+# This scritp has a collection of sub scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts.
+
+
+##############################
+# Project Wide Variables
+##############################
+
+# All variables which are used by multible portions of the script are stated in a script called 'global-vars.bash'. The intent is that each sub-portion can call and include 'global-vars.bash'.
 
 # Grab global variables:
 source global-vars.bash
 
+##############################
+##############################
+
 ### (MSG-001-B) HUGH: We can use global functions like this:
-###
+### Hugh is noticing that not a lot of use exists for global-functions.bash  do we really need it?
 ###
 
 # Grab global functions:
@@ -25,7 +32,7 @@ source global-functions.bash
 # Print Program Authors and Version number
 echo
 echo
-echo "Script Name:" $SCRIPT_NAME
+echo "Script Name:" $SCRIPT_NAME #This needs updated so that each portion is represented in the variable.
 echo "Authors:" $AUTHORS
 echo "Version:" $VERSION
 echo "License:" $LICENSE
@@ -40,7 +47,9 @@ PrintInfo "Your data is being processed in the following folder:\n
             \t $HOME_FOLDER"
 PrintInfo
 
-# Print starting step 1 stage 1 and 2: generating data
+
+# This section just needs to be moved to 'global-vars.bash'.
+# The purpose can be to verify that things actually have been loaded.
 echo
 echo "INFO: Pre-flighting. Setting some of the variables,"
 echo "      looking to see if you have the correct"
@@ -48,7 +57,8 @@ echo "      dependencies installed, and looking at the"
 echo "      corpus data on hand."
 echo
 
-
+# Dependency check should be moved to its own script and sourced.
+# Dependencies (software) and (data) should each be added into their own folder
 
 ##############################
 # Dependencies Checks
