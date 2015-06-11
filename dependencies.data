@@ -1,4 +1,3 @@
-
-csvfix|"INFO: Great you have ${x} installed."|" something great"
+csvfix|INFO: Great you have ${!x} installed.| something great
 teckit_compile|"4"|"5"
 
