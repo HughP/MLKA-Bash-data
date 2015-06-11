@@ -66,126 +66,62 @@ echo
 #2. Check for critical data-files
 ##############################
 
-# Check for software/scripts
+# Check for software and make sure it it is in path
+# Command line dependencies are maintained in a seperate file (dependencies.data). Within that file the following order is used in a pipe seperated format.
+#x:: thing to use the 'type' comman on.
+#y:: success message
+#z:: Failure message
 
-# Check to see if csvfix is installed and in path:
-if type csvfix &>/dev/null; then
-    echo
-    echo "INFO: Great you have csvfix installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have csvfix."
-    echo "       You need to get it."
-    echo "       You can use Mercurial and compile it"
-    echo "       yourself from:"
-    echo
-    echo "       https://bitbucket.org/neilb/csvfix"
-    echo
-    echo "       If you are on OS X you can use Homebrew."
-    echo "        'Brew install csvfix'."
-    echo
-    exit 1
-fi
+###################
+# Commandline tools used as dependencies
+###################
 
-# Check to see if TECkit is installed and in path:
-if type teckit_compile &>/dev/null; then
-    echo "INFO: Great you have teckit_compile installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have teckit_compile."
-    echo "       You need to get it.  SIL International is the"
-    echo "       distributor. It is part of TECkit."
-    echo "       Check here:"
-    echo
-    echo "       http://scripts.sil.org/TECkitDownloads"
-    echo
-    exit 1
-fi
+IFS=$'\n'
+for i in dependencies.data; do
+x=($(csvfix read_dsv -csv -smq -s '|' -f 1 dependencies_commandline.data ))
+y=($(csvfix read_dsv -csv -smq -s '|' -f 2 dependencies_commandline.data ))
+z=($(csvfix read_dsv -csv -smq -s '|' -f 3 dependencies_commandline.data ))
 
-# Check to see if txtconv is installed and in path:
-if type txtconv &>/dev/null; then
-    echo "INFO: Great you have txtconv installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have txtconv. You need to"
-    echo "       get it.  SIL International is the distributor."
-    echo "       It is part of TECkit. Check here:"
-    echo
-    echo "       http://scripts.sil.org/TECkitDownloads "
-    echo
-    exit 1
-fi
+unset $IFS
+	for (( i=0; i < ${#x[@]}; i++ )); do
+	#The above code lets me put in the sequential number of the dependency check. So if I wanted to give each check an number I could.
+	    if type ${x} &>/dev/null; then
+	        echo -e $(eval "echo ${y[$i]}")
+	    else
+	    	echo
+	        echo -e $(eval "echo ${z[$i]}")
+	        echo
+	        exit 1
+	    fi
+	done
+done
 
-# Check to see if UnicodeCCount is installed and in path:
-if type UnicodeCCount &>/dev/null; then
-    echo "INFO: Great you have UnicodeCCount installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have UnicodeCCount."
-    echo "       You need to get it.  SIL International is"
-    echo "       the distributor. Check here:"
-    echo
-    echo "       http://scripts.sil.org/UnicodeCharacterCount"
-    echo
-    exit 1
-fi
+###################
+# Python modules used as dependencies
+###################
 
-# Python Check
-if type python &>/dev/null; then
-    echo "INFO: Great you have Python installed. Looks like you are using the following version:"
-    echo "      $(python --version)"
-else
-    echo
-    echo "! ERROR: Shucks! You do not have Python."
-    echo "       You need to get it."
-    echo
-    echo "       On OS X, you can 'brew install python' this will get you a instance which is not your 'system instance'."
-    echo
-    echo "       BTW: We're going to check for pip and for pygal as best we can. So you should install both of those."
-    exit 1
-fi
+IFS=$'\n'
+for i in dependencies.data; do
+x=($(csvfix read_dsv -csv -smq -s '|' -f 1 dependencies_py.data ))
+y=($(csvfix read_dsv -csv -smq -s '|' -f 2 dependencies_py.data ))
+z=($(csvfix read_dsv -csv -smq -s '|' -f 3 dependencies_py.data ))
 
-# PIP Check
-if type pip &>/dev/null; then
-    echo "INFO: Great you have PIP installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have PIP."
-    echo "       You need to get it."
-    echo
-    echo "       PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system."
-    echo "       On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'."
-    exit 1
-fi
-
-# PyGal Check
-if python -c 'import pygal' &>/dev/null; then
-    echo "INFO: Great you have PyGal installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have PyGal."
-    echo "       You need to get it."
-    echo
-    echo "       You can get it via pip 'pip install pygal'"
-    echo "       or it's website: http://pygal.org/"
-    exit 1
-fi
-
-# Pandas Check
-if python -c 'import pandas' &>/dev/null; then
-    echo "INFO: Great you have Pandas installed."
-else
-    echo
-    echo "! ERROR: Shucks! You do not have pandas."
-    echo "       You need to get it."
-    echo
-    echo "       You can get it via pip 'pip install pandas'"
-    echo "       or it's website: http://pandas.pydata.org/"
-    exit 1
-fi
+unset $IFS
+	for (( i=0; i < ${#x[@]}; i++ )); do
+	#The above code lets me put in the sequential number of the dependency check. So if I wanted to give each check an number I could.
+	    if python -c ${x} &>/dev/null; then
+	        echo -e $(eval "echo ${y[$i]}")
+	    else
+	    	echo
+	        echo -e $(eval "echo ${z[$i]}")
+	        echo
+	        exit 1
+	    fi
+	done
+done
 
 # Fetch wikipedia-extractor
-if [ -f wikipedia-extractor/WikiExtractor.py ]; then
+if [ -f Dependencies/Software/wikipedia-extractor/WikiExtractor.py ]; then
     # Control will enter here if FILE does NOT exist.
     echo "INFO: It looks like you already have wikipedia-extractor in place."
     echo "      Must not be your first time around the block."
@@ -197,7 +133,7 @@ else
     echo
     echo "         You need to install:"
     echo "         git clone https://github.com/bwbaugh/wikipedia-extractor.git"
-    echo "         You should clone Wikipedia-Extractor into the same folder as $SCRIPT_NAME."
+    echo "         You should clone Wikipedia-Extractor into the Dependencies/Software folder."
     echo
     exit 1
 fi
@@ -667,7 +603,7 @@ DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY
 #		in Wiki-Data.
 
 # Let's make sure the python scritp is executable.
-chmod +x "$HOME_FOLDER"/wikipedia-extractor/WikiExtractor.py
+chmod +x "$HOME_FOLDER"/Dependencies/Software/wikipedia-extractor/WikiExtractor.py
 
 # Sweep up
 if [ -f iso-639-3.data ]; then
@@ -695,11 +631,11 @@ if [ -f iso-639-3.data ]; then
                     echo "INFO: Wiki-Data/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
                 else
                     mkdir ${DATA:1:3}
-                    echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data." #This line needs testing
-					START_EXTRACT=`date +%s` # This line needs testing.
-                    python ../wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
+                    echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data."
+					START_EXTRACT=`date +%s` 
+                    python ../Dependencies/Software/wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
                     END_EXTRACT=`date +%s` # This line needs testing.
-                    RUNTIME=$((END_EXTRACT-START_EXTRACT)) # This line needs testing.
+                    RUNTIME=$((END_EXTRACT-START_EXTRACT)) # This could use interpretation. It reports everything in seconds.
                     echo "      We're back from processing the [${DATA:1:3}] languge data. It only took: $RUNTIME seconds." # This line needs testing.
                     # For other methods of finding time for the script running see here: http://unix.stackexchange.com/questions/52313/how-to-get-execution-time-of-a-script-effectively
                     echo
@@ -725,7 +661,7 @@ cd "$HOME_FOLDER"
 
 # Set the Variables.
 WIKI_LANGUAGESString=$(cat $WIKI_LANGUAGES | tr "\n" " ")
-WIKI_LANGUAGES=($WIKI_LANGUAGESString)
+WIKI_LANGUAGES=($WIKI_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning.
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
