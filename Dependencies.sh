@@ -1,3 +1,18 @@
+x=$(csvfix read_dsv -s % -f1)
+y=$(csvfix read_dsv -s % -f2) # "INFO: Great you have $x installed."
+z=$(csvfix read_dsv -s % -f3)
+
+if type $x &>/dev/null; then
+    echo
+    echo $y
+else
+    echo $z
+    exit 1
+fi
+
+
+
+
 if type csvfix &>/dev/null; then
     echo
     echo "INFO: Great you have csvfix installed."
