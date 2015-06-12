@@ -7,7 +7,7 @@ There are three related repositories:
 * The MLKA project
 	* https://github.com/HughP/MLKA
 * MLKA-Data which is a set of test data for testing and building this script.
-	* https://github.com/HughP/MLKA-data
+	* https://github.com/HughP/MLKA-Test-Data
 * Keyboard-File-Types which is simply a data array of various types of keyboard layout file types.
 	* https://github.com/HughP/Keyboard-File-Types
 
@@ -20,7 +20,7 @@ Tested on:
 ##Requires these dependencies
 
 1. [UnicodeCCount](http://scripts.sil.org/UnicodeCharacterCount) - version 0.3
- * A sub-dependency here is Perl - ** We do not check for Perl.** _We do chech for UnicodeCCount._
+ * A sub-dependency here is Perl - **We do not check for Perl.** _We do chech for UnicodeCCount._
  * The script will not be successful and will output an error if [allkeys.txt](http://www.unicode.org/Public/UCA/latest/allkeys.txt) is not present in your Perl instance. This is a requirement of UnicodeCcount to operate. The error message will say: `Your Perl installation is missing the UCA keys file. Please download http://www.unicode.org/Public/UCA/latest/allkeys.txt and put a copy into the '/usr/lib/x86_64-linux-gnu/perl/5.20/Unicode/Collate' folder.`
 2. [TECKit](http://scripts.sil.org/TECkitDownloads) - version 2.5.4
 3. [Typing](https://github.com/michaeldickens/Typing) by Michael Dickens
