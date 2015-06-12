@@ -156,10 +156,10 @@ echo "INFO: We're looking for text data and moving it to the correct locations."
 # No: make directory; this is important on the first run of the script.
 if [ -d "$DIR_WIKI_DATA" ]; then
     echo "INFO: $DIR_WIKI_DATA folder exists."
-    echo "      If we find Wikidata we will move it to the $DIR_WIKI_DATA folder."
+    echo "      If we find Wikidumps outside of this folder we will move it to the $DIR_WIKI_DATA folder."
 else
     echo "INFO: Creating $DIR_WIKI_DATA folder"
-    echo "      If we find Wikidata we will move it $DIR_WIKI_DATA folder."
+    echo "      If we find Wikidumps we will move it $DIR_WIKI_DATA folder."
     mkdir "$DIR_WIKI_DATA"
 fi
 
@@ -481,13 +481,13 @@ echo
 echo
 
 if [ -f iso-639-3.data ]; then
-    cd Wiki-Data
+    cd "$DIR_WIKI_DATA"
     # For every *wiki*.bz2 file do:
     for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
         for DATA in $(cat ../iso-639-3.data); do
             if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
                 if [ -d ${DATA:1:3} ]; then
-                    echo "INFO: Wiki-Data/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
+                    echo "INFO: Data-Wiki/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
                 else
                     mkdir ${DATA:1:3}
                     echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data."

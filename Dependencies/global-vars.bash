@@ -13,17 +13,22 @@ LICENSE="GPL"
 # Set to root folder of project
 HOME_FOLDER=`pwd`
 
-# Variables for UnicodeCCount output
-DIR_INITIAL_STATS_TITLE=Initial-Stats
-DIR_SECOND_STATS_TITLE=Second-Stats
-DIR_THIRD_STATS_TITLE=Third-Stats
+# Variables for Corpora versions and Source Data
+DIR_JAMES_DATA=Data-Source/Data-James # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
+DIR_WIKI_DATA=Data-Source/Data-Wiki
 
-# Variables for Corpora versions
-DIR_JAMES_DATA=James-Data # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
-DIR_WIKI_DATA=Wiki-Data
-DIR_TYPOGRAHICAL_CORRECT_DATA=Typographically-Clean-Corpora
-DIR_CLEAN_AND_POSSIBLE_DATA=Typo-Clean-And-Possible-To-Type-Corpora
-DIR_TEC_FILES=TECkit-tec-Files
+
+# Variables for UnicodeCCount output
+DIR_INITIAL_STATS_TITLE=Data-Derived/Initial-Stats
+DIR_SECOND_STATS_TITLE=Data-Derived/Second-Stats
+DIR_THIRD_STATS_TITLE=Data-Derived/Third-Stats
+
+
+
+
+DIR_TYPOGRAHICAL_CORRECT_DATA=Data-Derived/Typographically-Clean-Corpora
+DIR_CLEAN_AND_POSSIBLE_DATA=Data-Derived/Typo-Clean-And-Possible-To-Type-Corpora
+DIR_TEC_FILES=Data-Derived/TECkit-tec-Files
 
 ##############################
 # Variables for File Names Prefixes

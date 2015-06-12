@@ -17,7 +17,7 @@ License="GPL"
 # Variables Unique to Clean-up
 ##############################
 
-NEW_DATA=Dependencies/Data/MLKA-Data
+NEW_DATA=Dependencies/Data/MLKA-Test-Data
 
 ##############################
 ##############################
@@ -33,7 +33,6 @@ source Dependencies/global-vars.bash
 
 ##############################
 ##############################
-
 
 
 # Files to clean up. 
@@ -70,7 +69,7 @@ done
 
 # Put standard folders in the array to remove them. The variables need to be enclosed in double quotes.
 
-clean_folder_array=("$DIR_INITIAL_STATS_TITLE" "$DIR_SECOND_STATS_TITLE" "$DIR_THIRD_STATS_TITLE" "$DIR_TYPOGRAHICAL_CORRECT_DATA" "$DIR_CLEAN_AND_POSSIBLE_DATA" "$DIR_TEC_FILES" "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" )
+clean_folder_array=("$DIR_INITIAL_STATS_TITLE" "$DIR_SECOND_STATS_TITLE" "$DIR_THIRD_STATS_TITLE" "$DIR_TYPOGRAHICAL_CORRECT_DATA" "$DIR_CLEAN_AND_POSSIBLE_DATA" "$DIR_TEC_FILES" )
 
 FOLDER_COUNT=0
 for i in ${clean_folder_array[@]};do
@@ -88,6 +87,9 @@ done
 ################################
 ### End of Standard Folders ####
 ################################
+
+
+#Other folders like "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" might need some special attention. 
 	
 echo
 echo "We cleaned up all the files and folders. Now we are trying to coping over new test data."
@@ -100,19 +102,19 @@ echo
 # We need clean coppies of test dumps from wikipedia. This chunk pulls them in from the MLKA-Data repo
 
 # This check and copy was blocked out on 11 June 2015 because the Repo was added as a sub-module and files should not need to be coppied in.
-# if [ -d $NEW_DATA ];then
-# 	for i in $(find "$NEW_DATA"  -name '*.txt');do
-# 			cp $i .
-# 			echo "		Added default '.txt' data back to the folder."
-# 	done		
-# 	for i in $(find "$NEW_DATA"  -name '*.bz2');do
-# 			cp $i .
-# 			echo "		Added default '.bz2' data back to the folder."
-# 	done
-# 	else
-# 	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
-# 	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
-# fi		
+if [ -d $NEW_DATA ];then
+	for i in $(find "$NEW_DATA"  -name '*.txt');do
+			cp $i .
+			echo "		Added default '.txt' data back to the folder."
+	done		
+	for i in $(find "$NEW_DATA"  -name '*.bz2');do
+			cp $i .
+			echo "		Added default '.bz2' data back to the folder."
+	done
+	else
+	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
+	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
+fi		
 
 # We need to make sure that we have the file types needed to search for keyboards. This pulls the file in from the repo. If the repo does not exist it clones it from github.
 
