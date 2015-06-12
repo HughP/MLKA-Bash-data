@@ -1,0 +1,3 @@
+'import pygal'|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have ${x[$i]}.'\\n\\t'You need to get it. You can get it via PIP 'pip install pygal''\\n\\t'or via it's website: http://pygal.org/
+
+'import pandas'|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have pandas.'\\n\\t'You need to get it.'\\n\\t'You can get it via pip 'pip install pandas''\\n\\t'or via it's website: http://pandas.pydata.org/

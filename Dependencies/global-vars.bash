@@ -41,20 +41,20 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 
 # List of the file names of the Data files (corpora and keyboards).
 
-JAMES_LIST_FILE=James-list.txt #This is a file list of the James Corpus files.
-WIKI_LIST_FILE=Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps.
+JAMES_LIST_FILE=Temp-Files/Input-Files-Lists/James-list.txt #This is a file list of the James Corpus files.
+WIKI_LIST_FILE=Temp-Files/Input-Files-Lists/Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps.
 # OTHER_LIST_FILE= # This is for other corpora to be added in a later version. (some where around v. 0.9.8)
-CORPUS_LIST_FILE=Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
-KEYBOARD_LIST_FILE_FP=Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
-KEYBOARD_LIST_FILE=Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
+CORPUS_LIST_FILE=Temp-Files/Input-Files-Lists/Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
+KEYBOARD_LIST_FILE_FP=Temp-Files/Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
+KEYBOARD_LIST_FILE=Temp-Files/Input-Files-Lists/Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
-LANGUAGE_LIST_FILE=Language_ID.txt # This file is for all languages, not just one of the three arrays.
-CORPORA_LANGUAGES=Corpora_Languages.txt
-JAMES_LANGUAGES=James_Languages.txt
-WIKI_LANGUAGES=Wikipedia_Languages.txt
+LANGUAGE_LIST_FILE=Temp-Files/Languages-Used/Language_ID.txt # This file is for all languages, not just one of the three arrays.
+CORPORA_LANGUAGES=Temp-Files/Languages-Used/Corpora_Languages.txt
+JAMES_LANGUAGES=Temp-Files/Languages-Used/James_Languages.txt
+WIKI_LANGUAGES=Temp-Files/Languages-Used/Wikipedia_Languages.txt
 OTHER_CORPORA_LANGUAGES=
-KEYBOARDS_LANGUAGES=Keyboard_Languages.txt
+KEYBOARDS_LANGUAGES=Temp-Files/Languages-Used/Keyboard_Languages.txt
 
 CMD_UNICODECCOUNT=UnicodeCCount
 

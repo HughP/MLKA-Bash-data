@@ -17,7 +17,7 @@
 # All variables which are used by multible portions of the script are stated in a script called 'global-vars.bash'. The intent is that each sub-portion can call and include 'global-vars.bash'.
 
 # Grab global variables:
-source global-vars.bash
+source Dependencies/global-vars.bash
 
 ##############################
 ##############################
@@ -27,7 +27,7 @@ source global-vars.bash
 ###
 
 # Grab global functions:
-source global-functions.bash
+source Dependencies/global-functions.bash
 
 # Print Program Authors and Version number
 echo
@@ -77,10 +77,10 @@ echo
 ###################
 
 IFS=$'\n'
-for i in dependencies.data; do
-x=($(csvfix read_dsv -csv -smq -s '|' -f 1 dependencies_commandline.data ))
-y=($(csvfix read_dsv -csv -smq -s '|' -f 2 dependencies_commandline.data ))
-z=($(csvfix read_dsv -csv -smq -s '|' -f 3 dependencies_commandline.data ))
+for i in Dependencies/Software/dependencies_commandline.data; do #Can this file name be converted to a variable?
+x=($(csvfix read_dsv -csv -smq -s '|' -f 1 Dependencies/Software/dependencies_commandline.data ))
+y=($(csvfix read_dsv -csv -smq -s '|' -f 2 Dependencies/Software/dependencies_commandline.data ))
+z=($(csvfix read_dsv -csv -smq -s '|' -f 3 Dependencies/Software/dependencies_commandline.data ))
 
 unset $IFS
 	for (( i=0; i < ${#x[@]}; i++ )); do
@@ -101,10 +101,10 @@ done
 ###################
 
 IFS=$'\n'
-for i in dependencies.data; do
-x=($(csvfix read_dsv -csv -smq -s '|' -f 1 dependencies_py.data ))
-y=($(csvfix read_dsv -csv -smq -s '|' -f 2 dependencies_py.data ))
-z=($(csvfix read_dsv -csv -smq -s '|' -f 3 dependencies_py.data ))
+for i in Dependencies/Software/dependencies_commandline_py.data; do
+x=($(csvfix read_dsv -csv -smq -s '|' -f 1 Dependencies/Software/dependencies_py.data ))
+y=($(csvfix read_dsv -csv -smq -s '|' -f 2 Dependencies/Software/dependencies_py.data ))
+z=($(csvfix read_dsv -csv -smq -s '|' -f 3 Dependencies/Software/dependencies_py.data ))
 
 unset $IFS
 	for (( i=0; i < ${#x[@]}; i++ )); do
@@ -119,6 +119,9 @@ unset $IFS
 	    fi
 	done
 done
+
+
+# External Libraries, setings, and data tables should be souced to other .bash files.
 
 # Fetch wikipedia-extractor
 if [ -f Dependencies/Software/wikipedia-extractor/WikiExtractor.py ]; then
@@ -143,7 +146,7 @@ fi
 # Check for the ISO 639-3 code set data file; Someday we might prompt the user to update this, or better yet to automatically check.
 
 THE_COUNT=0
-for i in $(find * -maxdepth 0 -iname 'iso-639-3*.tab'); do
+for i in $(find * -iname 'iso-639-3*.tab'); do
     (( THE_COUNT = THE_COUNT + 1 ))
 done
 
@@ -160,7 +163,7 @@ case $THE_COUNT in
         echo "      iso-639-3_YYYYMMDD.tab"
         echo
         echo "      You should copy this .tab file into the directory:"
-        echo "      $HOME_FOLDER"
+        echo "      $HOME_FOLDER/Dependencies/Data"
         exit 1
         ;;
     1)  echo "INFO: Well it looks like you already have the ISO 639-3 Code table available and it is in the appropriate location."
@@ -211,6 +214,8 @@ fi
 
 ##############################
 ##############################
+
+
 
 ##############################
 #Clean the data folders in the event that this is the second time this script has run.
@@ -342,11 +347,10 @@ fi
 ###
 
 # List all Wikipedia dumps and store
-# results into the file Wikipedia-list.txt
+# results into the file $WIKI_LIST_FILE (Wikipedia-list.txt)
 # We will use the >> rather than the > notation here because the file already exists. When we create new files we should use the > notation. However, in this case the file has aready been created by the `touch` command in the script initialization.
-cd "$DIR_WIKI_DATA"
-find * -maxdepth 0 -iname '*wiki*.bz2' >> ../$WIKI_LIST_FILE
-cd ..
+
+find * -iname '*wiki*.bz2' >> $WIKI_LIST_FILE
 
 if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
     # No wikipedia dumps were found.
@@ -510,10 +514,7 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 
 # This reporting function was alread acomplished.
 # Find James corpora in both root and in DIR_JAMES_DATA
-# find * -maxdepth 0 -iname '*ori*corpus*.txt' >> $JAMES_LIST_FILE
-# cd $DIR_JAMES_DATA
-# find * -maxdepth 0 -iname '*ori*corpus*.txt' >> ../$JAMES_LIST_FILE
-# cd ../
+
 
 
 # Generate the LANGUAGE_ID Variables.
@@ -524,11 +525,11 @@ cat $KEYBOARD_LIST_FILE_FP | rev |cut -d '/' -f1 | rev >> $KEYBOARD_LIST_FILE
 
 # James_Languages.txt is a file for just recording the languages I have for the corpora of James.
 for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
+    expr "/$i" : '.*\(.\{3\}\)\.' >> $CORPORA_LANGUAGES
 done
 
 # Take the languages from James and add them to the master language list.
-for i in $(cat $JAMES_LANGUAGES);do
+for i in $(cat $CORPORA_LANGUAGES);do
 	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
 done
 
@@ -597,7 +598,7 @@ DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY
 ##############################
 
 
-#		Matches all *wiki*.bx2 files
+#		Matches all *wiki*.bz2 files
 #		to all iso-639-3*.tab files combined.
 #		Then creates corisponding directory
 #		in Wiki-Data.
@@ -681,7 +682,7 @@ echo
 #   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
 
 
-csvfix unique Wikipedia_Languages.txt Language_ID.txt | csvfix write_dsv -s ' ' -o Language_ID.txt
+csvfix unique Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
 
 
 # Set the Variables.
