@@ -58,7 +58,7 @@ KEYBOARDS_LANGUAGES=Temp-Files/Languages-Used/Keyboard_Languages.txt
 
 CMD_UNICODECCOUNT=UnicodeCCount
 
-KEYBOARD_FILE_TYPES=../Keyboard-File-Types/Keyboard-File-Types.txt # This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
+KEYBOARD_FILE_TYPES=Dependencies/Settings/Keyboard-File-Types/Keyboard-File-Types.txt # This file is externally maintained and imported to help this application determine if there are keyboard file types which need to be searched for.
 
 DATA_TYPE= # This should be an array made dynamically from various attributes of the data types. We have Keyboards, and each type of corpora. This array should motivate the tables in the display output.
 CORPUS_TYPE= # This needs to be dynamically determined and then added to an array. Should be like Data_type but only an array.

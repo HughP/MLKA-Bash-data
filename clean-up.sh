@@ -17,7 +17,7 @@ License="GPL"
 # Variables Unique to Clean-up
 ##############################
 
-NEW_DATA=../MLKA-Data
+NEW_DATA=Dependencies/Data/MLKA-Data
 
 ##############################
 ##############################
@@ -99,19 +99,20 @@ echo
 
 # We need clean coppies of test dumps from wikipedia. This chunk pulls them in from the MLKA-Data repo
 
-if [ -d $NEW_DATA ];then
-	for i in $(find "$NEW_DATA"  -name '*.txt');do
-			cp $i .
-			echo "		Added default '.txt' data back to the folder."
-	done		
-	for i in $(find "$NEW_DATA"  -name '*.bz2');do
-			cp $i .
-			echo "		Added default '.bz2' data back to the folder."
-	done
-	else
-	echo "      You should get the test data. You can do this by using the following command in the parent of this repository ($ cd ../)."
-	echo "      git clone https://github.com/HughP/MLKA-Data.git"
-fi		
+# This check and copy was blocked out on 11 June 2015 because the Repo was added as a sub-module and files should not need to be coppied in.
+# if [ -d $NEW_DATA ];then
+# 	for i in $(find "$NEW_DATA"  -name '*.txt');do
+# 			cp $i .
+# 			echo "		Added default '.txt' data back to the folder."
+# 	done		
+# 	for i in $(find "$NEW_DATA"  -name '*.bz2');do
+# 			cp $i .
+# 			echo "		Added default '.bz2' data back to the folder."
+# 	done
+# 	else
+# 	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
+# 	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
+# fi		
 
 # We need to make sure that we have the file types needed to search for keyboards. This pulls the file in from the repo. If the repo does not exist it clones it from github.
 
@@ -120,7 +121,7 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo "		Glad to see you have the 'Keyboard-File-Types' file."	
 	echo
 		else
-	cd ../
+	cd Dependencies/Settings/
 	git clone https://github.com/HughP/Keyboard-File-Types.git 	
 	echo "      Well it looks like you needed a data file. No worries we cloned it from https://github.com/HughP/Keyboard-File-Types.git and it is parallel to this folder."
 	echo
