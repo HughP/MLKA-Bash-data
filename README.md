@@ -126,6 +126,9 @@ These script files call on other bash script and python files. These additional 
 #### clean-up.bash
 This script's purpose is to return the repo to a "clean" state so that the `awesome-script.bash` can run from start to finish. It was designed durring testing and devleopment. Therefore it's purpose is to return the repo to a state where testing can occur.
 
+#### awesome-script.bash
+This script's purpose is to implement the analysis. This script is why this repo exists.
+
 
 ### Temp Files
 The script `awesome-script.bash` creates lists which it stores as files. These lists are held in the `Temp-Files` folder.

@@ -136,12 +136,33 @@ else
     echo
     exit 1
 fi
+
+# Check to see if the keyboard data folder is not empty. This folder is a submodule. But it might not have anything in it if the person did not download things correctly.
+
+if [ "$(ls $DIR_KEYBOARD_DATA )" ]; then
+    # Control will enter here if FOLDER does NOT exist.
+    echo "INFO: It looks like you already have $DIR_KEYBOARD_DATA in place."
+    echo "      That great news!"
+    echo
+else
+    echo
+    echo "! ERROR: We were being diligent. We were looking for some keyboard data files."
+    echo "         To do that we need the keyboard files. We have a nice set on github. Please install it. Generally it is installed as a submodule."
+    echo
+    echo "         You just put in the following command and get all the software in one download."
+    echo "         git clone --recursive https://github.com/HughP/MLKA-Bash-data"
+    echo
+    echo "         You could get this as an independent repo (but this is disprefered, see option 1 for the prefered method):"
+    echo "         git clone https://github.com/HughP/MLKA-Keyboards.git" 
+    echo
+    exit 1
+fi
+
 ##############################
 ##############################
 ####### Action Point  ########
 ##############################
 
-# Need to add the REPO on keyboards
 # Need a REPO for phonoloy data
 # Need a Repo for Previous stats projects
 ##############################

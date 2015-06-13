@@ -16,7 +16,7 @@ HOME_FOLDER=`pwd`
 # Variables for Corpora versions and Source Data
 DIR_JAMES_DATA=Data-Source/Data-James # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
 DIR_WIKI_DATA=Data-Source/Data-Wiki
-
+DIR_KEYBOARD_DATA=Data-Source/Data-Keyboard #This folder is actually a sub-module and is imported by git.
 
 # Variables for UnicodeCCount output
 DIR_INITIAL_STATS_TITLE=Data-Derived/Initial-Stats
