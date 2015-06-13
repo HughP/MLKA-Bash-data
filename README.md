@@ -69,6 +69,7 @@ Tested on:
 
 ##Repo structure
 
+```
 .
 ├── Admin Stuff
 │   ├── Deprecated-Scripts
@@ -92,26 +93,26 @@ Tested on:
 │   │       ├── Navajo James Text
 │   │       └── Wikipedia extracted Text
 │   └── Try this table
-├── **Data-Derived**
-├── **Data-Source**
+├── Data-Derived
+├── Data-Source
 │   ├── Data-James
 │   ├── Data-Keyboard
 │   ├── Data-Phonology-Orthography
 │   ├── Data-Previous-Frequency-Stats
 │   ├── Data-Wiki
 │   └── TECkit-Files
-├── **Dependencies**
+├── Dependencies
 │   ├── Data
 │   │   └── MLKA-Test-Data
 │   ├── Settings
 │   │   └── Keyboard-File-Types
 │   └── Software
 │       └── wikipedia-extractor
-└── **Temp-Files**
+└── Temp-Files
     ├── Input-Files-Lists
     └── Languages-Used
 
-
+```
 
 ### Admin Stuff
 _This folder is mostly for temporary stuff and working versions._
