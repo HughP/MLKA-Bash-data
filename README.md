@@ -6,10 +6,12 @@ This script is written in bash script for processing and computing MLKA data. So
 There are three related repositories:
 * The MLKA project
 	* https://github.com/HughP/MLKA
-* MLKA-Test-Data which is a set of test data for testing and building this script.
+* `MLKA-Test-Data` which is a set of test data for testing and building this script.
 	* https://github.com/HughP/MLKA-Test-Data
-* Keyboard-File-Types which is simply a data array of various types of keyboard layout file types.
+* `Keyboard-File-Types` which is simply a data array of various types of keyboard layout file types. This is used as a submodule for settings.
 	* https://github.com/HughP/Keyboard-File-Types
+* `MLKA Keyboards` which is a repository of keyboard layout files and their descriptions. This is used as a submodule for keyboard data.
+	* https://github.com/HughP/MLKA-Keyboards	
 
 This is written to work on OS X and linux.
 Tested on:
@@ -126,7 +128,7 @@ This script's purpose is to return the repo to a "clean" state so that the `awes
 
 
 ### Temp Files
-This script creates lists which it stores as files. These lists are held in the `Temp-Files` folder.
+The script `awesome-script.bash` creates lists which it stores as files. These lists are held in the `Temp-Files` folder.
 
 ### Data-Source
 The `Data-Source` folder houses where the source data is kept. Other copies of the data in various processed forms are created and housed in the `Data-Derived` folder.
@@ -142,11 +144,29 @@ The `Data-Source` folder houses where the source data is kept. Other copies of t
 * Typography character conversion by TECKit
 
 ###James
-*
+* Remove SFM Markers
+  i. Remove Verse
+  ii. Remove Chapter
+  iii. Remove Section headings
+  iv. Create stated copy of text for reference.
+
 
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._
 
+Some the files listed blow need to be intergrated into the outline below. 
+```
+
+list of all characters supported by keyboard.
+list of characters to be removed from text.
+.map file to support the removal of characters.
+
+.map file for each keyboard layout to transform the text to ASCII.
+.tec file for each keyboard layout to transform the text to ASCII.
+
+.map file 
+
+```
 ###Files we start off with
 
 ####Corpus Data

@@ -1,3 +1,6 @@
 [submodule "Dependencies/Data/MLKA-Test-Data"]
 	path = Dependencies/Data/MLKA-Test-Data
 	url = https://github.com/HughP/MLKA-Test-Data
+[submodule "Data-Source/Data-Keyboard"]
+	path = Data-Source/Data-Keyboard
+	url = https://github.com/HughP/MLKA-Keyboards.git
