@@ -6,7 +6,7 @@ This script is written in bash script for processing and computing MLKA data. So
 There are three related repositories:
 * The MLKA project
 	* https://github.com/HughP/MLKA
-* MLKA-Data which is a set of test data for testing and building this script.
+* MLKA-Test-Data which is a set of test data for testing and building this script.
 	* https://github.com/HughP/MLKA-Test-Data
 * Keyboard-File-Types which is simply a data array of various types of keyboard layout file types.
 	* https://github.com/HughP/Keyboard-File-Types
@@ -66,6 +66,71 @@ Tested on:
  - [ ] 0.9.2 for going the other way consider http://stackoverflow.com/questions/24300508/csv-to-json-using-bash or [csvkit's tools](http://csvkit.readthedocs.org/en/latest/scripts/in2csv.html).
  - [ ] 0.9.8 Add method for other corproa to exist and to be processed.
 - [ ] 1.5 add Swifter layout analysis.
+
+##Repo structure
+```
+.
+├── Admin Stuff
+│   ├── Deprecated-Scripts
+│   │   ├── Research-Keyboards
+│   │   └── cleancsv
+│   ├── Keyboard-XML
+│   │   ├── Apple CSS image
+│   │   ├── Apple keyboard search
+│   │   │   ├── Dark
+│   │   │   │   ├── Apple Keyboard made via css3._files
+│   │   │   │   └── css
+│   │   │   └── Light
+│   │   │       ├── Apple Keyboard made via css3._files
+│   │   │       └── css
+│   │   └── Ukrainian-Russian
+│   ├── TMP_JD
+│   ├── Test-Materials
+│   │   ├── Igbo James text
+│   │   ├── Igbo Keyboard Layout
+│   │   └── Navajo
+│   │       ├── Navajo James Text
+│   │       └── Wikipedia extracted Text
+│   └── Try this table
+├── **Data-Derived**
+├── **Data-Source**
+│   ├── Data-James
+│   ├── Data-Keyboard
+│   ├── Data-Phonology-Orthography
+│   ├── Data-Previous-Frequency-Stats
+│   ├── Data-Wiki
+│   └── TECkit-Files
+├── **Dependencies**
+│   ├── Data
+│   │   └── MLKA-Test-Data
+│   ├── Settings
+│   │   └── Keyboard-File-Types
+│   └── Software
+│       └── wikipedia-extractor
+└── **Temp-Files**
+    ├── Input-Files-Lists
+    └── Languages-Used
+
+```
+
+### Admin Stuff
+_This folder is mostly for temporary stuff and working versions._
+
+### Organization of script files
+Two `.bash` scripts are contained in root. `awesome-script.bash` and `clean-up.bash`.
+These script files call on other bash script and python files. These additional files are held in the `Dependencies` folder.
+
+#### clean-up.bash
+This script's purpose is to return the repo to a "clean" state so that the `awesome-script.bash` can run from start to finish. It was designed durring testing and devleopment. Therefore it's purpose is to return the repo to a state where testing can occur.
+
+
+### Temp Files
+This script creates lists which it stores as files. These lists are held in the `Temp-Files` folder.
+
+### Data-Source
+The `Data-Source` folder houses where the source data is kept. Other copies of the data in various processed forms are created and housed in the `Data-Derived` folder.
+
+
 
 ##Corpus clean up process
 ###Wikipedia
