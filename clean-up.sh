@@ -7,13 +7,7 @@
 # License: GPL
 ####To quickly removecontent produced by awesome bash script.
 
- 
-SCRIPT_NAME="awesome-script.bash"
-AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.02"
-License="GPL"
-
-##############################
+ ##############################
 # Variables Unique to Clean-up
 ##############################
 
@@ -35,7 +29,7 @@ source Dependencies/global-vars.bash
 ##############################
 
 
-# Files to clean up. 
+# Files to clean up.
 rm -f typographically-correct-corpora.txt
 
 ################################
@@ -89,8 +83,8 @@ done
 ################################
 
 
-#Other folders like "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" might need some special attention. 
-	
+#Other folders like "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" might need some special attention.
+
 echo
 echo "We cleaned up all the files and folders. Now we are trying to coping over new test data."
 echo
@@ -106,7 +100,7 @@ if [ -d $NEW_DATA ];then
 	for i in $(find "$NEW_DATA"  -name '*.txt');do
 			cp $i .
 			echo "		Added default '.txt' data back to the folder."
-	done		
+	done
 	for i in $(find "$NEW_DATA"  -name '*.bz2');do
 			cp $i .
 			echo "		Added default '.bz2' data back to the folder."
@@ -114,21 +108,21 @@ if [ -d $NEW_DATA ];then
 	else
 	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
 	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
-fi		
+fi
 
 # We need to make sure that we have the file types needed to search for keyboards. This pulls the file in from the repo. If the repo does not exist it clones it from github.
 
 if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
-	echo "		Glad to see you have the 'Keyboard-File-Types' file."	
+	echo "		Glad to see you have the 'Keyboard-File-Types' file."
 	echo
 		else
 	cd Dependencies/Settings/
-	git clone https://github.com/HughP/Keyboard-File-Types.git 	
+	git clone https://github.com/HughP/Keyboard-File-Types.git
 	echo "      Well it looks like you needed a data file. No worries we cloned it from https://github.com/HughP/Keyboard-File-Types.git and it is parallel to this folder."
 	echo
 	echo
-fi		
+fi
 
 ################################
 #### End of Copy in New Data ###
