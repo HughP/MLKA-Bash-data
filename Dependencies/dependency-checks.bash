@@ -162,7 +162,6 @@ fi
 ##############################
 ####### Action Point  ########
 ##############################
-
 # Need a REPO for phonoloy data
 # Need a Repo for Previous stats projects
 ##############################
@@ -172,8 +171,5 @@ fi
 # The following dependencies might be needed. However their integration is not completed until we actually use them.
 #We might want to consider dependencies for carpalx.
 #We might need to add KMFL and the Plaso-Python dependencies.
-#Phonology Data for various languages
-#Statistical Numbers from previous studies
-
 ##############################
 ##############################
