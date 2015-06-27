@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author: Jonathan Duff <jonathan@dufffamily.org>
 
-source global-vars.bash
+source Dependencies/global-vars.bash
 
 # http://tldp.org/LDP/abs/html/functions.html
 

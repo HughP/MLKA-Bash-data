@@ -11,7 +11,7 @@ There are three related repositories:
 * `Keyboard-File-Types` which is simply a data array of various types of keyboard layout file types. This is used as a submodule for settings.
 	* https://github.com/HughP/Keyboard-File-Types
 * `MLKA Keyboards` which is a repository of keyboard layout files and their descriptions. This is used as a submodule for keyboard data.
-	* https://github.com/HughP/MLKA-Keyboards	
+	* https://github.com/HughP/MLKA-Keyboards
 
 This is written to work on OS X and linux.
 Tested on:
@@ -157,7 +157,7 @@ The `Data-Source` folder houses where the source data is kept. Other copies of t
 ##List of files
 _The purpose of this section is to list the kinds of files and the quantity of files which are created and used during the data processing process. There are three kinds of files: those we start off with, temp-files which are created and then deleted by the script, and those which are generated along the way, but represent some type of analysis._
 
-Some the files listed blow need to be intergrated into the outline below. 
+Some the files listed blow need to be intergrated into the outline below.
 ```
 
 list of all characters supported by keyboard.
@@ -167,7 +167,7 @@ list of characters to be removed from text.
 .map file for each keyboard layout to transform the text to ASCII.
 .tec file for each keyboard layout to transform the text to ASCII.
 
-.map file 
+.map file
 
 ```
 ###Files we start off with
@@ -250,13 +250,6 @@ git push
 ```
 
 ###Notes for Hugh
-_Yes you "can" write anything with as little code as possible. The question is do you want to actually work on code that is readable._
-
-I've been programming my whole life and went to school for Computer Science. In my journey you come across people that write short cryptic code and they think, less is better. It is not. Six months from now when you don't have the code in your working memory you'll read some line that makes no sense because the programmer sacrificed readability for "impressive" or "quick" or "condensed" code.
-
-_This Code is for everybody not just programmers!_
-
-You want people to understand the code so they trust the code with their data. Yes, short code with little comments may work for you, now. But this project is on GitHub for everybody in the world. Do you want to have your code only "serviceable" by you right now? Or do you want others to use and adapt your code?
 
 * Here is some great advice: http://mywiki.wooledge.org/BashGuide/Practices
 
