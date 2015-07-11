@@ -1,7 +1,7 @@
 #MLKA-Bash-data
 _The purpose is to run data through UnicodeCcount and TECKit enmass. The script then processes the data counts produced against various keyboard layouts and gives evaluations on what the keyboard layout efficentcy is for the text of a specific language._
 
-This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required.
+This script is written in bash for processing and computing MLKA data. While some bash code does some functions, mostly bash functions as the glue pulling together several other programs written in other languages. Some python code referenced, and some perl dependencies are required.
 
 There are three related repositories:
 * The MLKA project

@@ -5,7 +5,7 @@
 #          Jonathan Duff <jonathan@dufffamily.org>
 # Version: 0.02
 # License: GPL
-# Dependencies are mentioned in detail with linkes in the README.md file.
+# Dependencies are mentioned in detail with links in the README.md file.
 
 # This scritp has a collection of sub scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts.
 
@@ -359,6 +359,9 @@ for i in $(cat "$INS_TRANSPOSED"-list-csv.txt);do
 # FIND a SVG to .jpg or .png application. See discussion here: http://superuser.com/questions/134679/command-line-application-for-converting-svg-to-png-on-mac-os-x
 
 
+#List of plots to create: differences of total characters in each phase of the text clean up process.
+#for each result (flag) of the UnicodeCCount output compare with the previous results, and also for each phase of the procss compare with previous results.
+
 ##############################
 ##############################
 
@@ -399,12 +402,6 @@ done
 
 ##############################
 ##############################
-
-##############################
-# Create gnuplot graphs of character frequencies based on CSV files
-##############################
-# http://stackoverflow.com/questions/14871272/plotting-using-a-csv-file
-
 
 
 ##############################

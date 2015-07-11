@@ -46,7 +46,7 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
-#Is the output on to theterminal on the above line correct? there are two sets of quote marks.
+#Is the output to the terminal on the above line correct? there are two sets of quote marks.
 fi
 
 

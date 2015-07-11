@@ -47,18 +47,20 @@ The solution I have imagined is that all control characters can be changed to th
 basically:
 find XML file
 copy xml file to derived data folder.
-in copy replace character code sequences with glyphs.
-Use XML to pull capable characters out of the keyboard layout.
+in the copy replace character code sequences for control characters with glyphs.
+Use XML to pull all characters out of the keyboard layout.
 Measure the keyboard characters against characters in the orthography and writing system. Generate Report.
-Measure the keyboard characters against characters in James.
-Measure the keyboard characters against characters in Wikipeida.
+Measure the keyboard characters against characters in James. Generate Report.
+Measure the keyboard characters against characters in Wikipeida. Generate Report.
 
 Pull out characters used and their associated key.
 Use the associated key in the QWERTY keyboard to create a TECkit mapping pivoting on the keyboard for each language and the QWERTY Mapping.
 
 
-We need to report what was changed.
+We need to report what was changed. -- a corespondence table.
 
+Convert texts to quwerty equivelent via TECkit.
+Run Keyboard evaluation program against TECKit model.
 
 
 # In oder to read .keylayout files with CVSfix invalid characters in XML 1.0 can not be included in the file being parsed. These characters need to be removed, or better yet replaced. These characters minimally include: 

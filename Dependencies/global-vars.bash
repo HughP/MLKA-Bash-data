@@ -7,7 +7,7 @@
 
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
-VERSION="0.02"
+VERSION="0.02.5"
 LICENSE="GPL"
 
 # Set to root folder of project
