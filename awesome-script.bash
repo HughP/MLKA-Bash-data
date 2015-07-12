@@ -7,7 +7,7 @@
 # License: GPL
 # Dependencies are mentioned in detail with links in the README.md file.
 
-# This scritp has a collection of sub scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts.
+# This script has a collection of sub-scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts. In this case the ties are all written in bash while some of the other scripts are written in other languages.
 
 
 ##############################
@@ -93,8 +93,8 @@ source Dependencies/dependency-checks.bash
 ################################
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
+# The RESET array is set in the global-variables file.
 
-reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do
@@ -143,25 +143,20 @@ fi
 #Others - not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
 
+# This portion of the script moves files which may be dropped in the master folder area and puts them in appropriate folders.
 source Dependencies/data-moves.bash
 
 ##############################
 ##############################
 
-
+# This section does....
 source Dependencies/source-data-stats.bash
 
 ##############################
 #Create Language IDs
 ##############################
 
-
-### I think we should move the James counts to another section where James is processed.
-### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
-
-### (MSG-006) HUGH: The above statements sounds good to me too.
-###
-###
+exit;1
 
 ### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
 ###                 run above in the James section? If so, then we should remove it.

@@ -13,17 +13,25 @@ LICENSE="GPL"
 # Set to root folder of project
 HOME_FOLDER=`pwd`
 
+reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$WIKI_LIST_FILE_FP" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
+
+clean_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$WIKI_LIST_FILE_FP" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
+
+##############################
+# Variables for directories
+##############################
+
 # Variables for Corpora versions and Source Data
+
 DIR_JAMES_DATA=Data-Source/Data-James # This variable needs to be updated in the clean-up script. I wish there was a way to reference these variables from that script.
 DIR_WIKI_DATA=Data-Source/Data-Wiki
 DIR_KEYBOARD_DATA=Data-Source/Data-Keyboard #This folder is actually a sub-module and is imported by git.
 
 # Variables for UnicodeCCount output
+
 DIR_INITIAL_STATS_TITLE=Data-Derived/Initial-Stats
 DIR_SECOND_STATS_TITLE=Data-Derived/Second-Stats
 DIR_THIRD_STATS_TITLE=Data-Derived/Third-Stats
-
-
 
 
 DIR_TYPOGRAHICAL_CORRECT_DATA=Data-Derived/Typographically-Clean-Corpora
@@ -47,11 +55,13 @@ INS_TRANSPOSED=First_Stats_Transposed # Used for transposed CSV files
 # List of the file names of the Data files (corpora and keyboards).
 
 JAMES_LIST_FILE=Temp-Files/Input-Files-Lists/James-list.txt #This is a file list of the James Corpus files.
+JAMES_LIST_FILE_FP=Temp-Files/Input-Files-Lists/Full-Path-James-list.txt #This is a file list of the James Corpus files with their full paths relative to the home folder.
 WIKI_LIST_FILE=Temp-Files/Input-Files-Lists/Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps.
+WIKI_LIST_FILE_FP=Temp-Files/Input-Files-Lists/Full-Path-Wikipedia-list.txt #This file contains the file names of the Wikipedia data dumps with their full paths relative to the home directory.
 # OTHER_LIST_FILE= # This is for other corpora to be added in a later version. (some where around v. 0.9.8)
 CORPUS_LIST_FILE=Temp-Files/Input-Files-Lists/Corpus-list.txt #This file is a list of all corpora (James + Wikipedia # + other)
-KEYBOARD_LIST_FILE_FP=Temp-Files/Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 KEYBOARD_LIST_FILE=Temp-Files/Input-Files-Lists/Keyboard-list.txt #This file lists all the keyboard files. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
+KEYBOARD_LIST_FILE_FP=Temp-Files/Input-Files-Lists/Full-Path-Keyboard-list.txt # This file lists all the keyboard files with their full path relative to the home directory. Included are .kmx, .keylayout, .kmn, (and perhaps more) other blocks which reference this file need to take into account that there are multiple file types in this file.
 
 # List of all languages used in the data processing
 LANGUAGE_LIST_FILE=Temp-Files/Languages-Used/Language_ID.txt # This file is for all languages, not just one of the three arrays.

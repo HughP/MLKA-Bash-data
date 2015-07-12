@@ -5,7 +5,7 @@
 #          Jonathan Duff <jonathan@dufffamily.org>
 # Version: 0.02
 # License: GPL
-####To quickly removecontent produced by awesome bash script.
+#Purpose: To quickly remove content produced by awesome bash script.
 
  
 SCRIPT_NAME="awesome-script.bash"
@@ -44,7 +44,7 @@ rm -f typographically-correct-corpora.txt
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-clean_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
+# The clean_file_array is set in the global variables file.
 
 FILE_COUNT=0
 for i in ${clean_file_array[@]};do
@@ -100,6 +100,25 @@ echo
 ################################
 
 # We need clean coppies of test dumps from wikipedia. This chunk pulls them in from the MLKA-Data repo
+
+
+if [ -d $NEW_DATA ];then
+	echo "		Removing '.txt' data from the data source folder."	
+
+	for i in $(find "$NEW_DATA" -name '*.txt' -exec basename \{} \; );do
+			rm "$DIR_JAMES_DATA"/$i
+			printf "+"
+	done
+	
+	echo "		Removing '.bz2' data from the data source folder."	
+	for i in $(find "$NEW_DATA"  -name '*.bz2' -exec basename \{} \; );do
+			rm "$DIR_WIKI_DATA"/$i
+			printf "+"
+	done
+	else
+	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
+	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
+fi		
 
 # This check and copy was blocked out on 11 June 2015 because the Repo was added as a sub-module and files should not need to be coppied in.
 if [ -d $NEW_DATA ];then

@@ -1,5 +1,0 @@
-First_Stats-list-csv-transpose.csv
-First_Stats-list-transpose-transpose.csv
-First_Stats-list-transpose.csv
-First_Stats_Transposed-list-csv-transpose.csv
-First_Stats_Transposed-list-csv.csv

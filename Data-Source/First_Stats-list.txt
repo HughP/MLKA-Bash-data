@@ -1,3 +1,0 @@
-First_Stats-list-csv.txt
-First_Stats-list.txt
-First_Stats_Transposed-list-csv.txt

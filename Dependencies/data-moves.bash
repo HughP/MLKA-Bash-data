@@ -16,8 +16,8 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     echo "INFO: $DIR_WIKI_DATA folder exists."
     echo "      If we find Wikidumps outside of this folder we will move it to the $DIR_WIKI_DATA folder."
 else
-    echo "INFO: Creating $DIR_WIKI_DATA folder"
-    echo "      If we find Wikidumps we will move it $DIR_WIKI_DATA folder."
+    echo "INFO: Creating $DIR_WIKI_DATA folder."
+    echo "      If we find Wikidumps we will move it into the $DIR_WIKI_DATA folder."
     mkdir "$DIR_WIKI_DATA"
 fi
 
@@ -25,10 +25,10 @@ fi
 
 echo
 echo "INFO: Looking for corpora from Wikipedia data dumps."
-echo "      If we find anything we'll let you know."
+echo "      If we find anything we'll let you know by the number of '+' symbols."
 echo
 
-# Find all wikipedia dumps in all folders below the home folder (except the test data folder) and move Wikipedia dumps into wikidata folder for processing.
+# Find all Wikipedia dumps in all folders below the home folder (except the test data folder) and move Wikipedia dumps into wikidata folder for processing.
 WIKI_DATA_FILE_COUNT=0
 if [ -d "$DIR_WIKI_DATA" ]; then
     printf "STATUS: "
@@ -46,32 +46,39 @@ if [ -d "$DIR_WIKI_DATA" ]; then
     done
     echo
     echo "INFO: Moved " $WIKI_DATA_FILE_COUNT " Wikidata dumps into the $DIR_WIKI_DATA folder."
-#Is the output to the terminal on the above line correct? there are two sets of quote marks.
 fi
 
 
-### (MSG-004) HUGH: For more information please see:
+### (MSG-004) For more Historical discussion please see:
 ###                 https://github.com/HughP/Bash-data-mlka/issues/17
-###
+### This issue is now closed but this comment is retained for historical reasons.
 
-# List all Wikipedia dumps and store
-# results into the file $WIKI_LIST_FILE (Wikipedia-list.txt)
+# List all Wikipedia dumps and store in temp file
+# results into the file $WIKI_LIST_FILE_FP (Full-Path-Wikipedia-list.txt)
 # We will use the >> rather than the > notation here because the file already exists. When we create new files we should use the > notation. However, in this case the file has aready been created by the `touch` command in the script initialization.
 
-find * -name '*wiki*.bz2' -not -path '*/MLKA-Test-Data/*' >> $WIKI_LIST_FILE
+find * -name '*wiki*.bz2' -not -path '*/MLKA-Test-Data/*' > $WIKI_LIST_FILE_FP
 
-if [ "$(cat $WIKI_LIST_FILE | wc -l)" -eq "0" ]; then
-    # No wikipedia dumps were found.
+# lets also create a file with the names of the files of Wikipedia corpora without paths.
+# If we wanted to, we could copy from the source file and then pull the paths out, but it is likely easier and more consistent to just run the find command again. If we were to move copy and modify from the $WIKI_LIST_FILE_FP file then we could use the commented out code below.
+# cp $WIKI_LIST_FILE_FP $WIKI_LIST_FILE
+# cat $WIKI_LIST_FILE | rev |cut -d '/' -f1 | rev > $WIKI_LIST_FILE
+
+find . -name '*wiki*.bz2' -not -path '*/MLKA-Test-Data/*' -exec basename \{} \; > $WIKI_LIST_FILE
+
+#Now lets count the number if items with paths and return that to the terminal prompt.
+if [ "$(cat $WIKI_LIST_FILE_FP | wc -l)" -eq "0" ]; then
+    # No Wikipedia dumps were found.
     echo
     echo "INFO:  We didn't find any Wikipedia data. We're moving on."
     echo
 else
     # Some uncompressed Wikipedia dumps exist.
     echo
-    echo "INFO: We think there are: $(cat $WIKI_LIST_FILE | wc -l) dumps to be processed."
+    echo "INFO: We think there are: $(cat $WIKI_LIST_FILE_FP | wc -l) dumps to be processed."
     echo
 
-    #There is a bug here in that the above line has a long space in it when returned to the command prompt.
+    #There is a bug here in that the above line has a long space in it when returned to the command prompt. It would look neater if this long space did not exist.
 fi
 
 # James
@@ -84,47 +91,54 @@ fi
 # Yes: print exists; inform the user we did not write over the folder and the data in it. Awesomescript does not set this folder to empty when it runs.
 # No: make directory; this is important on the first run of the script.
 if [ -d "$DIR_JAMES_DATA" ]; then
-    echo "INFO: $DIR_JAMES_DATA folder exists"
-    echo
+    echo "INFO: $DIR_JAMES_DATA folder exists."
+    echo "      If we find instances of James outside of this folder we will move it to the $DIR_JAMES_DATA folder."
 else
-    echo "INFO: Creating $DIR_JAMES_DATA folder"
-    echo
+    echo "INFO: Creating $DIR_JAMES_DATA folder."
+    echo "      If we find instances of James we will move it into the $DIR_JAMES_DATA folder."
     mkdir $DIR_JAMES_DATA
 fi
 
-### (MSG-005) HUGH: You had mentioned you would like to have an indicator for each file moved.
-###
-###
 
 # Does the James folder exist?
 # Yes: then move all files in HOME_FOLDER *james*.txt to it.
 # NO: nothing.
 JAMES_DATA_FILE_COUNT=0
 if [ -d "$DIR_JAMES_DATA" ]; then
-    for i in $(find * -maxdepth 0 -iname '*ori*james*.txt'); do
-	# Added a check so it doesn't clobber files:
-        if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
-            # safe to move the -ori-corpus-james*.txt files into James-Data:
-            mv "$i" "$DIR_JAMES_DATA"
-            (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
-            # http://www.tldp.org/LDP/abs/html/dblparens.html
-        fi
+    printf "STATUS: "
+    for i in $(find * -name '*ori*james*.txt' -not -path '*/MLKA-Test-Data/*'); do
+	        SafeMove "$i" "$DIR_JAMES_DATA/$i"
+			# $? is the return value from previous command above
+			case "$?" in
+         	   0) printf "+"
+              	  (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
+             	   ;;
+				1) printf "!"
+            	    ;;
+				*) printf "*"
+			esac
+#			# Original James check before safemove was introduced
+#			# Added a check so it doesn\'t clobber files:
+#   	    if [ ! -f "$DIR_JAMES_DATA/$i" ]; then
+#            # safe to move the -ori-corpus-james*.txt files into James-Data:
+#            mv "$i" "$DIR_JAMES_DATA"
+#            (( JAMES_DATA_FILE_COUNT = JAMES_DATA_FILE_COUNT + 1 ))
+#            # http://www.tldp.org/LDP/abs/html/dblparens.html
+#        	fi
     done
-# Report what was found and moved.
+    echo
     echo "INFO: Moved " $JAMES_DATA_FILE_COUNT " James texts into the $DIR_JAMES_DATA folder."
-	echo
 fi
 
-### (MSG-010) HUGH: This is a little misleading by putting an append. The file is deleted
-###                 above if it exists every time the script runs. We should change >> to >
-###                 So it's clear what we're doing at this point in the code.
-###
-###
+# Record to file what was found and moved.
+find * -name '*ori*james*.txt' -not -path '*/MLKA-Test-Data/*' > $JAMES_LIST_FILE_FP
 
-# Record to file what was fount and moved.
-cd $DIR_JAMES_DATA
-find * -maxdepth 0 -iname '*ori*james*.txt' >> ../$JAMES_LIST_FILE
-cd ../
+# lets also create a file with the names of the files of James corpora without paths.
+# If we wanted to, we could copy from the source file and then pull the paths out, but it is likely easier and more consistent to just run the find command again. If we were to move copy and modify from the $JAMES_LIST_FILE_FP file then we could use the commented out code below.
+# cp $JAMES_LIST_FILE_FP $JAMES_LIST_FILE
+# cat $JAMES_LIST_FILE | rev |cut -d '/' -f1 | rev > $JAMES_LIST_FILE
+
+find . -name '*ori*james*.txt' -not -path '*/MLKA-Test-Data/*' -exec basename \{} \; > $JAMES_LIST_FILE
 
 # Other
 
