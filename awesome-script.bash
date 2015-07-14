@@ -93,7 +93,8 @@ source Dependencies/dependency-checks.bash
 ################################
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
-# The RESET array is set in the global-variables file.
+
+reset_file_array=( "$JAMES_LIST_FILE" "$JAMES_LIST_FILE_FP" "$WIKI_LIST_FILE" "$WIKI_LIST_FILE_FP" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
 
 RESET_FILE_COUNT=0
@@ -156,47 +157,46 @@ source Dependencies/source-data-stats.bash
 #Create Language IDs
 ##############################
 
-exit;1
-
-### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
-###                 run above in the James section? If so, then we should remove it.
-###
-###
-
-# This reporting function was alread acomplished.
-# Find James corpora in both root and in DIR_JAMES_DATA
-
-
-
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
 
+# It needs to deal with the wikipedia and the keyboard files.
 
 
 # James_Languages.txt is a file for just recording the languages I have for the corpora of James.
-for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> $CORPORA_LANGUAGES
+for i in $(cat $JAMES_LIST_FILE); do
+    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
 done
 
 # Take the languages from James and add them to the master language list.
-for i in $(cat $CORPORA_LANGUAGES);do
+for i in $(cat $JAMES_LANGUAGES);do
 	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
+	grep -Fxq "$i" $CORPORA_LANGUAGES || echo $i >> $CORPORA_LANGUAGES
 done
-
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
+
+## These are not reading as arrays. Rather they are reading as literals or paths OR they are reading as just the first line of the file.
 echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES[@]} James based corpora."
 echo "      Including the following languages: ${JAMES_LANGUAGES[*]}"
 echo
 
 
+##############################
+##############################
+
+source Dependencies/wikipedia-process.bash
+
 
 ######
 # Jonathan\'s Language look-up table needs to go here.
 ######
+
+exit;1
+
 
 ### (MSG-008) HUGH: The displaying of the table is handed off to a function
 ###                 called DisplayTable. Does not fully work at the moment.
@@ -218,12 +218,6 @@ DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY
 
 ######
 ######
-
-##############################
-##############################
-
-source Dependencies/wikipedia-process.bash
-
 
 
 ##############################

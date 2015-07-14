@@ -27,7 +27,7 @@ if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
 
-csvfix read_dsv -f 1,4,7 -s '\t' iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
+csvfix read_dsv -f 1,4,7 -s '\t' Dependencies/Data/iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
 
 echo
 echo "INFO: We've started extracting the Wikipedia data."
@@ -39,10 +39,10 @@ echo
 echo
 
 if [ -f iso-639-3.data ]; then
-    cd "$DIR_WIKI_DATA"
+    pushd "$DIR_WIKI_DATA"
     # For every *wiki*.bz2 file do:
-    for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-        for DATA in $(cat ../iso-639-3.data); do
+    for FILE in $(find * -iname '*wiki*.bz2'); do
+        for DATA in $(cat "$HOME_FOLDER"/iso-639-3.data); do
             if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
                 if [ -d ${DATA:1:3} ]; then
                     echo "INFO: Data-Wiki/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
@@ -62,8 +62,10 @@ if [ -f iso-639-3.data ]; then
         done
     done
 
-    cd .. # NOTE: need to change to $HOME_FOLDER
+    popd
 fi
+
+exit;0
 
 # Sweep up
 if [ -f iso-639-3.data ]; then
@@ -71,9 +73,9 @@ if [ -f iso-639-3.data ]; then
 fi
 
 # Report the languages found to the wikipedia list and to the master list
-cd $DIR_WIKI_DATA
+pushd $DIR_WIKI_DATA
 find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> ../$WIKI_LANGUAGES
-cd "$HOME_FOLDER"
+popd
 
 
 # Set the Variables.

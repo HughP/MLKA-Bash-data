@@ -1,0 +1,6 @@
+Data-Source/Data-James/example-ori-corpus-james-asg.txt
+Data-Source/Data-James/example-ori-corpus-james-bkv.txt
+Data-Source/Data-James/example-ori-corpus-james-deu.txt
+Data-Source/Data-James/example-ori-corpus-james-eng.txt
+Data-Source/Data-James/example-ori-corpus-james-ibo.txt
+Data-Source/Data-James/example-ori-corpus-james-nav.txt

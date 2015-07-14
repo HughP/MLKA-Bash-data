@@ -1,0 +1,6 @@
+example-ori-corpus-james-asg.txt
+example-ori-corpus-james-bkv.txt
+example-ori-corpus-james-deu.txt
+example-ori-corpus-james-eng.txt
+example-ori-corpus-james-ibo.txt
+example-ori-corpus-james-nav.txt
