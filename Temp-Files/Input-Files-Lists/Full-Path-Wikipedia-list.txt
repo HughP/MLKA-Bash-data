@@ -1,4 +1,0 @@
-Data-Source/Data-Wiki/ffwiki-latest-pages-articles.xml.bz2
-Data-Source/Data-Wiki/hawiki-latest-pages-articles.xml.bz2
-Data-Source/Data-Wiki/igwiki-latest-pages-articles.xml.bz2
-Data-Source/Data-Wiki/nvwiki-latest-pages-articles.xml.bz2

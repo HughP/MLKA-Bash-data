@@ -50,7 +50,7 @@ if [ -f iso-639-3.data ]; then
                     mkdir ${DATA:1:3}
                     echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data."
 					START_EXTRACT=`date +%s` 
-                    python ../Dependencies/Software/wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
+                    python "$HOME_FOLDER"/Dependencies/Software/wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
                     END_EXTRACT=`date +%s` # This line needs testing.
                     RUNTIME=$((END_EXTRACT-START_EXTRACT)) # This could use interpretation. It reports everything in seconds.
                     echo "      We're back from processing the [${DATA:1:3}] languge data. It only took: $RUNTIME seconds." # This line needs testing.
@@ -65,36 +65,44 @@ if [ -f iso-639-3.data ]; then
     popd
 fi
 
-exit;0
-
 # Sweep up
 if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
 
+##############################
+#Create Language IDs from Wiki Dumps
+##############################
+
 # Report the languages found to the wikipedia list and to the master list
 pushd $DIR_WIKI_DATA
-find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> ../$WIKI_LANGUAGES
+find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> "$HOME_FOLDER"/$WIKI_LANGUAGES
 popd
+
+for i in $(cat $WIKI_LANGUAGES);do
+	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
+	grep -Fxq "$i" $CORPORA_LANGUAGES || echo $i >> $CORPORA_LANGUAGES
+done
 
 
 # Set the Variables.
 WIKI_LANGUAGESString=$(cat $WIKI_LANGUAGES | tr "\n" " ")
-WIKI_LANGUAGES=($WIKI_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning.
+WIKI_LANGUAGES_ARRAY=($WIKI_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning. Fixed on 15 July 2015 by adding "_ARRAY at the end of the variable name".
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES[@]} Wikipedia based corpora."
-echo "      Including the following languages: ${WIKI_LANGUAGES[*]}"
+echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES_ARRAY[@]} Wikipedia based corpora."
+echo "      Including the following languages: ${WIKI_LANGUAGES_ARRAY[*]}"
 echo
 
+exit;0
 
 # Take the languages from Wikipedia and append them to the master language list; making sure not to add duplicates
 
 # This might be able to be simplified as an array and use just bash....
-#   Some_array=(cat $WIKI_LANGUAGES)
-#   Some_other_array=(cat $JAMES_LANGUAGES)
+#   Some_array=(cat $WIKI_LANGUAGES_ARRAY)
+#   Some_other_array=(cat $JAMES_LANGUAGES_ARRAY)
 #   Some_third_array=("${Some_array[@]}" "${Some_other_array[@]}")
 #   Display the compined number of units: ${#Some_third_array[*]}
 #   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
