@@ -267,7 +267,7 @@ Date accessed: 31 May 2015
 Author: xubuntix
 Date Authored: Nov 2 '11 at 7:32, updated at Aug 25 '12 at 7:07
 License: Creative Commons-With Attribution-Share Alike 3.0.
-License info: The CC-BY-SA 3.0 license is required as part of the user agreement for askubuntu.com. Thee script was a user contribution.
+License info: The CC-BY-SA 3.0 license is required as part of the user agreement for askubuntu.com. The script was a user contribution.
 Use: From the command line type: python csv_transposer.py <theinfilename> <theoutfilename>
 """
 
@@ -399,7 +399,7 @@ done
 ##############################
 #Alternate code by Jonathan D.
 ##############################
-#Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
+#Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan\'s approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
 #
 #cd $DIR_INITIAL_STATS_TITLE
 #

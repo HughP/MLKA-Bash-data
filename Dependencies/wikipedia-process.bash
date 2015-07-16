@@ -112,7 +112,7 @@ echo
 #   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
 
 
-csvfix unique /Temp-Files/Languages-Used/Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
+csvfix unique Temp-Files/Languages-Used/Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
 exit;0
 
 # Set the Variables.
@@ -174,97 +174,9 @@ echo "INFO: For the Wikipdia dumps which have been extracted, we are pulling the
 echo "      This might take some time as we use a small python script tocycle through some of the larger corpora."
 
 # Find all language folders
-# into each of the language's sub-folders copy the python code.
-#
-
-
-# The Python code
-
-# Embed the python code in the bash script so that it creates a new python script.
-
-
-cat << EOF > wiki_extractor_cleaner.py
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-@author: Matt Stave
-Date Authored: Thu Apr 30 23:43:48 2015
-Modified by: Hugh Paterson
-Date Modified: Sat Jun 06 22:14:00 2015
-License: GPL 3.0
-License info: http://www.gnu.org/licenses/gpl-3.0.en.html
-Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
-"""
-
-import pandas
-import glob
-import os
-
-#I tried to add the non-verbose commands with argparse.
-# Generally un successful.  More here: https://docs.python.org/2/howto/argparse.html
-# The python extractor script has several falgs.
-
-def make_df(articles):
-    #make a data frame from the list(s)
-    df = pandas.DataFrame(index = range(len(titles)))
-#    df['title'] = titles
-    df['article'] = articles
-    return df
-
-#get all files in directory and put them into a big list
-#Adjust path to find containing folder
-
-path = os.getcwd()
-filelist = glob.glob(path + '/wiki_*')
-content = []
-for item in filelist:
-    with open(item) as f:
-        subcontent = f.readlines()
-    content = content + subcontent
-
-#content = content[:2110]
-
-titles = []
-articles = []
-i = 0
-while i < len(content):
-    #skip <doc> type lines
-    if content[i][0] == '<':
-        print('skip', content[i][0], i)
-        i += 1
-        #keep text lines
-    else:
-        #first should be the title (then skip two lines to get to article text)
-        titles = titles + [content[i]]
-        print('title', content[i][0], i)
-        i += 2
-        art = []
-        #go through each line and get the text till you reach a newline
-        while '\n' not in content[i][0]:
-            art = art + [content[i]]
-            print('article', content[i][0], i)
-            i += 1
-            print i
-        if art == []:
-            art = ['NOARTICLE']
-        if len(art) > 0:
-            art = [' '.join(art)]
-        articles = articles + art
-        i += 1
-
-wiki = []
-for i in xrange(len(articles)):
-    wiki += [titles[i]]
-    wiki += [articles[i]]
-
-ISO_639_3code = os.path.split(os.path.dirname(path))[1]
-with open("ori-" + "corpus-" + "wikipedia-" + str(ISO_639_3code) + ".txt", 'w') as out_file:
-    out_file.write('\n'.join(wiki))
-EOF
-
-# Give write permissions to the python script
-chmod 755 wiki_extractor_cleaner.py
+# into each of the language\'s sub-folders copy the python code.
+# Call the python code from: /Dependencies/Software/wikipedia-extractor-cleaner/wiki_extractor_cleaner.py
+# Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
 
 # If I wanted to call the python script directly I could
 #./pyscript.py
@@ -291,7 +203,6 @@ rm wiki_extractor_cleaner.py
 ##############################
 
 #Use the Printf command from jonathan
-
 
 ##############################
 ##############################
