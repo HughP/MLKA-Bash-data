@@ -177,7 +177,6 @@ echo "      This might take some time as we use a small python script tocycle th
 # into each of the language\'s sub-folders copy the python code.
 # Call the python code from: /Dependencies/Software/wikipedia-extractor-cleaner/wiki_extractor_cleaner.py
 # Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
-
 # If I wanted to call the python script directly I could
 #./pyscript.py
 

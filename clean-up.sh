@@ -7,7 +7,7 @@
 # License: GPL
 #Purpose: To quickly remove content produced by awesome bash script.
 
- 
+
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.02"
@@ -35,7 +35,7 @@ source Dependencies/global-vars.bash
 ##############################
 
 
-# Files to clean up. 
+# Files to clean up.
 rm -f typographically-correct-corpora.txt
 
 ################################
@@ -89,8 +89,8 @@ done
 ################################
 
 
-#Other folders like "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" might need some special attention. 
-	
+#Other folders like "$DIR_WIKI_DATA" "$DIR_JAMES_DATA" might need some special attention.
+
 echo
 echo "We cleaned up all the files and folders. Now we are trying to coping over new test data."
 echo
@@ -111,7 +111,7 @@ if [ -d $NEW_DATA ];then
 	done
 	echo
 
-	echo "		Removing '.bz2' data from the data source folder."	
+	echo "		Removing '.bz2' data from the data source folder."
 	printf "STATUS: "
 	for i in $(find "$NEW_DATA"  -name '*.bz2' -exec basename \{} \; );do
 			rm "$DIR_WIKI_DATA"/$i
@@ -122,7 +122,7 @@ if [ -d $NEW_DATA ];then
 	else
 	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
 	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
-fi		
+fi
 
 # This check and copy was blocked out on 11 June 2015 because the Repo was added as a sub-module and files should not need to be coppied in.
 if [ -d $NEW_DATA ];then
@@ -134,7 +134,7 @@ if [ -d $NEW_DATA ];then
 	done
 	echo
 
-			
+
 	echo "		Added default '.bz2' data back to the main folder."
 	printf "STATUS: "
 	for i in $(find "$NEW_DATA"  -name '*.bz2');do
@@ -146,21 +146,21 @@ if [ -d $NEW_DATA ];then
 	else
 	echo "      You should get the test data. It is included as a sub-module in this repo. However you can also get it independently via the following command:"
 	echo "      git clone https://github.com/HughP/MLKA-Test-Data.git"
-fi		
+fi
 
 # We need to make sure that we have the file types needed to search for keyboards. This pulls the file in from the repo. If the repo does not exist it clones it from github.
 
 if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
-	echo "		Glad to see you have the 'Keyboard-File-Types' file."	
+	echo "		Glad to see you have the 'Keyboard-File-Types' file."
 	echo
 		else
 	cd Dependencies/Settings/
-	git clone https://github.com/HughP/Keyboard-File-Types.git 	
+	git clone https://github.com/HughP/Keyboard-File-Types.git
 	echo "      Well it looks like you needed a data file. No worries we cloned it from https://github.com/HughP/Keyboard-File-Types.git and it is parallel to this folder."
 	echo
 	echo
-fi		
+fi
 
 ################################
 #### End of Copy in New Data ###
