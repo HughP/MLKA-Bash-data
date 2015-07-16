@@ -79,24 +79,28 @@ pushd $DIR_WIKI_DATA
 find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> "$HOME_FOLDER"/$WIKI_LANGUAGES
 popd
 
+# For each item/line in Wiki_languages find out if the line already exists in $LANGUAGE_LIST_FILE and if not append it.
+
 for i in $(cat $WIKI_LANGUAGES);do
-	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
-	grep -Fxq "$i" $CORPORA_LANGUAGES || echo $i >> $CORPORA_LANGUAGES
+	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo "$i" >> $LANGUAGE_LIST_FILE #There is a bug here and I can not seem to pass data into this$LANGUAGE_LIST_FILE.
+	grep -Fxq "$i" $CORPORA_LANGUAGES || echo "$i" >> $CORPORA_LANGUAGES
 done
 
 
 # Set the Variables.
+
+#turn the list into a long list (array) with out new lines instead of a tall list
 WIKI_LANGUAGESString=$(cat $WIKI_LANGUAGES | tr "\n" " ")
-WIKI_LANGUAGES_ARRAY=($WIKI_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning. Fixed on 15 July 2015 by adding "_ARRAY at the end of the variable name".
+WIKI_LANGUAGES_ARRAY=($WIKI_LANGUAGESString)
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES_ARRAY[@]} Wikipedia based corpora."
+echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES_ARRAY[@]} Wikipedia based corpora." #There is a bug here and I can\'t seem to find out why the data is not being passed correctly. The same thing is happening in James. 
 echo "      Including the following languages: ${WIKI_LANGUAGES_ARRAY[*]}"
 echo
 
-exit;0
+
 
 # Take the languages from Wikipedia and append them to the master language list; making sure not to add duplicates
 
@@ -108,8 +112,8 @@ exit;0
 #   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
 
 
-csvfix unique Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
-
+csvfix unique /Temp-Files/Languages-Used/Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
+exit;0
 
 # Set the Variables.
 LANGUAGE_IDString=$(cat $LANGUAGE_LIST_FILE | tr "\n" " ")

@@ -170,6 +170,7 @@ for i in $(cat $JAMES_LIST_FILE); do
 done
 
 # Take the languages from James and add them to the master language list.
+echo $(cat $JAMES_LANGUAGES)
 for i in $(cat $JAMES_LANGUAGES);do
 	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
 	grep -Fxq "$i" $CORPORA_LANGUAGES || echo $i >> $CORPORA_LANGUAGES
@@ -181,9 +182,8 @@ done
 JAMES_LANGUAGESString=$(cat $JAMES_LANGUAGES | tr "\n" " ")
 JAMES_LANGUAGES_ARRAY=($JAMES_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning. Fixed on 15 July 2015 by adding "_ARRAY at the end of the variable name".
 
-
 ## These are not reading as arrays. Rather they are reading as literals or paths OR they are reading as just the first line of the file.
-echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES_ARRAY[@]} James based corpora."
+echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGESString[@]} James based corpora."
 echo "      Including the following languages: ${JAMES_LANGUAGES_ARRAY[*]}"
 echo
 
