@@ -256,41 +256,8 @@ ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-l
 # Let's transpose the CSV files so that CSVfix can drop a table so that we can use PYgal to create a chart.
 
 # Embed the python code in the bash script so that it creates a new python script.
-
-cat << EOF > csv_transposer.py
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-Source: http://askubuntu.com/questions/74686/is-there-a-utility-to-transpose-a-csv-file
-Date accessed: 31 May 2015
-Author: xubuntix
-Date Authored: Nov 2 '11 at 7:32, updated at Aug 25 '12 at 7:07
-License: Creative Commons-With Attribution-Share Alike 3.0.
-License info: The CC-BY-SA 3.0 license is required as part of the user agreement for askubuntu.com. The script was a user contribution.
-Use: From the command line type: python csv_transposer.py <theinfilename> <theoutfilename>
-"""
-
-import csv
-import sys
-infile = sys.argv[1]
-outfile = sys.argv[2]
-
-with open(infile) as f:
-    reader = csv.reader(f)
-    cols = []
-    for row in reader:
-        cols.append(row)
-
-with open(outfile, 'wb') as f:
-    writer = csv.writer(f)
-    for i in range(len(max(cols, key=len))):
-        writer.writerow([(c[i] if i<len(c) else '') for c in cols])
-EOF
-
-# Give write permissions to the python script
-chmod 755 csv_transposer.py
-
+# Call the python code from: /Dependencies/Software/CSV-transposer/csv_transposer.py
+# Use: From the commandline type: csv_transposer.py <theinfilename> <theoutfilename>
 # If I wanted to call the python script directly I could
 #./pyscript.py
 
