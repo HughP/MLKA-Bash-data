@@ -229,6 +229,25 @@ list of characters to be removed from text.
 * image of keyboard for heatmap full text.
 * list of all characters supported by keyboard.
 
+##Outline
+* Start
+ * Metadata
+* Variables set
+ * Directories
+ * File Names
+ * Other things
+* Dependencies
+ * Software
+ * Datafiles
+* Start with clean data processing folders
+ * Clear files created
+ * Clear compiled data
+* Look for data to move into data processing folders
+ * Look for Wikipedia data
+ * Look for James Data
+ * Look for keyboard data
+
+
 
 ##Notes
 
