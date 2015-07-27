@@ -162,14 +162,14 @@ fi
 ##############################
 ####### Action Point  ########
 ##############################
-# Need a REPO for phonoloy data
-# Need a Repo for Previous stats projects
+# Need a REPO for phonoloy data - Exemplify with NAV and ENG data
+# Need a Repo for Previous stats projects - Exemplify with NAV and ENG data
 ##############################
 ##############################
 
 
 # The following dependencies might be needed. However their integration is not completed until we actually use them.
-#We might want to consider dependencies for carpalx.
+#We might want to consider dependencies for carpalx. -- slated for version 0.4
 #We might need to add KMFL and the Plaso-Python dependencies.
 ##############################
 ##############################

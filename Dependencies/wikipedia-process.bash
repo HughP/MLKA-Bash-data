@@ -27,7 +27,7 @@ if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
 
-csvfix read_dsv -f 1,4,7 -s '\t' iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
+csvfix read_dsv -f 1,4,7 -s '\t' Dependencies/Data/iso-639-3*.tab | csvfix remove -f 2 -l 0 > iso-639-3.data
 
 echo
 echo "INFO: We've started extracting the Wikipedia data."
@@ -39,10 +39,10 @@ echo
 echo
 
 if [ -f iso-639-3.data ]; then
-    cd "$DIR_WIKI_DATA"
+    pushd "$DIR_WIKI_DATA"
     # For every *wiki*.bz2 file do:
-    for FILE in $(find * -maxdepth 0 -iname '*wiki*.bz2'); do
-        for DATA in $(cat ../iso-639-3.data); do
+    for FILE in $(find * -iname '*wiki*.bz2'); do
+        for DATA in $(cat "$HOME_FOLDER"/iso-639-3.data); do
             if [[ ${FILE:0:2} == ${DATA:7:2} ]]; then
                 if [ -d ${DATA:1:3} ]; then
                     echo "INFO: Data-Wiki/${DATA:1:3} exists. We assume that there is already extracted Wikipedia data in that folder."
@@ -50,7 +50,7 @@ if [ -f iso-639-3.data ]; then
                     mkdir ${DATA:1:3}
                     echo "INFO: We're extracting the ${DATA:11} [${DATA:1:3}] languge data."
 					START_EXTRACT=`date +%s` 
-                    python ../Dependencies/Software/wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
+                    python "$HOME_FOLDER"/Dependencies/Software/wikipedia-extractor/WikiExtractor.py -q -o ${DATA:1:3} $FILE
                     END_EXTRACT=`date +%s` # This line needs testing.
                     RUNTIME=$((END_EXTRACT-START_EXTRACT)) # This could use interpretation. It reports everything in seconds.
                     echo "      We're back from processing the [${DATA:1:3}] languge data. It only took: $RUNTIME seconds." # This line needs testing.
@@ -62,7 +62,7 @@ if [ -f iso-639-3.data ]; then
         done
     done
 
-    cd .. # NOTE: need to change to $HOME_FOLDER
+    popd
 fi
 
 # Sweep up
@@ -70,36 +70,50 @@ if [ -f iso-639-3.data ]; then
     rm iso-639-3.data
 fi
 
+##############################
+#Create Language IDs from Wiki Dumps
+##############################
+
 # Report the languages found to the wikipedia list and to the master list
-cd $DIR_WIKI_DATA
-find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> ../$WIKI_LANGUAGES
-cd "$HOME_FOLDER"
+pushd $DIR_WIKI_DATA
+find * -maxdepth 0 -type d  \( ! -iname ".*" \) >> "$HOME_FOLDER"/$WIKI_LANGUAGES
+popd
+
+# For each item/line in Wiki_languages find out if the line already exists in $LANGUAGE_LIST_FILE and if not append it.
+
+for i in $(cat $WIKI_LANGUAGES);do
+	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo "$i" >> $LANGUAGE_LIST_FILE #There is a bug here and I can not seem to pass data into this$LANGUAGE_LIST_FILE.
+	grep -Fxq "$i" $CORPORA_LANGUAGES || echo "$i" >> $CORPORA_LANGUAGES
+done
 
 
 # Set the Variables.
+
+#turn the list into a long list (array) with out new lines instead of a tall list
 WIKI_LANGUAGESString=$(cat $WIKI_LANGUAGES | tr "\n" " ")
-WIKI_LANGUAGES=($WIKI_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning.
+WIKI_LANGUAGES_ARRAY=($WIKI_LANGUAGESString)
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES[@]} Wikipedia based corpora."
-echo "      Including the following languages: ${WIKI_LANGUAGES[*]}"
+echo "INFO: It looks like we were able to extract ${#WIKI_LANGUAGES_ARRAY[@]} Wikipedia based corpora." #There is a bug here and I can\'t seem to find out why the data is not being passed correctly. The same thing is happening in James. 
+echo "      Including the following languages: ${WIKI_LANGUAGES_ARRAY[*]}"
 echo
+
 
 
 # Take the languages from Wikipedia and append them to the master language list; making sure not to add duplicates
 
 # This might be able to be simplified as an array and use just bash....
-#   Some_array=(cat $WIKI_LANGUAGES)
-#   Some_other_array=(cat $JAMES_LANGUAGES)
+#   Some_array=(cat $WIKI_LANGUAGES_ARRAY)
+#   Some_other_array=(cat $JAMES_LANGUAGES_ARRAY)
 #   Some_third_array=("${Some_array[@]}" "${Some_other_array[@]}")
 #   Display the compined number of units: ${#Some_third_array[*]}
 #   Some_third_array_count=$((${#Some_array[*]} + ${#Some_other_array[*]}))
 
 
-csvfix unique Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
-
+csvfix unique Temp-Files/Languages-Used/Wikipedia_Languages.txt $LANGUAGE_LIST_FILE | csvfix write_dsv -s ' ' -o $LANGUAGE_LIST_FILE
+exit;0
 
 # Set the Variables.
 LANGUAGE_IDString=$(cat $LANGUAGE_LIST_FILE | tr "\n" " ")
@@ -160,98 +174,9 @@ echo "INFO: For the Wikipdia dumps which have been extracted, we are pulling the
 echo "      This might take some time as we use a small python script tocycle through some of the larger corpora."
 
 # Find all language folders
-# into each of the language's sub-folders copy the python code.
-#
-
-
-# The Python code
-
-# Embed the python code in the bash script so that it creates a new python script.
-
-
-cat << EOF > wiki_extractor_cleaner.py
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-@author: Matt Stave
-Date Authored: Thu Apr 30 23:43:48 2015
-Modified by: Hugh Paterson
-Date Modified: Sat Jun 06 22:14:00 2015
-License: GPL 3.0
-License info: http://www.gnu.org/licenses/gpl-3.0.en.html
-Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
-"""
-
-import pandas
-import glob
-import os
-
-#I tried to add the non-verbose commands with argparse.
-# Generally un successful.  More here: https://docs.python.org/2/howto/argparse.html
-# The python extractor script has several falgs.
-
-def make_df(articles):
-    #make a data frame from the list(s)
-    df = pandas.DataFrame(index = range(len(titles)))
-#    df['title'] = titles
-    df['article'] = articles
-    return df
-
-#get all files in directory and put them into a big list
-#Adjust path to find containing folder
-
-path = os.getcwd()
-filelist = glob.glob(path + '/wiki_*')
-content = []
-for item in filelist:
-    with open(item) as f:
-        subcontent = f.readlines()
-    content = content + subcontent
-
-#content = content[:2110]
-
-titles = []
-articles = []
-i = 0
-while i < len(content):
-    #skip <doc> type lines
-    if content[i][0] == '<':
-        print('skip', content[i][0], i)
-        i += 1
-        #keep text lines
-    else:
-        #first should be the title (then skip two lines to get to article text)
-        titles = titles + [content[i]]
-        print('title', content[i][0], i)
-        i += 2
-        art = []
-        #go through each line and get the text till you reach a newline
-        while '\n' not in content[i][0]:
-            art = art + [content[i]]
-            print('article', content[i][0], i)
-            i += 1
-            print i
-        if art == []:
-            art = ['NOARTICLE']
-        if len(art) > 0:
-            art = [' '.join(art)]
-        articles = articles + art
-        i += 1
-
-wiki = []
-for i in xrange(len(articles)):
-    wiki += [titles[i]]
-    wiki += [articles[i]]
-
-ISO_639_3code = os.path.split(os.path.dirname(path))[1]
-with open("ori-" + "corpus-" + "wikipedia-" + str(ISO_639_3code) + ".txt", 'w') as out_file:
-    out_file.write('\n'.join(wiki))
-EOF
-
-# Give write permissions to the python script
-chmod 755 wiki_extractor_cleaner.py
-
+# into each of the language\'s sub-folders copy the python code.
+# Call the python code from: /Dependencies/Software/wikipedia-extractor-cleaner/wiki_extractor_cleaner.py
+# Use: From the commandline type: wiki_extractor_cleaner.py <theinfilename> <theoutfilename>
 # If I wanted to call the python script directly I could
 #./pyscript.py
 
@@ -277,7 +202,6 @@ rm wiki_extractor_cleaner.py
 ##############################
 
 #Use the Printf command from jonathan
-
 
 ##############################
 ##############################

@@ -1,7 +1,7 @@
 #MLKA-Bash-data
 _The purpose is to run data through UnicodeCcount and TECKit enmass. The script then processes the data counts produced against various keyboard layouts and gives evaluations on what the keyboard layout efficentcy is for the text of a specific language._
 
-This script is written in bash script for processing and computing MLKA data. Some python code is embeded, and some perl dependencies are required.
+This script is written in bash for processing and computing MLKA data. While some bash code does some functions, mostly bash functions as the glue pulling together several other programs written in other languages. Some python code referenced, and some perl dependencies are required.
 
 There are three related repositories:
 * The MLKA project
@@ -228,6 +228,25 @@ list of characters to be removed from text.
 * image of keyboard for heatmap sample text.
 * image of keyboard for heatmap full text.
 * list of all characters supported by keyboard.
+
+##Outline
+* Start
+ * Metadata
+* Variables set
+ * Directories
+ * File Names
+ * Other things
+* Dependencies
+ * Software
+ * Datafiles
+* Start with clean data processing folders
+ * Clear files created
+ * Clear compiled data
+* Look for data to move into data processing folders
+ * Look for Wikipedia data
+ * Look for James Data
+ * Look for keyboard data
+
 
 
 ##Notes

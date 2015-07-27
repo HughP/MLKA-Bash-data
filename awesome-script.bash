@@ -5,9 +5,9 @@
 #          Jonathan Duff <jonathan@dufffamily.org>
 # Version: 0.02
 # License: GPL
-# Dependencies are mentioned in detail with linkes in the README.md file.
+# Dependencies are mentioned in detail with links in the README.md file.
 
-# This scritp has a collection of sub scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts.
+# This script has a collection of sub-scripts. These sub-scripts can be run independently or collectively in series by running the master script which ties together the sub-scripts. In this case the ties are all written in bash while some of the other scripts are written in other languages.
 
 
 ##############################
@@ -94,7 +94,8 @@ source Dependencies/dependency-checks.bash
 
 # Put standard files in the array to remove them. The variables need to be enclosed in double quotes.
 
-reset_file_array=( "$JAMES_LIST_FILE" "$WIKI_LIST_FILE" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
+reset_file_array=( "$JAMES_LIST_FILE" "$JAMES_LIST_FILE_FP" "$WIKI_LIST_FILE" "$WIKI_LIST_FILE_FP" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
+
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do
@@ -143,65 +144,62 @@ fi
 #Others - not yet implemented. See notes for version 0.9.8 in the ReadMe.md
 ##############################
 
+# This portion of the script moves files which may be dropped in the master folder area and puts them in appropriate folders.
 source Dependencies/data-moves.bash
 
 ##############################
 ##############################
 
-
+# This section does....
 source Dependencies/source-data-stats.bash
 
 ##############################
-#Create Language IDs
+#Create Language IDs from James
 ##############################
-
-
-### I think we should move the James counts to another section where James is processed.
-### I think we should change from '*ori*corpus*.txt' to '*ori*james*.txt'
-
-### (MSG-006) HUGH: The above statements sounds good to me too.
-###
-###
-
-### (MSG-007) HUGH: I was not sure if the paragraph of commented out lines below are already
-###                 run above in the James section? If so, then we should remove it.
-###
-###
-
-# This reporting function was alread acomplished.
-# Find James corpora in both root and in DIR_JAMES_DATA
-
-
 
 # Generate the LANGUAGE_ID Variables.
 # This step looks through the James corpus texts and pull out
 # the last three characters of the corpus texts.
 
+# It needs to deal with the wikipedia and the keyboard files.
 
 
 # James_Languages.txt is a file for just recording the languages I have for the corpora of James.
-for i in $(find * -maxdepth 1 -iname '*ori*corpus*.txt'); do
-    expr "/$i" : '.*\(.\{3\}\)\.' >> $CORPORA_LANGUAGES
+for i in $(cat $JAMES_LIST_FILE); do
+    expr "/$i" : '.*\(.\{3\}\)\.' >> $JAMES_LANGUAGES
 done
 
 # Take the languages from James and add them to the master language list.
-for i in $(cat $CORPORA_LANGUAGES);do
+echo $(cat $JAMES_LANGUAGES)
+for i in $(cat $JAMES_LANGUAGES);do
 	grep -Fxq "$i" $LANGUAGE_LIST_FILE || echo $i >> $LANGUAGE_LIST_FILE
+	grep -Fxq "$i" $CORPORA_LANGUAGES || echo $i >> $CORPORA_LANGUAGES
 done
-
 
 # This section needs to be modified and allow the arangement of info
 # to be corpus by type: Wikpedia/James or Language Navajo/ibgo
 
-echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGES[@]} James based corpora."
-echo "      Including the following languages: ${JAMES_LANGUAGES[*]}"
+JAMES_LANGUAGESString=$(cat $JAMES_LANGUAGES | tr "\n" " ")
+JAMES_LANGUAGES_ARRAY=($JAMES_LANGUAGESString) #There is a bug here (or at least a bad programming practice). The file veriable has one name and the same name is used later for a different meaning. Fixed on 15 July 2015 by adding "_ARRAY at the end of the variable name".
+
+## These are not reading as arrays. Rather they are reading as literals or paths OR they are reading as just the first line of the file.
+echo "INFO: It looks like altogether we found: ${#JAMES_LANGUAGESString[@]} James based corpora."
+echo "      Including the following languages: ${JAMES_LANGUAGES_ARRAY[*]}"
 echo
 
+
+##############################
+##############################
+
+source Dependencies/wikipedia-process.bash
 
 
 ######
 # Jonathan\'s Language look-up table needs to go here.
 ######
+
+exit;1
+
 
 ### (MSG-008) HUGH: The displaying of the table is handed off to a function
 ###                 called DisplayTable. Does not fully work at the moment.
@@ -223,12 +221,6 @@ DisplayTable EXAMPLE_TABLE_ARRAY1[*] EXAMPLE_TABLE_ARRAY2[*] EXAMPLE_TABLE_ARRAY
 
 ######
 ######
-
-##############################
-##############################
-
-source Dependencies/wikipedia-process.bash
-
 
 
 ##############################
@@ -264,41 +256,8 @@ ls -A1r *${INITIAL_STATS_TITLE}*.csv | sort -t - -k 7 > "$INITIAL_STATS_TITLE"-l
 # Let's transpose the CSV files so that CSVfix can drop a table so that we can use PYgal to create a chart.
 
 # Embed the python code in the bash script so that it creates a new python script.
-
-cat << EOF > csv_transposer.py
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-Source: http://askubuntu.com/questions/74686/is-there-a-utility-to-transpose-a-csv-file
-Date accessed: 31 May 2015
-Author: xubuntix
-Date Authored: Nov 2 '11 at 7:32, updated at Aug 25 '12 at 7:07
-License: Creative Commons-With Attribution-Share Alike 3.0.
-License info: The CC-BY-SA 3.0 license is required as part of the user agreement for askubuntu.com. Thee script was a user contribution.
-Use: From the command line type: python csv_transposer.py <theinfilename> <theoutfilename>
-"""
-
-import csv
-import sys
-infile = sys.argv[1]
-outfile = sys.argv[2]
-
-with open(infile) as f:
-    reader = csv.reader(f)
-    cols = []
-    for row in reader:
-        cols.append(row)
-
-with open(outfile, 'wb') as f:
-    writer = csv.writer(f)
-    for i in range(len(max(cols, key=len))):
-        writer.writerow([(c[i] if i<len(c) else '') for c in cols])
-EOF
-
-# Give write permissions to the python script
-chmod 755 csv_transposer.py
-
+# Call the python code from: /Dependencies/Software/CSV-transposer/csv_transposer.py
+# Use: From the commandline type: csv_transposer.py <theinfilename> <theoutfilename>
 # If I wanted to call the python script directly I could
 #./pyscript.py
 
@@ -359,6 +318,9 @@ for i in $(cat "$INS_TRANSPOSED"-list-csv.txt);do
 # FIND a SVG to .jpg or .png application. See discussion here: http://superuser.com/questions/134679/command-line-application-for-converting-svg-to-png-on-mac-os-x
 
 
+#List of plots to create: differences of total characters in each phase of the text clean up process.
+#for each result (flag) of the UnicodeCCount output compare with the previous results, and also for each phase of the procss compare with previous results.
+
 ##############################
 ##############################
 
@@ -400,17 +362,11 @@ done
 ##############################
 ##############################
 
-##############################
-# Create gnuplot graphs of character frequencies based on CSV files
-##############################
-# http://stackoverflow.com/questions/14871272/plotting-using-a-csv-file
-
-
 
 ##############################
 #Alternate code by Jonathan D.
 ##############################
-#Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan's approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
+#Hugh did not institute this imediatly because he found the CSVfix method of creating the .md files without TECKit. But there are some other interesting things about Jonathan\'s approach which might be useful. This needs more consideration. Imediate questions are: why capitalize variable "$i"? Second question, what should I be thinking about when to move the working directory?
 #
 #cd $DIR_INITIAL_STATS_TITLE
 #
