@@ -12,6 +12,9 @@ LICENSE="GPL"
 
 # Set to root folder of project
 HOME_FOLDER=`pwd`
+echo
+echo "HOME_FOLDER = $HOME_FOLDER"
+echo
 
 ##############################
 # Variables for directories
