@@ -162,6 +162,10 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
 fi
 
+# Remove Temp directory
+rm -rf Temp-Files
+
+
 ################################
 #### End of Copy in New Data ###
 ################################
