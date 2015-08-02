@@ -96,6 +96,17 @@ source Dependencies/dependency-checks.bash
 
 reset_file_array=( "$JAMES_LIST_FILE" "$JAMES_LIST_FILE_FP" "$WIKI_LIST_FILE" "$WIKI_LIST_FILE_FP" "$CORPUS_LIST_FILE" "$KEYBOARD_LIST_FILE" "$KEYBOARD_LIST_FILE_FP" "$LANGUAGE_LIST_FILE" "$CORPORA_LANGUAGES" "$JAMES_LANGUAGES" "$WIKI_LANGUAGES" "$KEYBOARDS_LANGUAGES" )
 
+# Need to create directory structure:
+# if directory does not exist then create directory
+if [ ! -d "$HOME_FOLDER/Temp-Files" ]; then
+  mkdir "$HOME_FOLDER/Temp-Files"
+fi
+if [ ! -d "$HOME_FOLDER/Temp-Files/Input-Files-Lists" ]; then
+  mkdir "$HOME_FOLDER/Temp-Files/Input-Files-Lists"
+fi
+if [ ! -d "$HOME_FOLDER/Temp-Files/Languages-Used" ]; then
+  mkdir "$HOME_FOLDER/Temp-Files/Languages-Used"
+fi
 
 RESET_FILE_COUNT=0
 for i in ${reset_file_array[@]};do

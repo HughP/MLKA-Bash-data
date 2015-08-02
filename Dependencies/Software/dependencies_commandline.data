@@ -2,12 +2,10 @@ csvfix|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have
 
 teckit_compile|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have ${x[$i]}.'\\n\\t'You need to get it.  SIL International is the'\\n\\t'distributor. It is part of TECkit.'\\n\\t'Check here:'\\n\\t'http://scripts.sil.org/TECkitDownloads
 
-txtconv|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have ${x[$i]}. You need to'\\n\\t'get it.  SIL International is the distributor.'\\n\\t'It is part of TECkit. Check here:\n\\thttp://scripts.sil.org/TECkitDownloads 
+txtconv|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have ${x[$i]}. You need to'\\n\\t'get it.  SIL International is the distributor.'\\n\\t'It is part of TECkit. Check here:\n\\thttp://scripts.sil.org/TECkitDownloads
 
 UnicodeCCount|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have ${x[$i]}.'\\n\\t'You need to get it.  SIL International is'\\n\\t'the distributor. Check here:'\\n\\t'http://scripts.sil.org/UnicodeCharacterCount
 
 python|INFO: Great you have ${x[$i]} installed. '\\n\\t' Looks like you are using the above version: '\\n\\t' $(python --version)|! ERROR: Shucks! You do not have Python.'\\n\\t'You need to get it.'\\n\\t'On OS X, you can 'brew install ${x[$i]}' this will get you a instance which is not your 'system instance'.'\\n\\t'BTW: We're going to check for pip and, pandas, and pygal as best we can. So you should install the rest of those too."
 
 pip|INFO: Great you have ${x[$i]} installed.|! ERROR: Shucks! You do not have PIP.'\\n\\t'You need to get it.'\\n\\t'PIP is part of the Python eco-system, so follow the same method for both, whatever that is for your system.'\\n\\t'On OS X, you can 'brew install pip' this will get you a instance which is not your 'system instance'.
-
-

@@ -8,12 +8,16 @@
 #Purpose: To quickly remove content produced by awesome bash script.
 
 
+<<<<<<< HEAD
+ ##############################
+=======
 SCRIPT_NAME="awesome-script.bash"
 AUTHORS="Hugh Paterson III, Jonathan Duff"
 VERSION="0.02"
 License="GPL"
 
 ##############################
+>>>>>>> upstream/master
 # Variables Unique to Clean-up
 ##############################
 
@@ -130,6 +134,10 @@ if [ -d $NEW_DATA ];then
 	printf "STATUS: "
 	for i in $(find "$NEW_DATA"  -name '*.txt');do
 			cp $i .
+<<<<<<< HEAD
+			echo "		Added default '.txt' data back to the folder."
+	done
+=======
 			printf "+"
 	done
 	echo
@@ -137,6 +145,7 @@ if [ -d $NEW_DATA ];then
 
 	echo "		Added default '.bz2' data back to the main folder."
 	printf "STATUS: "
+>>>>>>> upstream/master
 	for i in $(find "$NEW_DATA"  -name '*.bz2');do
 			cp $i .
 			printf "+"
@@ -161,10 +170,6 @@ if [ -f $KEYBOARD_FILE_TYPES  ];then
 	echo
 	echo
 fi
-
-# Remove Temp directory
-rm -rf Temp-Files
-
 
 ################################
 #### End of Copy in New Data ###

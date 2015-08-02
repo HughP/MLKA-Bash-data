@@ -2,7 +2,7 @@
 # Author: Jonathan Duff <jonathan@dufffamily.org>
 # Author: Hugh Paterson III
 
-source global-vars.bash
+source Dependencies/global-vars.bash
 
 # Source: http://stackoverflow.com/questions/25288194/dont-display-pushd-popd-stack-accross-several-bash-scripts-quiet-pushd-popd
 # Purpose of the function: To silent the out put of pushd and popd.
